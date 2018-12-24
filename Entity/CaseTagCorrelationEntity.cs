@@ -5,49 +5,43 @@ using System.Text;
 
 namespace Entity
 {
+
     ///<summary>
-    ///点赞
+    ///案例标签关联
     ///</summary>
-    [SugarTable("t_endorse")]
-    public partial class EndorseEntity
+    [SugarTable("t_case_tag_correlation")]
+    public partial class CaseTagCorrelationEntity
     {
-        public EndorseEntity()
+        public CaseTagCorrelationEntity()
         {
 
 
         }
         /// <summary>
-        /// Desc:ID
+        /// Desc:主键ID
         /// Default:
         /// Nullable:False
-        /// </summary>    
+        /// </summary>       
         [SugarColumn(IsPrimaryKey = true, IsIdentity = true)]
-        public int endorseId { get; set; }
+        public int caseTagCorrelation { get; set; }
 
         /// <summary>
-        /// Desc:点赞的用户
+        /// Desc:案例ID
         /// Default:-1
         /// Nullable:False
         /// </summary>           
-        public int userId { get; set; }
+        public int caseId { get; set; }
 
         /// <summary>
-        /// Desc:被点赞的对象
+        /// Desc:案例标签ID 
         /// Default:-1
         /// Nullable:False
         /// </summary>           
-        public int objId { get; set; }
-
-        /// <summary>
-        /// Desc:被点赞对象的类型:1 说说；2 案例
-        /// Default:-1
-        /// Nullable:False
-        /// </summary>           
-        public int type { get; set; }
+        public int caseTagId { get; set; }
 
         /// <summary>
         /// Desc:是否删除
-        /// Default:-1
+        /// Default:0
         /// Nullable:False
         /// </summary>           
         public bool isDel { get; set; }
@@ -66,7 +60,5 @@ namespace Entity
         /// </summary>           
         public DateTime modifyDate { get; set; }
 
-
     }
 }
-

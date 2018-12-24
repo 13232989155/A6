@@ -33,8 +33,8 @@ namespace Api.Controllers
         /// <summary>
         /// 用户注册
         /// </summary>
-        /// <param name="account">账号</param>
-        /// <param name="password">密码</param>
+        /// <param name="account">账号*</param>
+        /// <param name="password">密码*</param>
         /// <returns>msg</returns>
         [HttpPost]
         [SkipCheckLogin]
@@ -84,8 +84,8 @@ namespace Api.Controllers
         /// <summary>
         /// 用户登录
         /// </summary>
-        /// <param name="account">账号</param>
-        /// <param name="password">密码</param>
+        /// <param name="account">账号*</param>
+        /// <param name="password">密码*</param>
         /// <returns></returns>
         [SkipCheckLogin]
         [HttpPost]
@@ -143,7 +143,7 @@ namespace Api.Controllers
         /// <summary>
         /// 获取个人信息
         /// </summary>
-        /// <param name="token"></param>
+        /// <param name="token">*</param>
         /// <returns></returns>
         [HttpPost]
         public JsonResult Get([FromForm] string token)
@@ -168,8 +168,8 @@ namespace Api.Controllers
         /// <summary>
         /// 设置个人信息
         /// </summary>
-        /// <param name="token"></param>
-        /// <param name="userEntity">用户信息</param>
+        /// <param name="token">*</param>
+        /// <param name="userEntity">用户信息*</param>
         /// <returns></returns>
         [HttpPost]
         public JsonResult Set([FromForm] string token, [FromForm] UserEntity userEntity)
@@ -197,13 +197,16 @@ namespace Api.Controllers
 
         /// <summary>
         /// 生成实体文件
+        /// </summary>
         [HttpGet]
         [SkipCheckLogin]
         public void DbFirst()
         {
 
-            //userBLL.ActionDal.ActionDBAccess.DbFirst.Where("t_topic").CreateClassFile("c:\\A6");
-            //userBLL.ActionDal.ActionDBAccess.DbFirst.Where("t_integral_detail").CreateClassFile("c:\\A6");
+            //userBLL.ActionDal.ActionDBAccess.DbFirst.Where("t_case").CreateClassFile("c:\\A6");
+            //userBLL.ActionDal.ActionDBAccess.DbFirst.Where("t_case_step").CreateClassFile("c:\\A6");
+            //userBLL.ActionDal.ActionDBAccess.DbFirst.Where("t_case_tag").CreateClassFile("c:\\A6");
+            //userBLL.ActionDal.ActionDBAccess.DbFirst.Where("t_case_tag_correlation").CreateClassFile("c:\\A6");
         }
 
 

@@ -6,51 +6,44 @@ using System.Text;
 namespace Entity
 {
     ///<summary>
-    ///点赞
+    ///案例标签
     ///</summary>
-    [SugarTable("t_endorse")]
-    public partial class EndorseEntity
+    [SugarTable("t_case_tag")]
+    public partial class CaseTagEntity
     {
-        public EndorseEntity()
+        public CaseTagEntity()
         {
 
 
         }
         /// <summary>
-        /// Desc:ID
+        /// Desc:
         /// Default:
         /// Nullable:False
-        /// </summary>    
+        /// </summary>       
         [SugarColumn(IsPrimaryKey = true, IsIdentity = true)]
-        public int endorseId { get; set; }
+        public int caseTagId { get; set; }
 
         /// <summary>
-        /// Desc:点赞的用户
-        /// Default:-1
+        /// Desc:标签名称
+        /// Default:
         /// Nullable:False
         /// </summary>           
-        public int userId { get; set; }
-
-        /// <summary>
-        /// Desc:被点赞的对象
-        /// Default:-1
-        /// Nullable:False
-        /// </summary>           
-        public int objId { get; set; }
-
-        /// <summary>
-        /// Desc:被点赞对象的类型:1 说说；2 案例
-        /// Default:-1
-        /// Nullable:False
-        /// </summary>           
-        public int type { get; set; }
+        public string name { get; set; }
 
         /// <summary>
         /// Desc:是否删除
-        /// Default:-1
+        /// Default:0
         /// Nullable:False
         /// </summary>           
         public bool isDel { get; set; }
+
+        /// <summary>
+        /// Desc:最后修改的管理员ID
+        /// Default:-1
+        /// Nullable:False
+        /// </summary>           
+        public int adminId { get; set; }
 
         /// <summary>
         /// Desc:创建时间
@@ -66,7 +59,5 @@ namespace Entity
         /// </summary>           
         public DateTime modifyDate { get; set; }
 
-
     }
 }
-

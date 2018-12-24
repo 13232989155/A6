@@ -53,7 +53,7 @@ namespace BLL
                 forbidden = false,
                 gender = -1,
                 grade = 1,
-                integral = 0,
+                integral = 10000,
                 modifyDate = DateTime.Now,
                 name = account,
                 password = Helper.DataEncrypt.DataMd5(password),

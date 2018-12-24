@@ -5,7 +5,7 @@ using System.Text;
 
 namespace BLL
 {
-    public class TopicBLL:Base.BaseBLL<ShareTopicEntity>
+    public class CaseStepBLL:Base.BaseBLL<CaseStepEntity>
     {
     }
 }

@@ -11,6 +11,36 @@
             <param name="token"></param>
             <returns></returns>
         </member>
+        <member name="T:Api.Controllers.CaseController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Api.Controllers.CaseController.Create(System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="token">*</param>
+            <param name="title">标题*</param>
+            <param name="coverImage">封面照片*</param>
+            <param name="describe">案例描述*</param>
+            <param name="tips">小提示</param>
+            <param name="caseStep">案例步骤:[{"img":"adasd", "contents":"asdsad"}, {"img":"asdasdadas", "contents":"asdasdsa"}]</param>
+            <param name="caseTag">案例标签（id数组:[10001,10003]）</param>
+            <returns>ad</returns>
+        </member>
+        <member name="T:Api.Controllers.CaseTagController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Api.Controllers.CaseTagController.List(System.String)">
+            <summary>
+            获取案例标签列表
+            </summary>
+            <param name="token">*</param>
+            <returns></returns>
+        </member>
         <member name="T:Api.Controllers.CommentController">
             <summary>
             评论
@@ -25,11 +55,70 @@
             <summary>
             获取评论列表
             </summary>
-            <param name="token"></param>
-            <param name="type">类型： 1 说说； 2 案例；</param>
-            <param name="objId">主键ID</param>
+            <param name="token">*</param>
+            <param name="type">类型*： 1 说说； 2 案例；</param>
+            <param name="objId">主键ID*</param>
             <param name="pageNumber"></param>
             <param name="pageSize"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Api.Controllers.CommentController.Create(System.String,System.Int32,System.String,System.Int32)">
+            <summary>
+            评论
+            </summary>
+            <param name="token">*</param>
+            <param name="objId">说说ID*</param>
+            <param name="contents">评论的文字内容*</param>
+            <param name="type">类型*：1 说说； 2 案例</param>
+            <returns></returns>
+        </member>
+        <member name="M:Api.Controllers.CommentController.Delete(System.String,System.Int32)">
+            <summary>
+            删除评论
+            </summary>
+            <param name="token">*</param>
+            <param name="commentId">评论ID*</param>
+            <returns></returns>
+        </member>
+        <member name="M:Api.Controllers.CommentController.CreateCommentReply(System.String,System.Int32,System.String,System.Int32)">
+            <summary>
+            回复评论
+            </summary>
+            <param name="token">*</param>
+            <param name="commentId">评论ID*</param>
+            <param name="contents">回复的内容*</param>
+            <param name="toUserId">被回复的这条评论的所属用户ID*</param>
+            <returns></returns>
+        </member>
+        <member name="M:Api.Controllers.CommentController.DeleteCommentReply(System.String,System.Int32)">
+            <summary>
+            删除回复评论
+            </summary>
+            <param name="token">*</param>
+            <param name="commentReplyId">回复评论ID*</param>
+            <returns></returns>
+        </member>
+        <member name="T:Api.Controllers.EndorseController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Api.Controllers.EndorseController.Create(System.String,System.Int32,System.Int32)">
+            <summary>
+            点赞说说
+            </summary>
+            <param name="token">*</param>
+            <param name="objId">主键ID*</param>
+            <param name="type">类型*:1 说说；2 案例</param>
+            <returns></returns>
+        </member>
+        <member name="M:Api.Controllers.EndorseController.Delete(System.String,System.Int32,System.Int32)">
+            <summary>
+            取消点赞
+            </summary>
+            <param name="token">*</param>
+            <param name="objId">主键ID*</param>
+            <param name="type">类型*:1 说说；2 案例</param>
             <returns></returns>
         </member>
         <member name="T:Api.Controllers.HelperController">
@@ -41,7 +130,42 @@
             <summary>
             上传文件
             </summary>
-            <param name="files">文件数组</param>
+            <param name="files">文件数组*</param>
+            <returns></returns>
+        </member>
+        <member name="M:Api.Controllers.HelperController.GetImageFormat(System.IO.Stream)">
+            <summary>
+            获取Image图片格式
+            </summary>
+            <param name="file"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Api.Controllers.IntegralController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Api.Controllers.IntegralController.Create(System.String,System.Int32,System.Int32)">
+            <summary>
+            打赏
+            </summary>
+            <param name="token">*</param>
+            <param name="objId">对象主键ID*</param>
+            <param name="type">对象类型*：1 说说； 2 案列；</param>
+            <returns></returns>
+        </member>
+        <member name="T:Api.Controllers.ReadController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Api.Controllers.ReadController.Create(System.String,System.Int32,System.Int32)">
+            <summary>
+            阅读说说
+            </summary>
+            <param name="token">*</param>
+            <param name="objId">主键ID*</param>
+            <param name="type">类型*： 1 说说</param>
             <returns></returns>
         </member>
         <member name="T:Api.Controllers.ShareController">
@@ -63,9 +187,9 @@
             <summary>
             创建说说
             </summary>
-            <param name="token"></param>
-            <param name="contents">说说文字内容</param>
-            <param name="shareTypeId">说说类型</param>
+            <param name="token">*</param>
+            <param name="contents">说说文字内容*</param>
+            <param name="shareTypeId">说说类型*</param>
             <param name="img">照片json数组</param>
             <param name="shareTopicId">话题ID</param>
             <returns></returns>
@@ -74,75 +198,8 @@
             <summary>
             删除说说
             </summary>
-            <param name="token"></param>
-            <param name="shareId">说说ID</param>
-            <returns></returns>
-        </member>
-        <member name="M:Api.Controllers.ShareController.Read(System.String,System.Int32)">
-            <summary>
-            阅读说说
-            </summary>
-            <param name="token"></param>
-            <param name="shareId">说说ID</param>
-            <returns></returns>
-        </member>
-        <member name="M:Api.Controllers.ShareController.Endorse(System.String,System.Int32)">
-            <summary>
-            点赞说说
-            </summary>
-            <param name="token"></param>
-            <param name="shareId">说说ID</param>
-            <returns></returns>
-        </member>
-        <member name="M:Api.Controllers.ShareController.CancelEndorse(System.String,System.Int32)">
-            <summary>
-            取消点赞
-            </summary>
-            <param name="token"></param>
-            <param name="shareId">说说ID</param>
-            <returns></returns>
-        </member>
-        <member name="M:Api.Controllers.ShareController.Sponsor(System.String,System.Int32)">
-            <summary>
-            打赏
-            </summary>
-            <param name="token"></param>
-            <param name="shareId">说说ID</param>
-            <returns></returns>
-        </member>
-        <member name="M:Api.Controllers.ShareController.CreateCommnent(System.String,System.Int32,System.String)">
-            <summary>
-            评论
-            </summary>
-            <param name="token"></param>
-            <param name="shareId">说说ID</param>
-            <param name="contents">评论的文字内容</param>
-            <returns></returns>
-        </member>
-        <member name="M:Api.Controllers.ShareController.DeleteCommnent(System.String,System.Int32)">
-            <summary>
-            删除评论
-            </summary>
-            <param name="token"></param>
-            <param name="commentId">评论ID</param>
-            <returns></returns>
-        </member>
-        <member name="M:Api.Controllers.ShareController.CreateCommentReply(System.String,System.Int32,System.String,System.Int32)">
-            <summary>
-            回复评论
-            </summary>
-            <param name="token"></param>
-            <param name="commentId">评论ID</param>
-            <param name="contents">回复的内容</param>
-            <param name="toUserId">被回复的这条评论的所属用户ID</param>
-            <returns></returns>
-        </member>
-        <member name="M:Api.Controllers.ShareController.DeleteCommentReply(System.String,System.Int32)">
-            <summary>
-            删除回复评论
-            </summary>
-            <param name="token"></param>
-            <param name="commentReplyId">回复评论ID</param>
+            <param name="token">*</param>
+            <param name="shareId">说说ID*</param>
             <returns></returns>
         </member>
         <member name="M:Api.Controllers.ShareController.PageList(System.String,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
@@ -176,8 +233,32 @@
             <summary>
             根据说说ID获取详细内容
             </summary>
-            <param name="token"></param>
-            <param name="shareId"></param>
+            <param name="token">*</param>
+            <param name="shareId">*</param>
+            <returns></returns>
+        </member>
+        <member name="T:Api.Controllers.ShareTopicController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Api.Controllers.ShareTopicController.List(System.String)">
+            <summary>
+            获取说说话题列表
+            </summary>
+            <param name="token">*</param>
+            <returns></returns>
+        </member>
+        <member name="T:Api.Controllers.ShareTypeController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Api.Controllers.ShareTypeController.List(System.String)">
+            <summary>
+            获取说说类型列表
+            </summary>
+            <param name="token">*</param>
             <returns></returns>
         </member>
         <member name="M:Api.Controllers.UserController.#ctor">
@@ -189,34 +270,38 @@
             <summary>
             用户注册
             </summary>
-            <param name="account">账号</param>
-            <param name="password">密码</param>
+            <param name="account">账号*</param>
+            <param name="password">密码*</param>
             <returns>msg</returns>
         </member>
         <member name="M:Api.Controllers.UserController.Login(System.String,System.String)">
             <summary>
             用户登录
             </summary>
-            <param name="account">账号</param>
-            <param name="password">密码</param>
+            <param name="account">账号*</param>
+            <param name="password">密码*</param>
             <returns></returns>
         </member>
         <member name="M:Api.Controllers.UserController.Get(System.String)">
             <summary>
             获取个人信息
             </summary>
-            <param name="token"></param>
+            <param name="token">*</param>
             <returns></returns>
         </member>
         <member name="M:Api.Controllers.UserController.Set(System.String,Entity.UserEntity)">
             <summary>
             设置个人信息
             </summary>
-            <param name="token"></param>
-            <param name="userEntity">用户信息</param>
+            <param name="token">*</param>
+            <param name="userEntity">用户信息*</param>
             <returns></returns>
         </member>
-        <!-- 对于成员“M:Api.Controllers.UserController.DbFirst”忽略有格式错误的 XML 注释 -->
+        <member name="M:Api.Controllers.UserController.DbFirst">
+            <summary>
+            生成实体文件
+            </summary>
+        </member>
         <member name="T:Api.Models.DataResult">
             <summary>
             数据结果
