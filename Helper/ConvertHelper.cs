@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Helper
+namespace QiNiu
 {
     /// <summary>
     /// 数据转换辅助类

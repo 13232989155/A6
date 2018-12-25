@@ -155,7 +155,7 @@ namespace Api.Controllers
         /// <summary>
         /// 根据类型获取说说分页数据
         /// </summary>
-        /// <param name="token"></param>
+        /// <param name="token">*</param>
         /// <param name="userId"></param>
         /// <param name="shareTypeId"></param>
         /// <param name="shareTopicId"></param>
@@ -173,9 +173,9 @@ namespace Api.Controllers
                 UserEntity userEntity = this.GetUserByToken(token);
 
                 IPagedList<ShareEntity> shares = shareEntities.ToList().ToPagedList(pageNumber, pageSize);
-                shares = ListEndorseByList(shares, userEntity.userId);
+                shares = ListEndorseCountByList(shares, userEntity.userId);
 
-                shares = ListCommentByList(shares);
+                shares = ListCommentCountByList(shares);
 
                 PageData pageData = new PageData(shares);
 
@@ -196,7 +196,7 @@ namespace Api.Controllers
         /// </summary>
         /// <param name="shareEntities"></param>
         /// <returns></returns>
-        private IPagedList<ShareEntity> ListCommentByList(IPagedList<ShareEntity> shareEntities)
+        private IPagedList<ShareEntity> ListCommentCountByList(IPagedList<ShareEntity> shareEntities)
         {
             if (shareEntities.Count() > 0)
             {
@@ -222,7 +222,7 @@ namespace Api.Controllers
                                      {
                                          contents = s.contents,
                                          createDate = s.createDate,
-                                         endorseCount = ses.Value,
+                                         commentCount = ses.Value,
                                          img = s.img,
                                          integral = s.integral,
                                          modifyDate = s.modifyDate,
@@ -233,7 +233,9 @@ namespace Api.Controllers
                                          isDel = s.isDel,
                                          name = s.name,
                                          portrait = s.portrait,
-                                         isEndorse = s.isEndorse
+                                         isEndorse = s.isEndorse,
+                                         endorseCount = s.endorseCount,
+                                         readCount = s.readCount
                                      })
                                      .ToPagedList();
                 }
@@ -248,7 +250,7 @@ namespace Api.Controllers
         /// <param name="shareEntities"></param>
         /// <param name="userId"></param>
         /// <returns></returns>
-        private IPagedList<ShareEntity> ListEndorseByList(IPagedList<ShareEntity> shareEntities, int userId)
+        private IPagedList<ShareEntity> ListEndorseCountByList(IPagedList<ShareEntity> shareEntities, int userId)
         {
             if (shareEntities.Count() > 0)
             {
@@ -294,7 +296,10 @@ namespace Api.Controllers
                                          isDel = s.isDel,
                                          name = s.name,
                                          portrait = s.portrait,
-                                         isEndorse = s.isEndorse
+                                         isEndorse = s.isEndorse,
+                                         commentCount = s.commentCount,
+                                         readCount = s.readCount
+                                         
                                      })
                                      .ToPagedList();
 

@@ -47,7 +47,7 @@ namespace BLL
             {
                 account = account,
                 address = "",
-                birthday = Helper.ConvertHelper.DEFAULT_DATE,
+                birthday = QiNiu.ConvertHelper.DEFAULT_DATE,
                 createDate = DateTime.Now,
                 email = "",
                 forbidden = false,
@@ -56,7 +56,7 @@ namespace BLL
                 integral = 10000,
                 modifyDate = DateTime.Now,
                 name = account,
-                password = Helper.DataEncrypt.DataMd5(password),
+                password = QiNiu.DataEncrypt.DataMd5(password),
                 phone = "",
                 portrait = "",
                 remark = "",
@@ -77,7 +77,7 @@ namespace BLL
         /// <returns></returns>
         public UserEntity GetByAccountAndPassword(string account, string password)
         {
-            password = Helper.DataEncrypt.DataMd5(password);
+            password = QiNiu.DataEncrypt.DataMd5(password);
 
             return ActionDal.ActionDBAccess.Queryable<UserEntity>().Where(it => it.account == account && it.password == password && it.forbidden == false).First();
         }

@@ -4,6 +4,11 @@
         <name>Api</name>
     </assembly>
     <members>
+        <member name="T:Api.Base.BaseController">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="M:Api.Base.BaseController.GetUserByToken(System.String)">
             <summary>
             根据token获取个人信息
@@ -16,9 +21,14 @@
             
             </summary>
         </member>
+        <member name="F:Api.Controllers.CaseController.caseType">
+            <summary>
+            阅读、点赞、积分记录的type值
+            </summary>
+        </member>
         <member name="M:Api.Controllers.CaseController.Create(System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
             <summary>
-            
+            创建案例
             </summary>
             <param name="token">*</param>
             <param name="title">标题*</param>
@@ -28,6 +38,48 @@
             <param name="caseStep">案例步骤:[{"img":"adasd", "contents":"asdsad"}, {"img":"asdasdadas", "contents":"asdasdsa"}]</param>
             <param name="caseTag">案例标签（id数组:[10001,10003]）</param>
             <returns>ad</returns>
+        </member>
+        <member name="M:Api.Controllers.CaseController.Delete(System.String,System.Int32)">
+            <summary>
+            删除案例
+            </summary>
+            <param name="token">*</param>
+            <param name="caseId">*</param>
+            <returns></returns>
+        </member>
+        <member name="M:Api.Controllers.CaseController.PageList(System.String,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            获取案例列表
+            </summary>
+            <param name="token">*</param>
+            <param name="userId"></param>
+            <param name="caseTagId"></param>
+            <param name="pageNumber"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Api.Controllers.CaseController.ListCommentCountByList(X.PagedList.IPagedList{Entity.CaseEntity})">
+            <summary>
+            获取评论数量
+            </summary>
+            <param name="caseEntities"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Api.Controllers.CaseController.ListEndorseCountByList(X.PagedList.IPagedList{Entity.CaseEntity},System.Int32)">
+            <summary>
+            获取点赞数量和判断是否点赞
+            </summary>
+            <param name="caseEntities"></param>
+            <param name="userId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Api.Controllers.CaseController.GetById(System.String,System.Int32)">
+            <summary>
+            根据说说ID获取详细内容
+            </summary>
+            <param name="token">*</param>
+            <param name="caseId">*</param>
+            <returns></returns>
         </member>
         <member name="T:Api.Controllers.CaseTagController">
             <summary>
@@ -154,6 +206,24 @@
             <param name="type">对象类型*：1 说说； 2 案列；</param>
             <returns></returns>
         </member>
+        <member name="M:Api.Controllers.IntegralController.SponsorShare(Entity.UserEntity,System.Int32,System.Int32)">
+            <summary>
+            打赏说说
+            </summary>
+            <param name="userEntity"></param>
+            <param name="shareId"></param>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Api.Controllers.IntegralController.SponsorCase(Entity.UserEntity,System.Int32,System.Int32)">
+            <summary>
+            打赏案例
+            </summary>
+            <param name="userEntity"></param>
+            <param name="caseId"></param>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
         <member name="T:Api.Controllers.ReadController">
             <summary>
             
@@ -206,7 +276,7 @@
             <summary>
             根据类型获取说说分页数据
             </summary>
-            <param name="token"></param>
+            <param name="token">*</param>
             <param name="userId"></param>
             <param name="shareTypeId"></param>
             <param name="shareTopicId"></param>
@@ -214,14 +284,14 @@
             <param name="pageSize"></param>
             <returns></returns>
         </member>
-        <member name="M:Api.Controllers.ShareController.ListCommentByList(X.PagedList.IPagedList{Entity.ShareEntity})">
+        <member name="M:Api.Controllers.ShareController.ListCommentCountByList(X.PagedList.IPagedList{Entity.ShareEntity})">
             <summary>
             获取评论数量
             </summary>
             <param name="shareEntities"></param>
             <returns></returns>
         </member>
-        <member name="M:Api.Controllers.ShareController.ListEndorseByList(X.PagedList.IPagedList{Entity.ShareEntity},System.Int32)">
+        <member name="M:Api.Controllers.ShareController.ListEndorseCountByList(X.PagedList.IPagedList{Entity.ShareEntity},System.Int32)">
             <summary>
             获取点赞和判断是否已点赞
             </summary>
@@ -260,6 +330,11 @@
             </summary>
             <param name="token">*</param>
             <returns></returns>
+        </member>
+        <member name="T:Api.Controllers.UserController">
+            <summary>
+            
+            </summary>
         </member>
         <member name="M:Api.Controllers.UserController.#ctor">
             <summary>

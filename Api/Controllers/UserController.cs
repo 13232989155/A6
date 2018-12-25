@@ -15,6 +15,9 @@ using X.PagedList;
 
 namespace Api.Controllers
 {
+    /// <summary>
+    /// 
+    /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class UserController : BaseController

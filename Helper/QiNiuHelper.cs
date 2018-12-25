@@ -3,9 +3,6 @@ using Qiniu.Http;
 using Qiniu.IO;
 using Qiniu.IO.Model;
 using Qiniu.Util;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Helper
 {

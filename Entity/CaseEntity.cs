@@ -99,5 +99,47 @@ namespace Entity
         /// </summary>
         [SugarColumn(IsIgnore = true)]
         public List<CaseStepEntity> caseStepEntities { get; set; }
+
+        /// <summary>
+        /// 用户姓名
+        /// </summary>
+        [SugarColumn(IsIgnore = true)]
+        public string name { get; set; }
+
+        /// <summary>
+        /// 用户头像
+        /// </summary>
+        [SugarColumn(IsIgnore = true)]
+        public string portrait { get; set; }
+
+        /// <summary>
+        /// 阅读量
+        /// </summary>
+        [SugarColumn(IsIgnore = true)]
+        public int readCount { get; set; }
+
+        /// <summary>
+        /// 点赞量
+        /// </summary>
+        [SugarColumn(IsIgnore = true)]
+        public int endorseCount { get; set; }
+
+        /// <summary>
+        /// 是否已点赞
+        /// </summary>
+        [SugarColumn(IsIgnore = true)]
+        public bool isEndorse { get; set; }
+
+        /// <summary>
+        /// 评论数量
+        /// </summary>
+        [SugarColumn(IsIgnore = true)]
+        public int commentCount { get; set; }
+
+        /// <summary>
+        /// 标签列表
+        /// </summary>
+        [SugarColumn(IsIgnore = true)]
+        public List<CaseTagEntity> caseTagEntities { get; set; }
     }
 }

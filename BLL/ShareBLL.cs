@@ -63,7 +63,7 @@ namespace BLL
         /// <param name="isDel">是否包含已删除的说说</param>
         /// <param name="forbidden">是否包含禁用的用户的说说</param>
         /// <returns></returns>
-        public IEnumerable<ShareEntity> List(int shareTypeId, int shareTopicId, int userId = -1, bool isDel = false, bool forbidden = false)
+        public IEnumerable<ShareEntity> List(int shareTypeId = -1, int shareTopicId = -1, int userId = -1, bool isDel = false, bool forbidden = false)
         {
             return ActionDal.ActionDBAccess.Queryable<ShareEntity, UserEntity>( ( s, u) => new object[]
                     {

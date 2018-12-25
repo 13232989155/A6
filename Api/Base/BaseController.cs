@@ -11,6 +11,9 @@ using System.Threading.Tasks;
 
 namespace Api.Base
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class BaseController : Controller
     {
 
