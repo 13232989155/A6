@@ -33,7 +33,7 @@ namespace Api.Controllers
             {
                 CaseTagBLL caseTagBLL = new CaseTagBLL();
 
-                IEnumerable<CaseTagEntity> caseTagEntities = caseTagBLL.List();
+                List<CaseTagEntity> caseTagEntities = caseTagBLL.List();
 
                 dr.code = "200";
                 dr.data = caseTagEntities;

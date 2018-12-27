@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace BLL
 {
@@ -20,9 +21,9 @@ namespace BLL
         /// </summary>
         /// <param name="account"></param>
         /// <returns></returns>
-        public UserEntity GetByAccount(string account)
+        public async Task<UserEntity> GetByAccount(string account)
         {
-            return ActionDal.ActionDBAccess.Queryable<UserEntity>().Where(it => it.account == account).First();
+            return await ActionDal.ActionDBAccess.Queryable<UserEntity>().Where(it => it.account == account).FirstAsync();
         }
 
         /// <summary>
@@ -41,13 +42,13 @@ namespace BLL
         /// <param name="account"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        public int Register(string account, string password)
+        public async Task<int> Register(string account, string password)
         {
             UserEntity userEntity = new UserEntity()
             {
                 account = account,
                 address = "",
-                birthday = QiNiu.ConvertHelper.DEFAULT_DATE,
+                birthday = Helper.ConvertHelper.DEFAULT_DATE,
                 createDate = DateTime.Now,
                 email = "",
                 forbidden = false,
@@ -56,7 +57,7 @@ namespace BLL
                 integral = 10000,
                 modifyDate = DateTime.Now,
                 name = account,
-                password = QiNiu.DataEncrypt.DataMd5(password),
+                password = Helper.DataEncrypt.DataMd5(password),
                 phone = "",
                 portrait = "",
                 remark = "",
@@ -65,7 +66,7 @@ namespace BLL
                 type = -1
             };
 
-            return ActionDal.ActionDBAccess.Insertable(userEntity).ExecuteCommand();
+            return await ActionDal.ActionDBAccess.Insertable(userEntity).ExecuteCommandAsync();
 
         }
 
@@ -77,7 +78,7 @@ namespace BLL
         /// <returns></returns>
         public UserEntity GetByAccountAndPassword(string account, string password)
         {
-            password = QiNiu.DataEncrypt.DataMd5(password);
+            password = Helper.DataEncrypt.DataMd5(password);
 
             return ActionDal.ActionDBAccess.Queryable<UserEntity>().Where(it => it.account == account && it.password == password && it.forbidden == false).First();
         }

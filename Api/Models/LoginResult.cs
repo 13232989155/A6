@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Api.Models
 {
+    /// <summary>
+    /// 登录返回数据
+    /// </summary>
     public class LoginResult
     {
         /// <summary>

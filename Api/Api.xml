@@ -16,6 +16,36 @@
             <param name="token"></param>
             <returns></returns>
         </member>
+        <member name="M:Api.Base.BaseController.CaseListCommentCountByList(System.Collections.Generic.List{Entity.CaseEntity})">
+            <summary>
+            获取评论数量
+            </summary>
+            <param name="caseEntities"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Api.Base.BaseController.CaseListEndorseCountByList(System.Collections.Generic.List{Entity.CaseEntity},System.Int32)">
+            <summary>
+            获取点赞数量和判断是否点赞
+            </summary>
+            <param name="caseEntities"></param>
+            <param name="userId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Api.Base.BaseController.ShareListCommentCountByList(System.Collections.Generic.List{Entity.ShareEntity})">
+            <summary>
+            获取评论数量
+            </summary>
+            <param name="shareEntities"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Api.Base.BaseController.ShareListEndorseCountByList(System.Collections.Generic.List{Entity.ShareEntity},System.Int32)">
+            <summary>
+            获取点赞和判断是否已点赞
+            </summary>
+            <param name="shareEntities"></param>
+            <param name="userId"></param>
+            <returns></returns>
+        </member>
         <member name="T:Api.Controllers.CaseController">
             <summary>
             
@@ -58,24 +88,9 @@
             <param name="pageSize"></param>
             <returns></returns>
         </member>
-        <member name="M:Api.Controllers.CaseController.ListCommentCountByList(X.PagedList.IPagedList{Entity.CaseEntity})">
-            <summary>
-            获取评论数量
-            </summary>
-            <param name="caseEntities"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Api.Controllers.CaseController.ListEndorseCountByList(X.PagedList.IPagedList{Entity.CaseEntity},System.Int32)">
-            <summary>
-            获取点赞数量和判断是否点赞
-            </summary>
-            <param name="caseEntities"></param>
-            <param name="userId"></param>
-            <returns></returns>
-        </member>
         <member name="M:Api.Controllers.CaseController.GetById(System.String,System.Int32)">
             <summary>
-            根据说说ID获取详细内容
+            根据案例ID获取详细内容
             </summary>
             <param name="token">*</param>
             <param name="caseId">*</param>
@@ -91,6 +106,29 @@
             获取案例标签列表
             </summary>
             <param name="token">*</param>
+            <returns></returns>
+        </member>
+        <member name="T:Api.Controllers.CircleController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Api.Controllers.CircleController.Newest(System.String,System.Int32,System.Int32)">
+            <summary>
+            获取最新案例和说说
+            </summary>
+            <param name="token">*</param>
+            <param name="pageNumber"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Api.Controllers.CircleController.Attention(System.String,System.Int32,System.Int32)">
+            <summary>
+            获取关注的人的说说和案例
+            </summary>
+            <param name="token"></param>
+            <param name="pageNumber"></param>
+            <param name="pageSize"></param>
             <returns></returns>
         </member>
         <member name="T:Api.Controllers.CommentController">
@@ -171,6 +209,50 @@
             <param name="token">*</param>
             <param name="objId">主键ID*</param>
             <param name="type">类型*:1 说说；2 案例</param>
+            <returns></returns>
+        </member>
+        <member name="T:Api.Controllers.FansController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Api.Controllers.FansController.Create(System.String,System.Int32)">
+            <summary>
+            关注
+            </summary>
+            <param name="token">*</param>
+            <param name="userId">要关注的用户的ID*</param>
+            <returns></returns>
+        </member>
+        <member name="M:Api.Controllers.FansController.Delete(System.String,System.Int32)">
+            <summary>
+            取消关注
+            </summary>
+            <param name="token">*</param>
+            <param name="userId">要关注的用户的ID*</param>
+            <returns></returns>
+        </member>
+        <member name="M:Api.Controllers.FansController.Attention(System.String,System.Int32)">
+            <summary>
+            判断是否关注
+            </summary>
+            <param name="token">*</param>
+            <param name="userId">*</param>
+            <returns></returns>
+        </member>
+        <member name="M:Api.Controllers.FansController.AttentionList(System.String,System.Int32)">
+            <summary>
+            查看关注列表
+            </summary>
+            <param name="token">*</param>
+            <param name="userId">*</param>
+            <returns></returns>
+        </member>
+        <member name="M:Api.Controllers.FansController.FansList(System.String)">
+            <summary>
+            查看粉丝列表
+            </summary>
+            <param name="token">*</param>
             <returns></returns>
         </member>
         <member name="T:Api.Controllers.HelperController">
@@ -284,21 +366,6 @@
             <param name="pageSize"></param>
             <returns></returns>
         </member>
-        <member name="M:Api.Controllers.ShareController.ListCommentCountByList(X.PagedList.IPagedList{Entity.ShareEntity})">
-            <summary>
-            获取评论数量
-            </summary>
-            <param name="shareEntities"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Api.Controllers.ShareController.ListEndorseCountByList(X.PagedList.IPagedList{Entity.ShareEntity},System.Int32)">
-            <summary>
-            获取点赞和判断是否已点赞
-            </summary>
-            <param name="shareEntities"></param>
-            <param name="userId"></param>
-            <returns></returns>
-        </member>
         <member name="M:Api.Controllers.ShareController.GetById(System.String,System.Int32)">
             <summary>
             根据说说ID获取详细内容
@@ -366,16 +433,61 @@
         </member>
         <member name="M:Api.Controllers.UserController.Set(System.String,Entity.UserEntity)">
             <summary>
-            设置个人信息
+            设置自己信息
             </summary>
             <param name="token">*</param>
             <param name="userEntity">用户信息*</param>
+            <returns></returns>
+        </member>
+        <member name="M:Api.Controllers.UserController.GetById(System.String,System.Int32)">
+            <summary>
+            获取他人信息
+            </summary>
+            <param name="token">*</param>
+            <param name="userId">*</param>
             <returns></returns>
         </member>
         <member name="M:Api.Controllers.UserController.DbFirst">
             <summary>
             生成实体文件
             </summary>
+        </member>
+        <member name="T:Api.Controllers.ValuesController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Api.Controllers.ValuesController.Get">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Api.Controllers.ValuesController.Get(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Api.Controllers.ValuesController.Post(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+        </member>
+        <member name="M:Api.Controllers.ValuesController.Put(System.Int32,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="id"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:Api.Controllers.ValuesController.Delete(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="id"></param>
         </member>
         <member name="T:Api.Models.DataResult">
             <summary>
@@ -397,6 +509,40 @@
             数据
             </summary>
         </member>
+        <member name="M:Api.Models.DataResult.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Api.Models.DataResult.#ctor(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="data"></param>
+        </member>
+        <member name="M:Api.Models.DataResult.#ctor(System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="msg"></param>
+            <param name="code"></param>
+        </member>
+        <member name="T:Api.Models.LoginAuthorizeAttribute">
+            <summary>
+            过滤器
+            </summary>
+        </member>
+        <member name="M:Api.Models.LoginAuthorizeAttribute.OnActionExecuting(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext)">
+            <summary>
+            重写，登录过滤
+            </summary>
+            <param name="filterContext"></param>
+        </member>
+        <member name="T:Api.Models.LoginResult">
+            <summary>
+            登录返回数据
+            </summary>
+        </member>
         <member name="P:Api.Models.LoginResult.token">
             <summary>
             用户token
@@ -412,11 +558,14 @@
             分页数据
             </summary>
         </member>
-        <member name="M:Api.Models.PageData.#ctor(X.PagedList.IPagedList)">
+        <member name="M:Api.Models.PageData.#ctor(System.Object,System.Int32,System.Int32,System.Int32)">
             <summary>
             初始化
             </summary>
-            <param name="pagedList"></param>
+            <param name="pageData"></param>
+            <param name="pageNumber"></param>
+            <param name="pageSize"></param>
+            <param name="totalItemCount"></param>
         </member>
         <member name="P:Api.Models.PageData.PageCount">
             <summary>
@@ -477,6 +626,59 @@
             <summary>
             当控制器或者action方法贴有此标签，则表示跳过登录过滤器的检查
             </summary>
+        </member>
+        <member name="M:Api.Models.SkipCheckLoginAttribute.OnActionExecuting(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext)">
+            <summary>
+            未登录过滤
+            </summary>
+            <param name="filterContext"></param>
+        </member>
+        <member name="T:Api.Program">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Api.Program.Main(System.String[])">
+            <summary>
+            
+            </summary>
+            <param name="args"></param>
+        </member>
+        <member name="M:Api.Program.CreateWebHostBuilder(System.String[])">
+            <summary>
+            
+            </summary>
+            <param name="args"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Api.Startup">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Api.Startup.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            
+            </summary>
+            <param name="configuration"></param>
+        </member>
+        <member name="P:Api.Startup.Configuration">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Api.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            
+            </summary>
+            <param name="services"></param>
+        </member>
+        <member name="M:Api.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IHostingEnvironment)">
+            <summary>
+            
+            </summary>
+            <param name="app"></param>
+            <param name="env"></param>
         </member>
     </members>
 </doc>

@@ -37,17 +37,29 @@ namespace Api.Models
             set;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public DataResult()
         {
 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="data"></param>
         public DataResult(dynamic data)
         {
             this.code = "200";
             this.data = data;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="msg"></param>
+        /// <param name="code"></param>
         public DataResult(string msg, string code)
         {
             this.code = code;

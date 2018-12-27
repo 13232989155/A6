@@ -49,7 +49,7 @@ namespace BLL
         /// 获取全部说说
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<ShareEntity> List()
+        public List<ShareEntity> List()
         {
             return ActionDal.ActionDBAccess.Queryable<ShareEntity>().OrderBy( it => it.createDate, SqlSugar.OrderByType.Desc).ToList();
         }
@@ -62,8 +62,11 @@ namespace BLL
         /// <param name="userId"></param>
         /// <param name="isDel">是否包含已删除的说说</param>
         /// <param name="forbidden">是否包含禁用的用户的说说</param>
+        /// <param name="pageNumber"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="totalCount"></param>
         /// <returns></returns>
-        public IEnumerable<ShareEntity> List(int shareTypeId = -1, int shareTopicId = -1, int userId = -1, bool isDel = false, bool forbidden = false)
+        public List<ShareEntity> List(int shareTypeId = -1, int shareTopicId = -1, int userId = -1, bool isDel = false, bool forbidden = false, int pageNumber = 1, int pageSize = 10, int totalCount = 0)
         {
             return ActionDal.ActionDBAccess.Queryable<ShareEntity, UserEntity>( ( s, u) => new object[]
                     {
@@ -90,7 +93,48 @@ namespace BLL
                         shareTypeId = s.shareTypeId,
                         userId = s.userId
                     })
-                    .ToList();
+                    .ToPageList(pageNumber, pageSize, ref totalCount);
+        }
+
+        /// <summary>
+        /// 获取说说总条数
+        /// </summary>
+        /// <param name="shareTypeId"></param>
+        /// <param name="shareTopicId"></param>
+        /// <param name="userId"></param>
+        /// <param name="isDel"></param>
+        /// <param name="forbidden"></param>
+        /// <returns></returns>
+        public int Count(int shareTypeId = -1, int shareTopicId = -1, int userId = -1, bool isDel = false, bool forbidden = false)
+        {
+            return ActionDal.ActionDBAccess.Queryable<ShareEntity, UserEntity>((s, u) => new object[]
+                  {
+                         JoinType.Inner,s.userId == u.userId
+                  })
+                   .WhereIF(userId > 10000, (s, u) => s.userId == userId)
+                   .WhereIF(!forbidden, (s, u) => u.forbidden == false)
+                   .WhereIF(!isDel, (s, u) => s.isDel == false)
+                   .WhereIF(shareTypeId > 10000, (s, u) => s.shareTypeId == shareTypeId)
+                   .WhereIF(shareTopicId > 10000, (s, u) => s.shareTopicId == shareTopicId)
+                   .OrderBy(s => s.createDate, SqlSugar.OrderByType.Desc)
+                   .Count();
+        }
+
+        /// <summary>
+        /// 获取说说总条数
+        /// </summary>
+        /// <param name="userIdInts"></param>
+        /// <returns></returns>
+        public int CountByUserIdInts(int[] userIdInts)
+        {
+            return ActionDal.ActionDBAccess.Queryable<ShareEntity, UserEntity>((s, u) => new object[]
+                  {
+                         JoinType.Inner,s.userId == u.userId
+                  })
+                  .Where( (s, u) => s.isDel == false && u.forbidden == false)
+                  .In( (s, u) => u.userId, userIdInts)
+                   .OrderBy(s => s.createDate, SqlSugar.OrderByType.Desc)
+                   .Count();
         }
     }
 }

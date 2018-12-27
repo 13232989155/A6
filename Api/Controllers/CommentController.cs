@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Api.Base;
 using Api.Models;
 using BLL;
 using Entity;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using X.PagedList;
 
 namespace Api.Controllers
 {
@@ -47,15 +44,13 @@ namespace Api.Controllers
             DataResult dr = new DataResult();
             try
             {
+                int totalItemCount = commentBLL.CountUserByTypeAndObjId(type, objId);
+                List<CommentEntity> commentEntities = commentBLL.ListUserByTypeAndObjId(type, objId, pageNumber:pageNumber, pageSize:pageSize, totalCount:totalItemCount);
 
-                IEnumerable<CommentEntity> commentEntities = commentBLL.ListUserByTypeAndObjId(type, objId);
-
-                IPagedList<CommentEntity> comments = commentEntities.ToPagedList(pageNumber, pageSize);
-
-                int[] commentIdInts = comments.Select(it => it.commentId).ToArray();
+                int[] commentIdInts = commentEntities.Select(it => it.commentId).ToArray();
                 CommentReplyBLL commentReplyBLL = new CommentReplyBLL();
 
-                IEnumerable<CommentReplyEntity> commentReplyEntities = commentReplyBLL.ListByCommentIdInts(commentIdInts);
+                List<CommentReplyEntity> commentReplyEntities = commentReplyBLL.ListByCommentIdInts(commentIdInts);
 
                 if ( commentReplyEntities.Count() > 0)
                 {
@@ -68,30 +63,30 @@ namespace Api.Controllers
                                                                            })
                                                                            .ToDictionary(it => it.id, it => it.entity);
 
-                    comments = (from c in comments
-                                join k in keyValuePairs on c.commentId equals k.Key into ck
-                                from ckk in ck.DefaultIfEmpty()
-                                select (new CommentEntity
-                                {
-                                    commentId = c.commentId,
-                                    commentReplyEntities = ckk.Value,
-                                    contents = c.contents,
-                                    createDate = c.createDate,
-                                    img = c.img,
-                                    isDel = c.isDel,
-                                    modifyDate = c.modifyDate,
-                                    name = c.name,
-                                    objId = c.objId,
-                                    portrait = c.portrait,
-                                    score = c.score,
-                                    type = c.type,
-                                    userId = c.userId
-                                }))
-                               .ToPagedList();
+                    commentEntities = (from c in commentEntities
+                                       join k in keyValuePairs on c.commentId equals k.Key into ck
+                                        from ckk in ck.DefaultIfEmpty()
+                                        select (new CommentEntity
+                                        {
+                                            commentId = c.commentId,
+                                            commentReplyEntities = ckk.Value,
+                                            contents = c.contents,
+                                            createDate = c.createDate,
+                                            img = c.img,
+                                            isDel = c.isDel,
+                                            modifyDate = c.modifyDate,
+                                            name = c.name,
+                                            objId = c.objId,
+                                            portrait = c.portrait,
+                                            score = c.score,
+                                            type = c.type,
+                                            userId = c.userId
+                                        }))
+                                       .ToList();
 
                 }
 
-                PageData pageData = new PageData(comments);
+                PageData pageData = new PageData(commentEntities, pageNumber, pageSize, totalItemCount);
 
                 dr.code = "200";
                 dr.data = pageData;

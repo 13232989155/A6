@@ -48,7 +48,7 @@ namespace BLL
         /// <param name="type"></param>
         /// <param name="objIdInts"></param>
         /// <returns></returns>
-        public IEnumerable<EndorseEntity> ListByTypeAndObjIdInts(int type, int[] objIdInts, bool isDel = false)
+        public List<EndorseEntity> ListByTypeAndObjIdInts(int type, int[] objIdInts, bool isDel = false)
         {
             return ActionDal.ActionDBAccess.Queryable<EndorseEntity>()
                     .WhereIF( !isDel, it => it.isDel == false)
@@ -65,7 +65,7 @@ namespace BLL
         /// <param name="objId"></param>
         /// <param name="isDel"></param>
         /// <returns></returns>
-        public IEnumerable<EndorseEntity> ListByTypeAndObjId(int type, int objId, bool isDel = false)
+        public List<EndorseEntity> ListByTypeAndObjId(int type, int objId, bool isDel = false)
         {
             return ActionDal.ActionDBAccess.Queryable<EndorseEntity>()
                    .WhereIF(!isDel, it => it.isDel == false)

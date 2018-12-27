@@ -33,7 +33,7 @@ namespace Api.Controllers
             {
                 ShareTopicBLL shareTopicBLL = new ShareTopicBLL();
 
-                IEnumerable<ShareTopicEntity> shareTopicEntities = shareTopicBLL.UnderwayList();
+                List<ShareTopicEntity> shareTopicEntities = shareTopicBLL.UnderwayList();
 
                 dr.code = "200";
                 dr.data = shareTopicEntities;

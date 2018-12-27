@@ -12,7 +12,7 @@ namespace BLL
         /// </summary>
         /// <param name="isDel"></param>
         /// <returns></returns>
-        public IEnumerable<ShareTypeEntity> List( bool isDel = false)
+        public List<ShareTypeEntity> List( bool isDel = false)
         {
             return ActionDal.ActionDBAccess.Queryable<ShareTypeEntity>()
                      .WhereIF(!isDel, it => it.isDel == false)

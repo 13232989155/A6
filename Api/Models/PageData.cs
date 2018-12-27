@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using X.PagedList;
-
-namespace Api.Models
+﻿namespace Api.Models
 {
     /// <summary>
     /// 分页数据
@@ -14,21 +8,45 @@ namespace Api.Models
         /// <summary>
         /// 初始化
         /// </summary>
-        /// <param name="pagedList"></param>
-        public PageData( IPagedList pagedList)
+        /// <param name="pageData"></param>
+        /// <param name="pageNumber"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="totalItemCount"></param>
+        public PageData( dynamic pageData, int pageNumber, int pageSize, int totalItemCount)
         {
+            Data = pageData;
+            TotalItemCount = totalItemCount;
+            PageNumber = pageNumber;
+            PageSize = pageSize;
 
-            PageCount = pagedList.PageCount;
-            TotalItemCount = pagedList.TotalItemCount;
-            PageNumber = pagedList.PageNumber;
-            PageSize = pagedList.PageSize;
-            HasPreviousPage = pagedList.HasPreviousPage;
-            HasNextPage = pagedList.HasNextPage;
-            IsFirstPage = pagedList.IsFirstPage;
-            IsLastPage = pagedList.IsLastPage;
-            FirstItemOnPage = pagedList.FirstItemOnPage;
-            LastItemOnPage = pagedList.LastItemOnPage;
-            Data = pagedList;
+            if (pageSize > 0 && pageNumber > 0 && totalItemCount > 0)
+            {
+                PageCount = (totalItemCount + pageSize - 1) / pageSize;
+
+                if (pageNumber > 1 && PageCount > 2)
+                {
+                    HasPreviousPage = true;
+                }
+
+                if (pageNumber < PageCount)
+                {
+                    HasNextPage = true;
+                }
+
+                if (pageNumber == 1)
+                {
+                    IsFirstPage = true;
+                }
+
+                if (pageNumber == PageCount)
+                {
+                    IsLastPage = true;
+                }
+
+                FirstItemOnPage = ((pageNumber - 1) * pageSize + 1);
+                LastItemOnPage = IsLastPage ? totalItemCount : (pageNumber * pageSize);
+
+            }     
         }
 
         /// <summary>

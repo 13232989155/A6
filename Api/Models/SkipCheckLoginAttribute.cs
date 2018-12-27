@@ -13,6 +13,10 @@ namespace Api.Models
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
     public class SkipCheckLoginAttribute : ActionFilterAttribute
     {
+       /// <summary>
+       /// 未登录过滤
+       /// </summary>
+       /// <param name="filterContext"></param>
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             base.OnActionExecuting(filterContext);

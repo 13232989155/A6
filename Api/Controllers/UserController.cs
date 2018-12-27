@@ -1,17 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using Api.Base;
 using Api.Models;
 using BLL;
 using Entity;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Linq;
-using X.PagedList;
 
 namespace Api.Controllers
 {
@@ -41,7 +34,7 @@ namespace Api.Controllers
         /// <returns>msg</returns>
         [HttpPost]
         [SkipCheckLogin]
-        public JsonResult Register([FromForm] string account, [FromForm] string password )
+        public async Task<JsonResult> Register([FromForm] string account, [FromForm] string password )
         {
             DataResult dr = new DataResult();
             try
@@ -54,7 +47,7 @@ namespace Api.Controllers
                     return Json(dr);
                 }
 
-                UserEntity user = userBLL.GetByAccount(account);
+                UserEntity user = await userBLL.GetByAccount(account);
                 if (user != null)
                 {
                     dr.msg = "已存在该账号";
@@ -62,7 +55,7 @@ namespace Api.Controllers
                     return Json(dr);
                 }
 
-                int rows = userBLL.Register(account, password);
+                int rows = await userBLL.Register(account, password);
                 if (rows > 0)
                 {
                     dr.msg = "注册成功";
@@ -169,7 +162,7 @@ namespace Api.Controllers
         }
 
         /// <summary>
-        /// 设置个人信息
+        /// 设置自己信息
         /// </summary>
         /// <param name="token">*</param>
         /// <param name="userEntity">用户信息*</param>
@@ -196,6 +189,43 @@ namespace Api.Controllers
             return Json(dr);
         }
 
+
+        /// <summary>
+        /// 获取他人信息
+        /// </summary>
+        /// <param name="token">*</param>
+        /// <param name="userId">*</param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult GetById([FromForm] string token, [FromForm] int userId)
+        {
+            DataResult dr = new DataResult();
+            try
+            {
+                UserEntity userEntity = userBLL.GetById(userId);
+                FansUserResult fansUserResult = null;
+                if ( userEntity != null)
+                {
+                    fansUserResult.userId = userEntity.userId;
+                    fansUserResult.attention = false;
+                    fansUserResult.birthday = userEntity.birthday;
+                    fansUserResult.gender = userEntity.gender;
+                    fansUserResult.name = userEntity.name;
+                    fansUserResult.portrait = userEntity.portrait;
+                    fansUserResult.signature = userEntity.signature;
+                }
+                dr.code = "200";
+                dr.data = fansUserResult;
+
+            }
+            catch (Exception ex)
+            {
+                dr.code = "999";
+                dr.msg = ex.Message;
+            }
+
+            return Json(dr);
+        }
 
 
         /// <summary>

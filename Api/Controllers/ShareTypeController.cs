@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Api.Base;
 using Api.Models;
 using BLL;
 using Entity;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using X.PagedList;
 
 namespace Api.Controllers
 {
@@ -34,7 +30,7 @@ namespace Api.Controllers
             {
 
                 ShareTypeBLL shareTypeBLL = new ShareTypeBLL();
-                IEnumerable<ShareTypeEntity> shareTypeEntities = shareTypeBLL.List();
+                List<ShareTypeEntity> shareTypeEntities = shareTypeBLL.List();
 
                 dr.code = "200";
                 dr.data = shareTypeEntities;

@@ -13,7 +13,7 @@ namespace BLL
         /// </summary>
         /// <param name="isDel"></param>
         /// <returns></returns>
-        public IEnumerable<ShareTopicEntity> UnderwayList()
+        public List<ShareTopicEntity> UnderwayList()
         {
             return ActionDal.ActionDBAccess.Queryable<ShareTopicEntity>()
                      .Where( it => it.isDel == false && it.startDate <= SqlFunc.GetDate() && SqlFunc.GetDate() <= it.endDate)

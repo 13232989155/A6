@@ -18,6 +18,27 @@ namespace Entity
         }
 
         /// <summary>
+        /// 用户一般资料
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="name"></param>
+        /// <param name="gender"></param>
+        /// <param name="birthday"></param>
+        /// <param name="portrait"></param>
+        /// <param name="signature"></param>
+        /// <param name="attention"></param>
+        public UserEntity(int userId, string name, int gender, DateTime birthday, string portrait, string signature, bool attention)
+        {
+            this.userId = userId;
+            this.name = name;
+            this.gender = gender;
+            this.birthday = birthday;
+            this.portrait = portrait;
+            this.signature = signature;
+            this.attention = attention;
+        }
+
+        /// <summary>
         /// Desc:ID
         /// Default:
         /// Nullable:False
@@ -58,7 +79,7 @@ namespace Entity
         /// Default:
         /// Nullable:False
         /// </summary>           
-        public DateTime? birthday { get; set; }
+        public DateTime birthday { get; set; }
 
         /// <summary>
         /// Desc:头像
@@ -150,6 +171,14 @@ namespace Entity
         /// Nullable:False
         /// </summary>           
         public string remark { get; set; }
+
+        /// <summary>
+        /// Desc:关注
+        /// Default:
+        /// Nullable:False
+        /// </summary>          
+        [SugarColumn(IsIgnore = true)]
+        public bool attention { get; set; }
 
     }
 }

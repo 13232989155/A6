@@ -51,7 +51,7 @@ namespace BLL
         /// <param name="objIdInts"></param>
         /// <param name="isDel"></param>
         /// <returns></returns>
-        public IEnumerable<CommentEntity> ListByTypeAndObjIdInts(int type, int[] objIdInts, bool isDel = false)
+        public List<CommentEntity> ListByTypeAndObjIdInts(int type, int[] objIdInts, bool isDel = false)
         {
             return ActionDal.ActionDBAccess.Queryable<CommentEntity>()
                     .Where(it => it.type == type)
@@ -68,7 +68,7 @@ namespace BLL
         /// <param name="objId"></param>
         /// <param name="isDel"></param>
         /// <returns></returns>
-        public IEnumerable<CommentEntity> ListByTypeAndObjId(int type, int objId, bool isDel = false)
+        public List<CommentEntity> ListByTypeAndObjId(int type, int objId, bool isDel = false)
         {
             return ActionDal.ActionDBAccess.Queryable<CommentEntity>()
                     .Where(it => it.type == type && it.objId == objId)
@@ -77,14 +77,41 @@ namespace BLL
                     .ToList();
         }
 
+
         /// <summary>
-        /// 获取对象评论列表(包含用户信息)
+        /// 获取对象评论列表总数
         /// </summary>
         /// <param name="type"></param>
         /// <param name="objId"></param>
         /// <param name="isDel"></param>
         /// <returns></returns>
-        public IEnumerable<CommentEntity> ListUserByTypeAndObjId(int type, int objId, bool isDel = false)
+        public int CountUserByTypeAndObjId(int type, int objId, bool isDel = false)
+        {
+            int totalItemCount = 0;
+
+            totalItemCount = ActionDal.ActionDBAccess.Queryable<CommentEntity, UserEntity>((c, u) => new object[]
+                   {
+                         JoinType.Inner, c.userId == u.userId
+                   })
+                    .Where((c, u) => c.type == type && c.objId == objId)
+                    .WhereIF(!isDel, (c, u) => c.isDel == false)
+                    .OrderBy(c => c.createDate, SqlSugar.OrderByType.Desc)
+                    .Count();
+
+            return totalItemCount;
+        }
+
+        /// <summary>
+        ///  获取对象评论列表(包含用户信息)
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="objId"></param>
+        /// <param name="isDel"></param>
+        /// <param name="pageNumber"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="totalCount"></param>
+        /// <returns></returns>
+        public List<CommentEntity> ListUserByTypeAndObjId(int type, int objId, bool isDel = false, int pageNumber = 1, int pageSize = 10, int totalCount = 0)
         {
             return ActionDal.ActionDBAccess.Queryable<CommentEntity, UserEntity>( (c, u) => new object[]
                     {
@@ -108,7 +135,7 @@ namespace BLL
                         type = c.type,
                         userId = c.userId
                     })
-                    .ToList();
+                    .ToPageList( pageNumber, pageSize, ref totalCount);
         }
 
     }

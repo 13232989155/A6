@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Api.Base;
 using Api.Models;
 using BLL;
 using Entity;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using X.PagedList;
 
 namespace Api.Controllers
 {
@@ -220,16 +217,15 @@ namespace Api.Controllers
             {
                 CaseBLL caseBLL = new CaseBLL();
 
-                IEnumerable<CaseEntity> caseEntities = caseBLL.List(caseTagId, userId: userId);
+                int totalItemCount = caseBLL.Count(caseTagId, userId: userId);
+                List<CaseEntity> caseEntities = caseBLL.List(caseTagId, userId: userId, pageNumber:pageNumber, pageSize:pageSize, totalCount:totalItemCount);
+
                 UserEntity userEntity = this.GetUserByToken(token);
+                caseEntities = CaseListEndorseCountByList(caseEntities, userEntity.userId);
 
-                IPagedList<CaseEntity> cases  = caseEntities.ToList().ToPagedList(pageNumber, pageSize);
+                caseEntities = CaseListCommentCountByList(caseEntities);
 
-                cases = ListEndorseCountByList(cases, userEntity.userId);
-
-                cases = ListCommentCountByList(cases);
-
-                PageData pageData = new PageData(cases);
+                PageData pageData = new PageData(caseEntities, pageNumber, pageSize, totalItemCount);
 
                 dr.code = "200";
                 dr.data = pageData;
@@ -245,128 +241,7 @@ namespace Api.Controllers
         }
 
         /// <summary>
-        /// 获取评论数量
-        /// </summary>
-        /// <param name="caseEntities"></param>
-        /// <returns></returns>
-        private IPagedList<CaseEntity> ListCommentCountByList(IPagedList<CaseEntity> caseEntities)
-        {
-            if (caseEntities.Count() > 0)
-            {
-                int[] idInts = caseEntities.Select(it => it.caseId).ToArray();
-
-                CommentBLL commentBLL = new CommentBLL();
-                IEnumerable<CommentEntity> commentEntities = commentBLL.ListByTypeAndObjIdInts(caseType, idInts);
-                if (commentEntities.Count() > 0)
-                {
-                    Dictionary<int, int> keyValuePairs = commentEntities
-                                                        .GroupBy(it => it.objId)
-                                                        .Select(it => new
-                                                        {
-                                                            id = it.Key,
-                                                            count = it.Count()
-                                                        })
-                                                        .ToDictionary(it => it.id, it => it.count);
-
-                    caseEntities = (from c in caseEntities
-                                     join e in keyValuePairs on c.caseId equals e.Key into se
-                                     from ses in se.DefaultIfEmpty()
-                                     select new CaseEntity
-                                     {
-                                         caseId = c.caseId,
-                                         coverImage = c.coverImage,
-                                         createDate = c.createDate,
-                                         describe = c.describe,
-                                         integral = c.integral,
-                                         isDel = c.isDel,
-                                         modifyDate = c.modifyDate,
-                                         name = c.name,
-                                         portrait = c.portrait,
-                                         state = c.state,
-                                         tips = c.tips,
-                                         title = c.title,
-                                         userId = c.userId,
-                                         commentCount = ses.Value,
-                                         endorseCount = c.endorseCount,
-                                         isEndorse = c.isEndorse,
-                                         readCount = c.readCount
-                                     })
-                                     .ToPagedList();
-                }
-            }
-
-            return caseEntities;
-        }
-
-        /// <summary>
-        /// 获取点赞数量和判断是否点赞
-        /// </summary>
-        /// <param name="caseEntities"></param>
-        /// <param name="userId"></param>
-        /// <returns></returns>
-        private IPagedList<CaseEntity> ListEndorseCountByList(IPagedList<CaseEntity> caseEntities, int userId)
-        {
-            if (caseEntities.Count() > 0)
-            {
-                int[] idInts = caseEntities.Select(it => it.caseId).ToArray();
-
-                EndorseBLL endorseBLL = new EndorseBLL();
-                IEnumerable<EndorseEntity> endorseEntities = endorseBLL.ListByTypeAndObjIdInts(caseType, idInts);
-
-                if (endorseEntities.Count() > 0)
-                {
-
-                    var userEndorseList = endorseEntities.Where(it => it.userId == userId).ToList();
-
-                    userEndorseList.ToList().ForEach(it =>
-                    {
-                        caseEntities.First(itt => itt.caseId == it.objId).isEndorse = true;
-                    });
-
-                    Dictionary<int, int> keyValuePairs = endorseEntities
-                                                        .GroupBy(it => it.objId)
-                                                        .Select(it => new
-                                                        {
-                                                            id = it.Key,
-                                                            count = it.Count()
-                                                        })
-                                                        .ToDictionary(it => it.id, it => it.count);
-
-                    caseEntities = (from c in caseEntities
-                                    join e in keyValuePairs on c.caseId equals e.Key into se
-                                     from ses in se.DefaultIfEmpty()
-                                    select new CaseEntity
-                                    {
-                                        caseId = c.caseId,
-                                        coverImage = c.coverImage,
-                                        createDate = c.createDate,
-                                        describe = c.describe,
-                                        integral = c.integral,
-                                        isDel = c.isDel,
-                                        modifyDate = c.modifyDate,
-                                        name = c.name,
-                                        portrait = c.portrait,
-                                        state = c.state,
-                                        tips = c.tips,
-                                        title = c.title,
-                                        userId = c.userId,
-                                        commentCount = c.commentCount,
-                                        endorseCount = ses.Value,
-                                        isEndorse = c.isEndorse,
-                                        readCount = c.readCount
-                                    })
-                                     .ToPagedList();
-
-                }
-
-            }
-
-            return caseEntities;
-        }
-
-
-        /// <summary>
-        /// 根据说说ID获取详细内容
+        /// 根据案例ID获取详细内容
         /// </summary>
         /// <param name="token">*</param>
         /// <param name="caseId">*</param>
@@ -384,7 +259,7 @@ namespace Api.Controllers
                 caseEntity.commentCount = commentBLL.ListByTypeAndObjId(caseType, caseEntity.caseId).Count();
 
                 EndorseBLL endorseBLL = new EndorseBLL();
-                IEnumerable<EndorseEntity> endorseEntities = endorseBLL.ListByTypeAndObjId(caseType, caseEntity.caseId);
+                List<EndorseEntity> endorseEntities = endorseBLL.ListByTypeAndObjId(caseType, caseEntity.caseId);
 
                 caseEntity.endorseCount = endorseEntities.Count();
                 if (endorseEntities.ToList().Exists(it => it.userId == userEntity.userId))

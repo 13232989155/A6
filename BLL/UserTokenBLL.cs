@@ -27,7 +27,7 @@ namespace BLL
             UserTokenEntity userTokenEntity = new UserTokenEntity()
             {
                 createDate = DateTime.Now,
-                token = QiNiu.DataEncrypt.DataMd5( Guid.NewGuid().ToString()),
+                token = Helper.DataEncrypt.DataMd5( Guid.NewGuid().ToString()),
                 type = -1,
                 userId = userId
             };
@@ -43,7 +43,7 @@ namespace BLL
         public UserTokenEntity Update(UserTokenEntity userTokenEntity)
         {
             userTokenEntity.createDate = DateTime.Now;
-            userTokenEntity.token = QiNiu.DataEncrypt.DataMd5(Guid.NewGuid().ToString());
+            userTokenEntity.token = Helper.DataEncrypt.DataMd5(Guid.NewGuid().ToString());
 
             int rows = ActionDal.ActionDBAccess.Updateable(userTokenEntity).ExecuteCommand();
 

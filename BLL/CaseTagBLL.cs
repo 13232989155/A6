@@ -12,7 +12,7 @@ namespace BLL
         /// </summary>
         /// <param name="isDel"></param>
         /// <returns></returns>
-        public IEnumerable<CaseTagEntity> List( bool isDel = false)
+        public List<CaseTagEntity> List( bool isDel = false)
         {
             return ActionDal.ActionDBAccess.Queryable<CaseTagEntity>()
                     .WhereIF(!isDel, it => it.isDel == false)

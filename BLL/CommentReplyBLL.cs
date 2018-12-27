@@ -49,7 +49,7 @@ namespace BLL
         /// <param name="commentIdInts"></param>
         /// <param name="isDel"></param>
         /// <returns></returns>
-        public IEnumerable<CommentReplyEntity> ListByCommentIdInts(int[] commentIdInts, bool isDel = false)
+        public List<CommentReplyEntity> ListByCommentIdInts(int[] commentIdInts, bool isDel = false)
         {
             return ActionDal.ActionDBAccess.Queryable<CommentReplyEntity, UserEntity, UserEntity>((cr, u1, u2) => new object[]
                     {

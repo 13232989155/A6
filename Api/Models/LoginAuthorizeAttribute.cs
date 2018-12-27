@@ -17,8 +17,15 @@ using System.Threading.Tasks;
 
 namespace Api.Models
 {
+    /// <summary>
+    /// 过滤器
+    /// </summary>
     public class LoginAuthorizeAttribute : ActionFilterAttribute
     {
+        /// <summary>
+        /// 重写，登录过滤
+        /// </summary>
+        /// <param name="filterContext"></param>
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             //获取跳过验证的标签如果有则跳过验证
