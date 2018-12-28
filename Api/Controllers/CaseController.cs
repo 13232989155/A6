@@ -17,11 +17,6 @@ namespace Api.Controllers
     [ApiController]
     public class CaseController : BaseController
     {
-        /// <summary>
-        /// 阅读、点赞、积分记录的type值
-        /// </summary>
-        private readonly int caseType = 2;
-
 
         /// <summary>
         /// 创建案例
@@ -176,7 +171,7 @@ namespace Api.Controllers
 
                 //增加阅读记录
                 ReadBLL readBLL = new ReadBLL();
-                readBLL.Create(userEntity.userId, caseType, caseId);
+                readBLL.Create(userEntity.userId, (int)Entity.TypeEnumEntity.TypeEnum.案例, caseId);
 
                 if (rows > 0)
                 {
@@ -256,10 +251,10 @@ namespace Api.Controllers
                 CaseEntity caseEntity = caseBLL.GetById(caseId);
                 UserEntity userEntity = this.GetUserByToken(token);
                 CommentBLL commentBLL = new CommentBLL();
-                caseEntity.commentCount = commentBLL.ListByTypeAndObjId(caseType, caseEntity.caseId).Count();
+                caseEntity.commentCount = commentBLL.ListByTypeAndObjId((int)Entity.TypeEnumEntity.TypeEnum.案例, caseEntity.caseId).Count();
 
                 EndorseBLL endorseBLL = new EndorseBLL();
-                List<EndorseEntity> endorseEntities = endorseBLL.ListByTypeAndObjId(caseType, caseEntity.caseId);
+                List<EndorseEntity> endorseEntities = endorseBLL.ListByTypeAndObjId((int)Entity.TypeEnumEntity.TypeEnum.案例, caseEntity.caseId);
 
                 caseEntity.endorseCount = endorseEntities.Count();
                 if (endorseEntities.ToList().Exists(it => it.userId == userEntity.userId))

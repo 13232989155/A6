@@ -50,11 +50,11 @@ namespace Api.Controllers
 
                 if (type == 1)
                 {
-                    return Json(SponsorShare(userEntity, objId, type));
+                    return Json(SponsorShare(userEntity, objId));
                 }
                 else
                 {
-                    return Json(SponsorCase(userEntity, objId, type));
+                    return Json(SponsorCase(userEntity, objId));
                 }
 
             }
@@ -72,9 +72,8 @@ namespace Api.Controllers
         /// </summary>
         /// <param name="userEntity"></param>
         /// <param name="shareId"></param>
-        /// <param name="type"></param>
         /// <returns></returns>
-        private DataResult SponsorShare(UserEntity userEntity, int shareId, int type)
+        private DataResult SponsorShare(UserEntity userEntity, int shareId)
         {
             DataResult dr = new DataResult();
 
@@ -106,7 +105,7 @@ namespace Api.Controllers
                     isDel = false,
                     modifyDate = DateTime.Now,
                     objId = shareId,
-                    type = type,
+                    type = (int)Entity.TypeEnumEntity.TypeEnum.说说,
                     userId = userEntity.userId
                 };
                 var rows2 = shareBLL.ActionDal.ActionDBAccess.Insertable(integralDetailEntity).ExecuteCommand();
@@ -122,7 +121,7 @@ namespace Api.Controllers
                     isDel = false,
                     modifyDate = DateTime.Now,
                     objId = shareId,
-                    type = type,
+                    type = (int)Entity.TypeEnumEntity.TypeEnum.说说,
                     userId = user.userId
                 };
                 var rows4 = shareBLL.ActionDal.ActionDBAccess.Insertable(integralDetail).ExecuteCommand();
@@ -132,7 +131,7 @@ namespace Api.Controllers
             });
             //增加阅读记录
             ReadBLL readBLL = new ReadBLL();
-            readBLL.Create(userEntity.userId, type, shareId);
+            readBLL.Create(userEntity.userId, (int)Entity.TypeEnumEntity.TypeEnum.说说, shareId);
             if (result.IsSuccess)
             {
                 dr.code = "200";
@@ -152,9 +151,8 @@ namespace Api.Controllers
         /// </summary>
         /// <param name="userEntity"></param>
         /// <param name="caseId"></param>
-        /// <param name="type"></param>
         /// <returns></returns>
-        private DataResult SponsorCase(UserEntity userEntity, int caseId, int type)
+        private DataResult SponsorCase(UserEntity userEntity, int caseId)
         {
             DataResult dr = new DataResult();
 
@@ -186,7 +184,7 @@ namespace Api.Controllers
                     isDel = false,
                     modifyDate = DateTime.Now,
                     objId = caseId,
-                    type = type,
+                    type = (int)Entity.TypeEnumEntity.TypeEnum.案例,
                     userId = userEntity.userId
                 };
                 var rows2 = caseBLL.ActionDal.ActionDBAccess.Insertable(integralDetailEntity).ExecuteCommand();
@@ -202,7 +200,7 @@ namespace Api.Controllers
                     isDel = false,
                     modifyDate = DateTime.Now,
                     objId = caseId,
-                    type = type,
+                    type = (int)Entity.TypeEnumEntity.TypeEnum.案例,
                     userId = user.userId
                 };
                 var rows4 = caseBLL.ActionDal.ActionDBAccess.Insertable(integralDetail).ExecuteCommand();
@@ -212,7 +210,7 @@ namespace Api.Controllers
             });
             //增加阅读记录
             ReadBLL readBLL = new ReadBLL();
-            readBLL.Create(userEntity.userId, type, caseId);
+            readBLL.Create(userEntity.userId, (int)Entity.TypeEnumEntity.TypeEnum.案例, caseId);
             if (result.IsSuccess)
             {
                 dr.code = "200";

@@ -59,7 +59,7 @@ namespace BLL
                                     {
                                         id = it.caseId,
                                         createDate = it.createDate,
-                                        type = 2
+                                        type = (int)Entity.TypeEnumEntity.TypeEnum.案例
                                     }),
 
                                     ActionDal.ActionDBAccess.Queryable<ShareEntity>()
@@ -69,7 +69,7 @@ namespace BLL
                                     {
                                         id = it.shareId,
                                         createDate = it.createDate,
-                                        type = 1
+                                        type = (int)Entity.TypeEnumEntity.TypeEnum.说说
                                     }))
                                     .OrderBy(it => it.createDate, OrderByType.Desc)
                                     .ToPageList(pageNumber, pageSize, ref totalCount);
@@ -83,7 +83,7 @@ namespace BLL
                                     {
                                         id = it.caseId,
                                         createDate = it.createDate,
-                                        type = 2
+                                        type = (int)Entity.TypeEnumEntity.TypeEnum.案例
                                     }),
 
                                     ActionDal.ActionDBAccess.Queryable<ShareEntity>()
@@ -92,20 +92,20 @@ namespace BLL
                                     {
                                         id = it.shareId,
                                         createDate = it.createDate,
-                                        type = 1
+                                        type = (int)Entity.TypeEnumEntity.TypeEnum.说说
                                     }))
                                     .OrderBy(it => it.createDate, OrderByType.Desc)
                                     .ToPageList(pageNumber, pageSize, ref totalCount);
             }
 
-            List<CaseEntity> caseEntities = SetCaseUser(circleResultHelpers.Where(it => it.type == 2).Select( it => it.id).ToArray());
+            List<CaseEntity> caseEntities = SetCaseUser(circleResultHelpers.Where(it => it.type == (int)Entity.TypeEnumEntity.TypeEnum.案例).Select( it => it.id).ToArray());
             caseEntities.ForEach(it =>
             {
                 circleResultHelpers.Find(itt => itt.id == it.caseId).caseEntity = it;
             });
 
 
-            List<ShareEntity> shareEntities = SetShareUser(circleResultHelpers.Where(it => it.type == 1).Select(it => it.id).ToArray());
+            List<ShareEntity> shareEntities = SetShareUser(circleResultHelpers.Where(it => it.type == (int)Entity.TypeEnumEntity.TypeEnum.说说).Select(it => it.id).ToArray());
             shareEntities.ForEach(it =>
             {
                 circleResultHelpers.Find(itt => itt.id == it.shareId).shareEntity = it;

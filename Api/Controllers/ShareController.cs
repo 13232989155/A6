@@ -20,19 +20,12 @@ namespace Api.Controllers
         private ShareBLL shareBLL = null;
 
         /// <summary>
-        /// 阅读、点赞、积分记录的type值
-        /// </summary>
-        private readonly int shareType = 1;
-
-        /// <summary>
         /// 
         /// </summary>
         public ShareController()
         {
             this.shareBLL = new ShareBLL();
         }
-
-
 
         /// <summary>
         /// 创建说说
@@ -126,7 +119,7 @@ namespace Api.Controllers
 
                 //增加阅读记录
                 ReadBLL readBLL = new ReadBLL();
-                readBLL.Create(userEntity.userId, shareType, shareId);
+                readBLL.Create(userEntity.userId, (int)Entity.TypeEnumEntity.TypeEnum.说说, shareId);
 
                 if (rows > 0)
                 {
@@ -203,10 +196,10 @@ namespace Api.Controllers
                 UserEntity userEntity = this.GetUserByToken(token);
 
                 CommentBLL commentBLL = new CommentBLL();
-                shareEntity.commentCount = commentBLL.ListByTypeAndObjId(shareType, shareEntity.shareId).Count();
+                shareEntity.commentCount = commentBLL.ListByTypeAndObjId((int)Entity.TypeEnumEntity.TypeEnum.说说, shareEntity.shareId).Count();
 
                 EndorseBLL endorseBLL = new EndorseBLL();
-                List<EndorseEntity> endorseEntities = endorseBLL.ListByTypeAndObjId(shareType, shareEntity.shareId);
+                List<EndorseEntity> endorseEntities = endorseBLL.ListByTypeAndObjId((int)Entity.TypeEnumEntity.TypeEnum.说说, shareEntity.shareId);
 
                 shareEntity.endorseCount = endorseEntities.Count();
                 if ( endorseEntities.ToList().Exists( it => it.userId == userEntity.userId))

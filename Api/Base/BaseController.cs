@@ -53,7 +53,7 @@ namespace Api.Base
                 int[] idInts = caseEntities.Select(it => it.caseId).ToArray();
 
                 CommentBLL commentBLL = new CommentBLL();
-                List<CommentEntity> commentEntities = commentBLL.ListByTypeAndObjIdInts(2, idInts);
+                List<CommentEntity> commentEntities = commentBLL.ListByTypeAndObjIdInts( (int)Entity.TypeEnumEntity.TypeEnum.案例, idInts);
                 if (commentEntities.Count() > 0)
                 {
                     Dictionary<int, int> keyValuePairs = commentEntities
@@ -108,7 +108,7 @@ namespace Api.Base
                 int[] idInts = caseEntities.Select(it => it.caseId).ToArray();
 
                 EndorseBLL endorseBLL = new EndorseBLL();
-                List<EndorseEntity> endorseEntities = endorseBLL.ListByTypeAndObjIdInts(2, idInts);
+                List<EndorseEntity> endorseEntities = endorseBLL.ListByTypeAndObjIdInts((int)Entity.TypeEnumEntity.TypeEnum.案例, idInts);
 
                 if (endorseEntities.Count() > 0)
                 {
@@ -173,7 +173,7 @@ namespace Api.Base
                 int[] shareIdInts = shareEntities.Select(it => it.shareId).ToArray();
 
                 CommentBLL commentBLL = new CommentBLL();
-                List<CommentEntity> commentEntities = commentBLL.ListByTypeAndObjIdInts(1, shareIdInts);
+                List<CommentEntity> commentEntities = commentBLL.ListByTypeAndObjIdInts((int)Entity.TypeEnumEntity.TypeEnum.说说, shareIdInts);
                 if (commentEntities.Count() > 0)
                 {
                     Dictionary<int, int> keyValuePairs = commentEntities
@@ -227,7 +227,7 @@ namespace Api.Base
                 int[] shareIdInts = shareEntities.Select(it => it.shareId).ToArray();
 
                 EndorseBLL endorseBLL = new EndorseBLL();
-                List<EndorseEntity> endorseEntities = endorseBLL.ListByTypeAndObjIdInts(1, shareIdInts);
+                List<EndorseEntity> endorseEntities = endorseBLL.ListByTypeAndObjIdInts((int)Entity.TypeEnumEntity.TypeEnum.说说, shareIdInts);
 
                 if (endorseEntities.Count() > 0)
                 {
