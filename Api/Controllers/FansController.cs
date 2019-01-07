@@ -239,9 +239,10 @@ namespace Api.Controllers
         /// 查看粉丝列表
         /// </summary>
         /// <param name="token">*</param>
+        /// <param name="userId">*</param>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult FansList( [FromForm] string token)
+        public JsonResult FansList( [FromForm] string token, [FromForm] int userId)
         {
 
             DataResult dr = new DataResult();
@@ -251,7 +252,7 @@ namespace Api.Controllers
 
                 FansBLL fansBLL = new FansBLL();
 
-                List<FansUserResult> fansUserResults = fansBLL.fansList( userEntity.userId);
+                List<FansUserResult> fansUserResults = fansBLL.fansList( userId);
 
                 if (fansUserResults.Count > 0)
                 {

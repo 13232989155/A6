@@ -203,7 +203,7 @@ namespace Api.Controllers
             try
             {
                 UserEntity userEntity = userBLL.GetById(userId);
-                FansUserResult fansUserResult = null;
+                FansUserResult fansUserResult = new FansUserResult();
                 if ( userEntity != null)
                 {
                     fansUserResult.userId = userEntity.userId;

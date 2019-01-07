@@ -197,7 +197,29 @@ namespace BLL
         /// <returns></returns>
         public CaseEntity GetById(int caseId)
         {
-            return ActionDal.ActionDBAccess.Queryable<CaseEntity>().Where(it => it.caseId == caseId).First();
+            return ActionDal.ActionDBAccess.Queryable<CaseEntity, UserEntity>((c, u) => new object[]
+                               {
+                                    JoinType.Inner, c.userId == u.userId
+                               })
+                               .Where(c => c.caseId == caseId)
+                                .Select((c, u) => new CaseEntity
+                                {
+                                    caseId = c.caseId,
+                                    coverImage = c.coverImage,
+                                    createDate = c.createDate,
+                                    describe = c.describe,
+                                    integral = c.integral,
+                                    isDel = c.isDel,
+                                    modifyDate = c.modifyDate,
+                                    name = u.name,
+                                    portrait = u.portrait,
+                                    state = c.state,
+                                    tips = c.tips,
+                                    title = c.title,
+                                    userId = c.userId
+
+                                })
+                               .First();
         }
 
 

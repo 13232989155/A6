@@ -42,7 +42,27 @@ namespace BLL
         /// <returns></returns>
         public ShareEntity GetById(int shareId)
         {
-            return ActionDal.ActionDBAccess.Queryable<ShareEntity>().Where(it => it.shareId == shareId).First();
+            return ActionDal.ActionDBAccess.Queryable<ShareEntity, UserEntity>((s, u) => new object[]
+                   {
+                         JoinType.Inner,s.userId == u.userId
+                   })
+                   .Where(s => s.shareId == shareId)
+                   .Select((s, u) => new ShareEntity
+                   {
+                       contents = s.contents,
+                       createDate = s.createDate,
+                       shareId = s.shareId,
+                       img = s.img,
+                       integral = s.integral,
+                       isDel = s.isDel,
+                       modifyDate = s.modifyDate,
+                       name = u.name,
+                       portrait = u.portrait,
+                       shareTopicId = s.shareTopicId,
+                       shareTypeId = s.shareTypeId,
+                       userId = s.userId
+                   })
+                   .First();
         }
 
         /// <summary>
