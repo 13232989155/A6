@@ -55,11 +55,11 @@ namespace Api.Controllers
                 {
                     msg += "创建案例成功";
 
-                    if (string.IsNullOrWhiteSpace(caseStep))
+                    if (!string.IsNullOrWhiteSpace(caseStep))
                     {
                         List<CaseStepEntity> caseStepEntities = JsonConvert.DeserializeObject<List<CaseStepEntity>>(caseStep);
 
-                        caseStepEntities = caseStepEntities.Where(it => string.IsNullOrWhiteSpace(it.img) && string.IsNullOrWhiteSpace(it.contents)).ToList();
+                        caseStepEntities = caseStepEntities.Where(it => !string.IsNullOrWhiteSpace(it.img) && !string.IsNullOrWhiteSpace(it.contents)).ToList();
 
                         caseStepEntities.ForEach(it =>
                         {
@@ -77,7 +77,7 @@ namespace Api.Controllers
 
                     }
 
-                    if (string.IsNullOrWhiteSpace(caseTag))
+                    if (!string.IsNullOrWhiteSpace(caseTag))
                     {
                         int[] caseTags = JsonConvert.DeserializeObject<int[]>(caseTag);
 
@@ -95,14 +95,13 @@ namespace Api.Controllers
                                     isDel = false,
                                     modifyDate = DateTime.Now
                                 });
+                            }
 
-                                int rows = caseBLL.ActionDal.ActionDBAccess.Insertable(caseTagCorrelationEntities).ExecuteCommand();
+                            int rows = caseBLL.ActionDal.ActionDBAccess.Insertable(caseTagCorrelationEntities).ExecuteCommand();
 
-                                if (rows > 0)
-                                {
-                                    msg += ",标签添加成功";
-                                }
-
+                            if (rows > 0)
+                            {
+                                msg += ",标签添加成功";
                             }
 
 

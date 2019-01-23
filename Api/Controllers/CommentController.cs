@@ -45,52 +45,61 @@ namespace Api.Controllers
             try
             {
                 int totalItemCount = commentBLL.CountUserByTypeAndObjId(type, objId);
-                List<CommentEntity> commentEntities = commentBLL.ListUserByTypeAndObjId(type, objId, pageNumber:pageNumber, pageSize:pageSize, totalCount:totalItemCount);
-
-                int[] commentIdInts = commentEntities.Select(it => it.commentId).ToArray();
-                CommentReplyBLL commentReplyBLL = new CommentReplyBLL();
-
-                List<CommentReplyEntity> commentReplyEntities = commentReplyBLL.ListByCommentIdInts(commentIdInts);
-
-                if ( commentReplyEntities.Count() > 0)
+                if (totalItemCount > 0)
                 {
-                    Dictionary<int, List<CommentReplyEntity>> keyValuePairs = commentReplyEntities
-                                                                           .GroupBy(it => it.commentId)
-                                                                           .Select(it => new
-                                                                           {
-                                                                               id = it.Key,
-                                                                               entity = it.ToList()
-                                                                           })
-                                                                           .ToDictionary(it => it.id, it => it.entity);
+                    List<CommentEntity> commentEntities = commentBLL.ListUserByTypeAndObjId(type, objId, pageNumber: pageNumber, pageSize: pageSize, totalCount: totalItemCount);
 
-                    commentEntities = (from c in commentEntities
-                                       join k in keyValuePairs on c.commentId equals k.Key into ck
-                                        from ckk in ck.DefaultIfEmpty()
-                                        select (new CommentEntity
-                                        {
-                                            commentId = c.commentId,
-                                            commentReplyEntities = ckk.Value,
-                                            contents = c.contents,
-                                            createDate = c.createDate,
-                                            img = c.img,
-                                            isDel = c.isDel,
-                                            modifyDate = c.modifyDate,
-                                            name = c.name,
-                                            objId = c.objId,
-                                            portrait = c.portrait,
-                                            score = c.score,
-                                            type = c.type,
-                                            userId = c.userId
-                                        }))
-                                       .ToList();
+                    int[] commentIdInts = commentEntities.Select(it => it.commentId).ToArray();
+                    CommentReplyBLL commentReplyBLL = new CommentReplyBLL();
 
+                    List<CommentReplyEntity> commentReplyEntities = commentReplyBLL.ListByCommentIdInts(commentIdInts);
+
+                    if (commentReplyEntities.Count() > 0)
+                    {
+                        Dictionary<int, List<CommentReplyEntity>> keyValuePairs = commentReplyEntities
+                                                                               .GroupBy(it => it.commentId)
+                                                                               .Select(it => new
+                                                                               {
+                                                                                   id = it.Key,
+                                                                                   entity = it.ToList()
+                                                                               })
+                                                                               .ToDictionary(it => it.id, it => it.entity);
+
+                        commentEntities = (from c in commentEntities
+                                           join k in keyValuePairs on c.commentId equals k.Key into ck
+                                           from ckk in ck.DefaultIfEmpty()
+                                           select (new CommentEntity
+                                           {
+                                               commentId = c.commentId,
+                                               commentReplyEntities = ckk.Value,
+                                               contents = c.contents,
+                                               createDate = c.createDate,
+                                               img = c.img,
+                                               isDel = c.isDel,
+                                               modifyDate = c.modifyDate,
+                                               name = c.name,
+                                               objId = c.objId,
+                                               portrait = c.portrait,
+                                               score = c.score,
+                                               type = c.type,
+                                               userId = c.userId
+                                           }))
+                                           .ToList();
+
+                    }
+
+
+                    PageData pageData = new PageData(commentEntities, pageNumber, pageSize, totalItemCount);
+
+                    dr.code = "200";
+                    dr.data = pageData;
                 }
-
-                PageData pageData = new PageData(commentEntities, pageNumber, pageSize, totalItemCount);
-
-                dr.code = "200";
-                dr.data = pageData;
-
+                else
+                {
+                    PageData pageData = new PageData(null, pageNumber, pageSize, 0);
+                    dr.code = "200";
+                    dr.msg = "没有评论";
+                }
             }
             catch (Exception ex)
             {

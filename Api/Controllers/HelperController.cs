@@ -7,6 +7,8 @@ using Api.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using static System.Net.Mime.MediaTypeNames;
+using System.Text.RegularExpressions;
+using BLL;
 
 namespace Api.Controllers
 {
@@ -131,5 +133,61 @@ namespace Api.Controllers
                     return format;
             }
         }
+
+        /// <summary>
+        /// 发送验证码
+        /// </summary>
+        /// <param name="phone"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [SkipCheckLogin]
+        public JsonResult SendCode([FromForm] string phone)
+        {
+            DataResult dr = new DataResult();
+            try
+            {
+                if ( string.IsNullOrWhiteSpace(phone) || phone.Length != 11 || Regex.IsMatch(phone, Helper.RegexHelper.PATTERN_PHONE))
+                {
+                    dr.code = "201";
+                    dr.msg = "手机号码错误";
+                    return Json(dr);
+                }
+
+                Random rd = new Random();
+                string code = rd.Next(100000, 999999).ToString();
+
+                bool rs = Aliyun.MessageHeiper.SendCode(phone, code);
+
+                if (!rs)
+                {
+                    dr.code = "201";
+                    dr.msg = "验证码发送失败";
+                    return Json(dr);
+                }
+
+                PhoneCodeBLL phoneCodeBLL = new PhoneCodeBLL();
+
+                int rows = phoneCodeBLL.Delete(phone);
+
+                if (phoneCodeBLL.Create(phone, code) > 0)
+                {
+                    dr.code = "200";
+                    dr.msg = "验证码发送成功";
+                }
+                else
+                {
+                    dr.code = "201";
+                    dr.msg = "验证码发送成功，但保存失败";
+                }
+
+            }
+            catch (Exception ex)
+            {
+                dr.code = "999";
+                dr.msg = ex.Message;
+            }
+            return Json(dr);
+        }
+
     }
 }

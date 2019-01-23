@@ -101,14 +101,14 @@ namespace BLL
             List<CaseEntity> caseEntities = SetCaseUser(circleResultHelpers.Where(it => it.type == (int)Entity.TypeEnumEntity.TypeEnum.案例).Select( it => it.id).ToArray());
             caseEntities.ForEach(it =>
             {
-                circleResultHelpers.Find(itt => itt.id == it.caseId).caseEntity = it;
+                circleResultHelpers.Find(itt => itt.id == it.caseId && itt.type == (int)Entity.TypeEnumEntity.TypeEnum.案例).caseEntity = it;
             });
 
 
             List<ShareEntity> shareEntities = SetShareUser(circleResultHelpers.Where(it => it.type == (int)Entity.TypeEnumEntity.TypeEnum.说说).Select(it => it.id).ToArray());
             shareEntities.ForEach(it =>
             {
-                circleResultHelpers.Find(itt => itt.id == it.shareId).shareEntity = it;
+                circleResultHelpers.Find(itt => itt.id == it.shareId && itt.type == (int)Entity.TypeEnumEntity.TypeEnum.说说).shareEntity = it;
             });
             
 

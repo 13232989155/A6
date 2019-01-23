@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="aliyun-net-sdk-core">
+      <HintPath>C:\Users\Administrator\Downloads\dysms_net\net\api_demo\core2.0\aliyun-net-sdk-core.dll</HintPath>
+    </Reference>
+    <Reference Include="aliyun-net-sdk-dysmsapi">
+      <HintPath>C:\Users\Administrator\Downloads\dysms_net\net\api_demo\core2.0\aliyun-net-sdk-dysmsapi.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

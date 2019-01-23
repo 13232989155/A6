@@ -270,6 +270,13 @@
             <param name="file"></param>
             <returns></returns>
         </member>
+        <member name="M:Api.Controllers.HelperController.SendCode(System.String)">
+            <summary>
+            发送验证码
+            </summary>
+            <param name="phone"></param>
+            <returns></returns>
+        </member>
         <member name="T:Api.Controllers.IntegralController">
             <summary>
             
@@ -397,20 +404,33 @@
             用户
             </summary>
         </member>
-        <member name="M:Api.Controllers.UserController.Register(System.String,System.String)">
+        <member name="M:Api.Controllers.UserController.WxLogin(System.String)">
             <summary>
-            用户注册
+            微信登录
             </summary>
-            <param name="account">账号*</param>
-            <param name="password">密码*</param>
-            <returns>msg</returns>
+            <param name="code"></param>
+            <returns></returns>
         </member>
-        <member name="M:Api.Controllers.UserController.Login(System.String,System.String)">
+        <member name="M:Api.Controllers.UserController.CreateWxUser(WeChat.WxUserEntity)">
             <summary>
-            用户登录
+            创建微信用户
             </summary>
-            <param name="account">账号*</param>
-            <param name="password">密码*</param>
+            <param name="wxUserEntity"></param>
+        </member>
+        <member name="M:Api.Controllers.UserController.PhoneLogin(System.String,System.String)">
+            <summary>
+            手机号码登录
+            </summary>
+            <param name="phone"></param>
+            <param name="code"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Api.Controllers.UserController.ExaminePhoneAndCode(System.String,System.String)">
+            <summary>
+            检查手机号码
+            </summary>
+            <param name="phone"></param>
+            <param name="code"></param>
             <returns></returns>
         </member>
         <member name="M:Api.Controllers.UserController.Get(System.String)">

@@ -82,5 +82,47 @@ namespace BLL
 
             return ActionDal.ActionDBAccess.Queryable<UserEntity>().Where(it => it.account == account && it.password == password && it.forbidden == false).First();
         }
+
+        /// <summary>
+        /// 根据手机号码获取实体
+        /// </summary>
+        /// <param name="phone"></param>
+        /// <returns></returns>
+        public UserEntity GetByPhone(string phone)
+        {
+            return ActionDal.ActionDBAccess.Queryable<UserEntity>().Where(it => it.phone == phone && it.forbidden == false).First();
+        }
+
+        /// <summary>
+        /// 根据手机号码创建账号
+        /// </summary>
+        /// <param name="phone"></param>
+        /// <returns></returns>
+        public int CreateToPhone(string phone)
+        {
+            UserEntity userEntity = new UserEntity()
+            {
+                account = "",
+                address = "",
+                birthday = Helper.ConvertHelper.DEFAULT_DATE,
+                createDate = DateTime.Now,
+                email = "",
+                forbidden = false,
+                gender = -1,
+                grade = 1,
+                integral = 10000,
+                modifyDate = DateTime.Now,
+                name = phone,
+                password = "",
+                phone = phone,
+                portrait = "",
+                remark = "",
+                signature = "",
+                state = -1,
+                type = -1
+            };
+
+            return ActionDal.ActionDBAccess.Insertable(userEntity).ExecuteCommand();
+        }
     }
 }
