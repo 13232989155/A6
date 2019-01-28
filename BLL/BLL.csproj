@@ -12,6 +12,7 @@
     <ProjectReference Include="..\DAL\DAL.csproj" />
     <ProjectReference Include="..\Entity\Entity.csproj" />
     <ProjectReference Include="..\Helper\Helper.csproj" />
+    <ProjectReference Include="..\WeChat\WeChat.csproj" />
   </ItemGroup>
 
 </Project>

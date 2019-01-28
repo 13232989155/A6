@@ -337,8 +337,8 @@
             </summary>
             <param name="token">*</param>
             <param name="contents">说说文字内容*</param>
-            <param name="shareTypeId">说说类型*</param>
-            <param name="img">照片json数组</param>
+            <param name="shareTypeId">说说类型</param>
+            <param name="img">照片json数组*</param>
             <param name="shareTopicId">话题ID</param>
             <returns></returns>
         </member>
@@ -375,11 +375,10 @@
             
             </summary>
         </member>
-        <member name="M:Api.Controllers.ShareTopicController.List(System.String)">
+        <member name="M:Api.Controllers.ShareTopicController.List">
             <summary>
             获取说说话题列表
             </summary>
-            <param name="token">*</param>
             <returns></returns>
         </member>
         <member name="T:Api.Controllers.ShareTypeController">
@@ -410,12 +409,6 @@
             </summary>
             <param name="code"></param>
             <returns></returns>
-        </member>
-        <member name="M:Api.Controllers.UserController.CreateWxUser(WeChat.WxUserEntity)">
-            <summary>
-            创建微信用户
-            </summary>
-            <param name="wxUserEntity"></param>
         </member>
         <member name="M:Api.Controllers.UserController.PhoneLogin(System.String,System.String)">
             <summary>

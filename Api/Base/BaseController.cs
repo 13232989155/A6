@@ -112,13 +112,15 @@ namespace Api.Base
 
                 if (endorseEntities.Count() > 0)
                 {
-
-                    var userEndorseList = endorseEntities.Where(it => it.userId == userId).ToList();
-
-                    userEndorseList.ToList().ForEach(it =>
+                    if (userId > 10000)
                     {
-                        caseEntities.First(itt => itt.caseId == it.objId).isEndorse = true;
-                    });
+                        var userEndorseList = endorseEntities.Where(it => it.userId == userId).ToList();
+
+                        userEndorseList.ToList().ForEach(it =>
+                        {
+                            caseEntities.First(itt => itt.caseId == it.objId).isEndorse = true;
+                        });
+                    }
 
                     Dictionary<int, int> keyValuePairs = endorseEntities
                                                         .GroupBy(it => it.objId)
@@ -231,13 +233,15 @@ namespace Api.Base
 
                 if (endorseEntities.Count() > 0)
                 {
-
-                    var userEndorseList = endorseEntities.Where(it => it.userId == userId).ToList();
-
-                    userEndorseList.ToList().ForEach(it =>
+                    if (userId > 10000)
                     {
-                        shareEntities.First(itt => itt.shareId == it.objId).isEndorse = true;
-                    });
+                        var userEndorseList = endorseEntities.Where(it => it.userId == userId).ToList();
+
+                        userEndorseList.ToList().ForEach(it =>
+                        {
+                            shareEntities.First(itt => itt.shareId == it.objId).isEndorse = true;
+                        });
+                    }
 
                     Dictionary<int, int> keyValuePairs = endorseEntities
                                                         .GroupBy(it => it.objId)

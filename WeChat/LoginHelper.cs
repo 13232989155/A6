@@ -33,7 +33,7 @@ namespace WeChat
             GetWXUsersHelper userHelper = new GetWXUsersHelper();
             string urlRes = userHelper.GetUrltoHtml(url, type);
 
-            AccessTokenEntity accessTokenEntity = (AccessTokenEntity)JsonConvert.DeserializeObject(urlRes);
+            AccessTokenEntity accessTokenEntity = JsonConvert.DeserializeObject<AccessTokenEntity>(urlRes);
 
             return accessTokenEntity;
         }
@@ -50,7 +50,7 @@ namespace WeChat
 
             GetWXUsersHelper userHelper = new GetWXUsersHelper();
             string urlRes = userHelper.GetUrltoHtml(url, type);
-            AccessTokenEntity accessTokenEntity = (AccessTokenEntity)JsonConvert.DeserializeObject(urlRes);
+            AccessTokenEntity accessTokenEntity = JsonConvert.DeserializeObject<AccessTokenEntity>(urlRes);
 
             return accessTokenEntity;
         }
@@ -68,9 +68,9 @@ namespace WeChat
 
             GetWXUsersHelper userHelper = new GetWXUsersHelper();
             string urlRes = userHelper.GetUrltoHtml(url, type);
-            AccessTokenEntity accessToken = (AccessTokenEntity)JsonConvert.DeserializeObject(urlRes);
+            AccessTokenEntity accessToken = JsonConvert.DeserializeObject<AccessTokenEntity>(urlRes);
 
-            if (accessTokenEntity.errcode == "0")
+            if (accessToken.errcode == "0")
             {
                 return accessTokenEntity;
             }
@@ -93,7 +93,7 @@ namespace WeChat
 
             GetWXUsersHelper userHelper = new GetWXUsersHelper();
             string urlRes = userHelper.GetUrltoHtml(url, type);
-            WxUserEntity wxUserEntity = (WxUserEntity)JsonConvert.DeserializeObject(urlRes);
+            WxUserEntity wxUserEntity = JsonConvert.DeserializeObject<WxUserEntity>(urlRes);
 
             return wxUserEntity;
         }

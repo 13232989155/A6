@@ -22,10 +22,10 @@ namespace Api.Controllers
         /// <summary>
         /// 获取说说话题列表
         /// </summary>
-        /// <param name="token">*</param>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult List([FromForm] string token)
+        [SkipCheckLogin]
+        public JsonResult List()
         {
 
             DataResult dr = new DataResult();

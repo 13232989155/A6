@@ -32,8 +32,8 @@ namespace Api.Controllers
         /// </summary>
         /// <param name="token">*</param>
         /// <param name="contents">说说文字内容*</param>
-        /// <param name="shareTypeId">说说类型*</param>
-        /// <param name="img">照片json数组</param>
+        /// <param name="shareTypeId">说说类型</param>
+        /// <param name="img">照片json数组*</param>
         /// <param name="shareTopicId">话题ID</param>
         /// <returns></returns>
         [HttpPost]
@@ -43,7 +43,7 @@ namespace Api.Controllers
             try
             {
 
-                if (string.IsNullOrWhiteSpace(contents) || shareTypeId == 0)
+                if (string.IsNullOrWhiteSpace(img) || shareTypeId == 0)
                 {
                     dr.code = "201";
                     dr.msg = "参数错误";

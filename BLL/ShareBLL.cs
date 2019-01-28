@@ -21,7 +21,7 @@ namespace BLL
         {
             ShareEntity shareEntity = new ShareEntity()
             {
-                contents = contents,
+                contents = contents ?? "",
                 createDate = DateTime.Now,
                 img = img,
                 isDel = false,

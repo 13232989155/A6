@@ -146,7 +146,7 @@ namespace Api.Controllers
             DataResult dr = new DataResult();
             try
             {
-                if ( string.IsNullOrWhiteSpace(phone) || phone.Length != 11 || Regex.IsMatch(phone, Helper.RegexHelper.PATTERN_PHONE))
+                if ( string.IsNullOrWhiteSpace(phone) || phone.Length != 11)//|| !Regex.IsMatch(phone, Helper.RegexHelper.PATTERN_PHONE)
                 {
                     dr.code = "201";
                     dr.msg = "手机号码错误";

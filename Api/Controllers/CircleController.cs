@@ -27,6 +27,7 @@ namespace Api.Controllers
         /// <param name="pageSize"></param>
         /// <returns></returns>
         [HttpPost]
+        [SkipCheckLogin]
         public JsonResult Newest([FromForm] string token, [FromForm] int pageNumber = 1, [FromForm] int pageSize = 10)
         {
             DataResult dr = new DataResult();
@@ -40,11 +41,16 @@ namespace Api.Controllers
 
                 List<CircleResultHelper> circleResultHelpers = caseBLL.CaseAndShareList(pageNumber:pageNumber, pageSize:pageSize, totalCount:totalItemCount);
 
-                UserEntity userEntity = this.GetUserByToken(token);
+                UserEntity userEntity = new UserEntity();
+                if( !string.IsNullOrWhiteSpace(token))
+                {
+                    userEntity = this.GetUserByToken(token); 
+                }
+
                 List<CaseEntity> caseEntities = circleResultHelpers.Where(it => it.type == 2).Select(it => it.caseEntity).ToList();
                 if ( caseEntities.Count > 0)
                 {
-                    caseEntities = CaseListEndorseCountByList(caseEntities, userEntity.userId);
+                    caseEntities = CaseListEndorseCountByList(caseEntities, userEntity.userId > 10000 ? userEntity.userId : -1);
                     caseEntities = CaseListCommentCountByList(caseEntities);
 
                     caseEntities.ForEach(it =>
@@ -56,7 +62,7 @@ namespace Api.Controllers
                 List<ShareEntity> shareEntities = circleResultHelpers.Where(it => it.type == 1).Select(it => it.shareEntity).ToList();
                 if (shareEntities.Count > 0)
                 {
-                    shareEntities = ShareListEndorseCountByList(shareEntities, userEntity.userId);
+                    shareEntities = ShareListEndorseCountByList(shareEntities, userEntity.userId > 10000 ? userEntity.userId : -1);
                     shareEntities = ShareListCommentCountByList(shareEntities);
 
                     shareEntities.ForEach(it =>

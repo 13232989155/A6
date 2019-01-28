@@ -59,11 +59,13 @@ namespace Api.Controllers
                     {
                         List<CaseStepEntity> caseStepEntities = JsonConvert.DeserializeObject<List<CaseStepEntity>>(caseStep);
 
-                        caseStepEntities = caseStepEntities.Where(it => !string.IsNullOrWhiteSpace(it.img) && !string.IsNullOrWhiteSpace(it.contents)).ToList();
+                        caseStepEntities = caseStepEntities.Where(it => !string.IsNullOrWhiteSpace(it.img) || !string.IsNullOrWhiteSpace(it.contents)).ToList();
 
                         caseStepEntities.ForEach(it =>
                         {
                             it.caseId = caseEntity.caseId;
+                            it.img = it.img ?? "";
+                            it.contents = it.contents ?? "";
                         });
                         if (caseStepEntities.Count > 0)
                         {

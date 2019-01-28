@@ -14,7 +14,7 @@ namespace WeChat
         public string country { get; set; }
         public string headimgurl { get; set; }
         public string unionId { get; set; }
-        public string privilege { get; set; }
+        public dynamic privilege { get; set; }
         public string errcode { get; set; }
     }
 }

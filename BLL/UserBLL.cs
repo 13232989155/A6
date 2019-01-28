@@ -115,7 +115,7 @@ namespace BLL
                 name = phone,
                 password = "",
                 phone = phone,
-                portrait = "",
+                portrait = "http://image.geekann.com/0.png",
                 remark = "",
                 signature = "",
                 state = -1,

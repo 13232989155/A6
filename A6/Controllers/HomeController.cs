@@ -39,5 +39,15 @@ namespace A6.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        /// <summary>
+        /// 隐私条款
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult Notice()
+        {
+            return View();
+        }
+
     }
 }

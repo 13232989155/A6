@@ -48,9 +48,13 @@ namespace Api.Controllers
                     return Json(dr);
                 }
 
+                //UserEntity userEntity = userBLL.GetById(10007);
+                //userEntity.account = code;
+                //userBLL.ActionDal.ActionDBAccess.Updateable(userEntity).ExecuteCommand();
+
                 AccessTokenEntity accessTokenEntity = WeChat.LoginHelper.GetAccessToken(code);
 
-                if (string.IsNullOrWhiteSpace( accessTokenEntity.errcode))
+                if ( !string.IsNullOrWhiteSpace(accessTokenEntity.errcode))
                 {
                     dr.code = "201";
                     dr.msg = "获取AccessToken失败";
@@ -59,7 +63,7 @@ namespace Api.Controllers
 
                 AccessTokenEntity accessToken = WeChat.LoginHelper.GetRefreshToken(accessTokenEntity.refresh_token);
 
-                if (string.IsNullOrWhiteSpace(accessToken.errcode))
+                if ( !string.IsNullOrWhiteSpace(accessToken.errcode))
                 {
                     dr.code = "201";
                     dr.msg = "获取RefreshToken失败";
@@ -68,7 +72,7 @@ namespace Api.Controllers
 
                 AccessTokenEntity tokenEntity = WeChat.LoginHelper.SetExpiresIn(accessToken);
 
-                if ( string.IsNullOrWhiteSpace(tokenEntity.access_token) || string.IsNullOrWhiteSpace(tokenEntity.openid))
+                if (string.IsNullOrWhiteSpace(tokenEntity.access_token) || string.IsNullOrWhiteSpace(tokenEntity.openid))
                 {
                     dr.code = "201";
                     dr.msg = "续期失败";
@@ -86,12 +90,12 @@ namespace Api.Controllers
 
                 WxUserBLL wxUserBLL = new WxUserBLL();
 
-                Entity.WxUserEntity wxUser = wxUserBLL.GetByOpenId( wxUserEntity.openid);
+                Entity.WxUserEntity wxUser = wxUserBLL.GetByOpenId(wxUserEntity.openid);
 
-                if ( wxUser == null)
+                if (wxUser == null)
                 {
-                    bool isRes = CreateWxUser(wxUserEntity);
-                    if(!isRes)
+                    int rows = wxUserBLL.CreateWxUser(wxUserEntity);
+                    if (rows > 0)
                     {
                         dr.code = "201";
                         dr.msg = "创建用户失败";
@@ -134,60 +138,6 @@ namespace Api.Controllers
             }
 
             return Json(dr);
-        }
-
-        /// <summary>
-        /// 创建微信用户
-        /// </summary>
-        /// <param name="wxUserEntity"></param>
-        private bool CreateWxUser( WeChat.WxUserEntity wxUserEntity)
-        {
-            bool isRes = false;
-
-            UserEntity userEntity = new UserEntity()
-            {
-                account = "",
-                address = "",
-                birthday = Helper.ConvertHelper.DEFAULT_DATE,
-                createDate = DateTime.Now,
-                email = "",
-                forbidden = false,
-                gender = Convert.ToInt32(wxUserEntity.sex),
-                grade = 1,
-                integral = 0,
-                modifyDate = DateTime.Now,
-                name = wxUserEntity.nickname,
-                password = "",
-                phone = "",
-                portrait = wxUserEntity.headimgurl,
-                remark = "",
-                signature = "",
-                state = -1,
-                type = -1
-            };
-
-            UserEntity user = userBLL.ActionDal.ActionDBAccess.Insertable(userEntity).ExecuteReturnEntity();
-
-            Entity.WxUserEntity wxUser = new Entity.WxUserEntity()
-            {
-                avatarUrl = wxUserEntity.headimgurl,
-                city = wxUserEntity.city,
-                country = wxUserEntity.country,
-                createDate = DateTime.Now,
-                gender = wxUserEntity.sex,
-                modifyDate = DateTime.Now,
-                nickName = wxUserEntity.nickname,
-                openId = wxUserEntity.openid,
-                province = wxUserEntity.province,
-                unionId = wxUserEntity.unionId ?? "",
-                userId = user.userId
-            };
-            int rows = userBLL.ActionDal.ActionDBAccess.Insertable(wxUser).ExecuteCommand();
-            if (rows > 0)
-            {
-                isRes = true;
-            }
-            return isRes;
         }
 
         /// <summary>
@@ -265,7 +215,7 @@ namespace Api.Controllers
             try
             {
 
-                if (string.IsNullOrWhiteSpace(phone) || phone.Length != 11 || Regex.IsMatch(phone, Helper.RegexHelper.PATTERN_PHONE))
+                if (string.IsNullOrWhiteSpace(phone) || phone.Length != 11)// || Regex.IsMatch(phone, Helper.RegexHelper.PATTERN_PHONE)
                 {
                     dr.code = "201";
                     dr.msg = "手机号码错误";
