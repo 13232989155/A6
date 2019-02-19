@@ -68,5 +68,15 @@ namespace BLL
             
             return rows;
         }
+
+        /// <summary>
+        /// 根据用户id获取实体
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public WxUserEntity GetByUserId(int userId)
+        {
+            return ActionDal.ActionDBAccess.Queryable<WxUserEntity>().Where(it => it.userId == userId).First();
+        }
     }
 }

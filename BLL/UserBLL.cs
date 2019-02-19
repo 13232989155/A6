@@ -1,20 +1,16 @@
 ﻿using Entity;
+using SqlSugar;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using X.PagedList;
 
 namespace BLL
 {
     public class UserBLL : Base.BaseBLL<UserEntity>
     {
 
-
-
-        public List<UserEntity> List()
-        {
-            throw new NotImplementedException();
-        }
 
         /// <summary>
         /// 根据账号获取实体
@@ -34,6 +30,37 @@ namespace BLL
         public UserEntity GetById(int userId)
         {
             return ActionDal.ActionDBAccess.Queryable<UserEntity>().Where(it => it.userId == userId).First();
+        }
+
+        /// <summary>
+        /// 分页列表
+        /// </summary>
+        /// <param name="pageNumber"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="searchString"></param>
+        /// <returns></returns>
+        public IPagedList<UserEntity> AdminPageList(int pageNumber, int pageSize, string searchString)
+        {
+            IPagedList<UserEntity> userEntities = ActionDal.ActionDBAccess.Queryable<UserEntity>()
+                                                    .WhereIF(!string.IsNullOrWhiteSpace(searchString), it => it.account.Contains(searchString)
+                                                       || it.address.Contains(searchString)
+                                                       || it.email.Contains(searchString)
+                                                       || it.name.Contains(searchString)
+                                                       || it.signature.Contains(searchString)
+                                                       || SqlFunc.ToString(it.userId).Contains(searchString))
+                                                    .OrderBy(it => it.createDate, OrderByType.Desc)
+                                                    .ToList()
+                                                    .ToPagedList(pageNumber, pageSize);
+            return userEntities;
+        }
+
+        /// <summary>
+        /// 获取全部用户
+        /// </summary>
+        /// <returns></returns>
+        public List<UserEntity> List()
+        {
+            return ActionDal.ActionDBAccess.Queryable<UserEntity>().ToList();
         }
 
         /// <summary>

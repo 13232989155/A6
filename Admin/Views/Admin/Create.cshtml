@@ -1,0 +1,179 @@
+﻿
+@{
+    ViewData["Title"] = "创建管理员";
+}
+@model List<Entity.UserEntity>
+<div class="page-title">
+    <div class="title_left">
+        <h3>创建管理员</h3>
+    </div>
+</div>
+<link href="~/css/pnotify.css" rel="stylesheet" />
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2><small></small></h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle"><i class="fa fa-wrench"></i></a>
+                    </li>
+                    <li>
+                        <a class="close-link"><i class="fa fa-close"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div id="example" class="x_content">
+                <br>
+                <form id="demo-form2" class="form-horizontal form-label-left">
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            名称 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" v-model="name" class="form-control col-md-7 col-xs-12">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            账号 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" v-model="account" class="form-control col-md-7 col-xs-12">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            密码 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="password" v-model="password" class="form-control col-md-7 col-xs-12">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            手机号码 <span class="required"></span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" v-model="phone" class="form-control col-md-7 col-xs-12">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            邮箱 <span class="required"></span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" v-model="email" class="form-control col-md-7 col-xs-12">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            绑定用户 <span class="required"></span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <select v-model="userId" class="form-control">
+                                <option value="-1" selected>暂不设置</option>
+                                @foreach (var item in Model)
+                                {
+                                    <option value="@item.userId">@item.name</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="ln_solid"></div>
+
+                    <div class="form-group">
+                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                            <button class="btn btn-primary" onclick="Save()" type="button">创建</button>
+                            <a href="/Admin/List" class="btn btn-info" type="reset">返回列表</a>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/pnotify.js"></script>
+<script src="~/js/vue.js"></script>
+<script src="~/js/a6admin.js"></script>
+<script type="text/javascript">
+    //
+    $("#liAdminList").addClass("current-page");
+    $("#ulAdmin").show();
+
+    var adminEntity = {
+        name: "",
+        account: "",
+        password: "",
+        phone: "",
+        email: "",
+        userId: "-1"
+    }
+
+    var adminVue = new Vue({
+        el: "#example",
+        data: adminEntity
+    })
+
+    function Save() {
+
+        if (adminEntity.name == "") {
+            ShowPNotify("名称不能为空");
+            return
+        }
+
+        if (adminEntity.account == "") {
+            ShowPNotify("账号不能为空");
+            return
+        }
+
+        if (adminEntity.password == "") {
+            ShowPNotify("密码不能为空")
+            return
+        }
+
+        $.ajax({
+            type: "post",
+            url: "/Admin/Create",
+            data: {
+                name: adminEntity.name,
+                account: adminEntity.account,
+                password: adminEntity.password,
+                phone: adminEntity.phone,
+                email: adminEntity.email,
+                userId: adminEntity.userId
+            },
+            dataType: "json",
+            success: function (result) {
+
+                if (result.code == "200") {
+                    window.location.href = "/Admin/List";
+                }
+                else {
+                    ShowPNotify(result.msg)
+                }
+            },
+            error: function () {
+                ShowPNotify("请求错误")
+            }
+        });
+    }
+
+
+    
+
+</script>
+

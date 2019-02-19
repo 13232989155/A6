@@ -61,9 +61,6 @@ namespace Api
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.UseMvc();
-
             //启用中间件服务生成Swagger作为JSON终结点
             app.UseSwagger();
             //启用中间件服务对swagger-ui，指定Swagger JSON终结点
@@ -71,6 +68,9 @@ namespace Api
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
+            app.UseMvc();
+
+           
         }
     }
 }

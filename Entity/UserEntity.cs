@@ -180,5 +180,11 @@ namespace Entity
         [SugarColumn(IsIgnore = true)]
         public bool attention { get; set; }
 
+        /// <summary>
+        /// 微信数据
+        /// </summary>
+        [SugarColumn(IsIgnore = true)]
+        public WxUserEntity wxUserEntity { set; get; }
+
     }
 }

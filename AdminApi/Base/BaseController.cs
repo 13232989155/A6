@@ -9,24 +9,27 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AdminApi.Base
 {
-    public class BaseController : Controller
+    /// <summary>
+    /// 基础控制器
+    /// </summary>
+    public class BaseController : ControllerBase
     {
         /// <summary>
         /// 根据token获取个人信息
         /// </summary>
         /// <param name="token"></param>
         /// <returns></returns>
-        protected UserEntity GetUserByToken(string token)
+        protected AdminEntity GetAdminByToken(string token)
         {
             if (!string.IsNullOrWhiteSpace(token))
             {
-                UserBLL userBLL = new UserBLL();
-                UserTokenBLL userTokenBLL = new UserTokenBLL();
-                UserTokenEntity userTokenEntity = userTokenBLL.GetByToken(token);
+                AdminBLL adminBLL = new AdminBLL();
+                AdminTokenBLL adminTokenBLL = new AdminTokenBLL();
+                AdminTokenEntity adminTokenEntity = adminTokenBLL.GetByToken(token);
 
-                UserEntity userEntity = userBLL.GetById(userTokenEntity.userId);
+                AdminEntity adminEntity = adminBLL.GetById(adminTokenEntity.adminId);
 
-                return userEntity;
+                return adminEntity;
             }
             else
             {

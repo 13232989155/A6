@@ -1,0 +1,284 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>AdminApi</name>
+    </assembly>
+    <members>
+        <member name="T:AdminApi.Base.BaseController">
+            <summary>
+            基础控制器
+            </summary>
+        </member>
+        <member name="M:AdminApi.Base.BaseController.GetAdminByToken(System.String)">
+            <summary>
+            根据token获取个人信息
+            </summary>
+            <param name="token"></param>
+            <returns></returns>
+        </member>
+        <member name="T:AdminApi.Controllers.AdminController">
+            <summary>
+            管理员
+            </summary>
+        </member>
+        <member name="M:AdminApi.Controllers.AdminController.Login(System.String,System.String)">
+            <summary>
+            登录
+            </summary>
+            <param name="account">*</param>
+            <param name="password">*</param>
+            <returns></returns>
+        </member>
+        <member name="M:AdminApi.Controllers.AdminController.GetById(System.String,System.Int32)">
+            <summary>
+            根据id获取信息
+            </summary>
+            <param name="token">*</param>
+            <param name="adminId">*</param>
+            <returns></returns>
+        </member>
+        <member name="M:AdminApi.Controllers.AdminController.Get(System.String)">
+            <summary>
+            获取自己信息
+            </summary>
+            <param name="token">*</param>
+            <returns></returns>
+        </member>
+        <member name="M:AdminApi.Controllers.AdminController.Crete(System.String,Entity.AdminEntity)">
+            <summary>
+            创建管理员
+            </summary>
+            <param name="token">*</param>
+            <param name="adminEntity">*</param>
+            <returns></returns>
+        </member>
+        <member name="T:AdminApi.Controllers.ValuesController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:AdminApi.Controllers.ValuesController.Get">
+            <summary>
+            GET api/values
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:AdminApi.Controllers.ValuesController.Get(System.Int32)">
+            <summary>
+            GET api/values/5
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AdminApi.Controllers.ValuesController.Post(System.String)">
+            <summary>
+            POST api/values
+            </summary>
+            <param name="value"></param>
+        </member>
+        <member name="M:AdminApi.Controllers.ValuesController.Put(System.Int32,System.String)">
+            <summary>
+            PUT api/values/5
+            </summary>
+            <param name="id"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:AdminApi.Controllers.ValuesController.Delete(System.Int32)">
+            <summary>
+            DELETE api/values/5
+            </summary>
+            <param name="id"></param>
+        </member>
+        <member name="T:AdminApi.Models.DataResult">
+            <summary>
+            数据结果
+            </summary>
+        </member>
+        <member name="P:AdminApi.Models.DataResult.code">
+            <summary>
+            返回代码
+            </summary>
+        </member>
+        <member name="P:AdminApi.Models.DataResult.msg">
+            <summary>
+            错误消息
+            </summary>
+        </member>
+        <member name="P:AdminApi.Models.DataResult.data">
+            <summary>
+            数据
+            </summary>
+        </member>
+        <member name="M:AdminApi.Models.DataResult.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:AdminApi.Models.DataResult.#ctor(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="data"></param>
+        </member>
+        <member name="M:AdminApi.Models.DataResult.#ctor(System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="msg"></param>
+            <param name="code"></param>
+        </member>
+        <member name="T:AdminApi.Models.LoginAuthorizeAttribute">
+            <summary>
+            过滤器
+            </summary>
+        </member>
+        <member name="M:AdminApi.Models.LoginAuthorizeAttribute.OnActionExecuting(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext)">
+            <summary>
+            重写，登录过滤
+            </summary>
+            <param name="filterContext"></param>
+        </member>
+        <member name="T:AdminApi.Models.LoginResult">
+            <summary>
+            登录返回数据
+            </summary>
+        </member>
+        <member name="P:AdminApi.Models.LoginResult.token">
+            <summary>
+            用户token
+            </summary>
+        </member>
+        <member name="P:AdminApi.Models.LoginResult.adminEntity">
+            <summary>
+            用户信息
+            </summary>
+        </member>
+        <member name="T:AdminApi.Models.PageData">
+            <summary>
+            分页数据
+            </summary>
+        </member>
+        <member name="M:AdminApi.Models.PageData.#ctor(System.Object,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            初始化
+            </summary>
+            <param name="pageData"></param>
+            <param name="pageNumber"></param>
+            <param name="pageSize"></param>
+            <param name="totalItemCount"></param>
+        </member>
+        <member name="P:AdminApi.Models.PageData.PageCount">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:AdminApi.Models.PageData.TotalItemCount">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:AdminApi.Models.PageData.PageNumber">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:AdminApi.Models.PageData.PageSize">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:AdminApi.Models.PageData.HasPreviousPage">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:AdminApi.Models.PageData.HasNextPage">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:AdminApi.Models.PageData.IsFirstPage">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:AdminApi.Models.PageData.IsLastPage">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:AdminApi.Models.PageData.FirstItemOnPage">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:AdminApi.Models.PageData.LastItemOnPage">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:AdminApi.Models.PageData.Data">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:AdminApi.Models.SkipCheckLoginAttribute">
+            <summary>
+            当控制器或者action方法贴有此标签，则表示跳过登录过滤器的检查
+            </summary>
+        </member>
+        <member name="M:AdminApi.Models.SkipCheckLoginAttribute.OnActionExecuting(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext)">
+            <summary>
+            未登录过滤
+            </summary>
+            <param name="filterContext"></param>
+        </member>
+        <member name="T:AdminApi.Program">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:AdminApi.Program.Main(System.String[])">
+            <summary>
+            
+            </summary>
+            <param name="args"></param>
+        </member>
+        <member name="M:AdminApi.Program.CreateWebHostBuilder(System.String[])">
+            <summary>
+            
+            </summary>
+            <param name="args"></param>
+            <returns></returns>
+        </member>
+        <member name="T:AdminApi.Startup">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:AdminApi.Startup.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            
+            </summary>
+            <param name="configuration"></param>
+        </member>
+        <member name="P:AdminApi.Startup.Configuration">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:AdminApi.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            
+            </summary>
+            <param name="services"></param>
+        </member>
+        <member name="M:AdminApi.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IHostingEnvironment)">
+            <summary>
+            
+            </summary>
+            <param name="app"></param>
+            <param name="env"></param>
+        </member>
+    </members>
+</doc>

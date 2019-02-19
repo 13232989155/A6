@@ -1,0 +1,305 @@
+﻿
+@{
+    ViewData["Title"] = "用户详细";
+}
+@model Entity.UserEntity;
+
+
+<div class="page-title">
+    <div class="title_left">
+        <h3>用户详细</h3>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2><small></small></h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle"><i class="fa fa-wrench"></i></a>
+                    </li>
+                    <li>
+                        <a class="close-link"><i class="fa fa-close"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div id="example" class="x_content">
+                <br>
+                <form id="demo-form2" class="form-horizontal form-label-left">
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            用户ID <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" value="@Model.userId" disabled class="form-control col-md-7 col-xs-12">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            名称 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" value="@Model.name" disabled class="form-control col-md-7 col-xs-12">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            账号 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" value="@Model.account" disabled class="form-control col-md-7 col-xs-12">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            等级 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" value="@Model.grade" disabled class="form-control col-md-7 col-xs-12">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            积分 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" value="@Model.integral" disabled class="form-control col-md-7 col-xs-12">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            性别 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" value="@( Model.gender == 0 ? "女" : Model.gender == 1 ? "男" : "未知")" disabled class="form-control col-md-7 col-xs-12">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            生日 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" value="@Model.birthday" disabled class="form-control col-md-7 col-xs-12">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            常住地址 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" value="@Model.address" disabled class="form-control col-md-7 col-xs-12">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            手机号码 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" value="@Model.phone" disabled class="form-control col-md-7 col-xs-12">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            邮箱 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" value="@Model.email" disabled class="form-control col-md-7 col-xs-12">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            个性签名 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" value="@Model.signature" disabled class="form-control col-md-7 col-xs-12">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            备注 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <textarea class="form-control" disabled rows="5">@Model.remark</textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            头像 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            @if (!string.IsNullOrWhiteSpace(Model.portrait))
+                            {
+
+                                <div class="col-md-3 col-xs-12 widget widget_tally_box">
+                                    <div class="x_panel">
+                                        <div class="x_title">
+                                            <ul class="nav navbar-right panel_toolbox">
+                                                @*<li>
+                                                    <template v-if="item.isDel">
+                                                        <a title="恢复删除" class="collapse-link"><i class="fa fa-reply"></i></a>
+                                                    </template>
+                                                    <template v-else>
+                                                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                                    </template>
+                                                </li>
+                                                <li class="dropdown">
+                                                    <a class="dropdown-toggle"><i class="fa fa-picture-o"></i></a>
+                                                </li>
+                                                <li>
+                                                    <a class="close-link"><i class="fa fa-close"></i></a>
+                                                </li>*@
+                                            </ul>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="x_content" style="display: block;">
+
+                                            <div style="text-align: center; margin-bottom: 17px">
+                                                <img style="width:100%" src="@Model.portrait" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            }
+
+                        </div>
+                    </div>
+
+                    @if (Model.wxUserEntity != null)
+                    {
+
+
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                                WXID <span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input type="text" value="@Model.wxUserEntity.wxUserId" disabled class="form-control col-md-7 col-xs-12">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                                openId <span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input type="text" value="@Model.wxUserEntity.openId" disabled class="form-control col-md-7 col-xs-12">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                                openId <span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input type="text" value="@Model.wxUserEntity.unionId" disabled class="form-control col-md-7 col-xs-12">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                                WX昵称 <span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input type="text" value="@Model.wxUserEntity.nickName" disabled class="form-control col-md-7 col-xs-12">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                                WX头像 <span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                @if (!string.IsNullOrWhiteSpace(Model.wxUserEntity.avatarUrl))
+                                {
+                                    <div class="col-md-3 col-xs-12 widget widget_tally_box">
+                                        <div class="x_panel">
+                                            <div class="x_title">
+                                                <ul class="nav navbar-right panel_toolbox">
+                                                    @*<li>
+                                                        <template v-if="item.isDel">
+                                                            <a title="恢复删除" class="collapse-link"><i class="fa fa-reply"></i></a>
+                                                        </template>
+                                                        <template v-else>
+                                                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                                        </template>
+                                                    </li>
+                                                    <li class="dropdown">
+                                                        <a class="dropdown-toggle"><i class="fa fa-picture-o"></i></a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="close-link"><i class="fa fa-close"></i></a>
+                                                    </li>*@
+                                                </ul>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                            <div class="x_content" style="display: block;">
+
+                                                <div style="text-align: center; margin-bottom: 17px">
+                                                    <img style="width:100%" src="@Model.wxUserEntity.avatarUrl" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+                            </div>
+                        </div>
+                    }
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            创建日期 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" value="@Model.createDate" disabled class="form-control col-md-7 col-xs-12">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            修改日期 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" value="@Model.modifyDate" disabled class="form-control col-md-7 col-xs-12">
+                        </div>
+                    </div>
+
+                    <div class="ln_solid"></div>
+
+                    <div class="form-group">
+                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                            <a href="/User/List" class="btn btn-info" type="reset">返回列表</a>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    //
+    $("#liUserList").addClass("current-page");
+    $("#ulUser").show();
+
+</script>
