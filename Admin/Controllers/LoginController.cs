@@ -43,7 +43,7 @@ namespace Admin.Controllers
             }
 
             HttpContext.Session.Set("admin", adminEntity);
-
+            
             return RedirectToAction(controllerName: "Home", actionName: "Index");
         }
 
@@ -55,16 +55,6 @@ namespace Admin.Controllers
         {
             HttpContext.Session.Clear();
             return RedirectToAction("Login");
-        }
-
-
-        /// <summary>
-        /// 返回当前用户
-        /// </summary>
-        /// <returns></returns>
-        public AdminEntity GetThisAdmin()
-        {
-            return this.ThisAdmin();
         }
 
 

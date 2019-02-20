@@ -1,15 +1,14 @@
 ﻿
 @{
-    ViewData["Title"] = "管理员列表";
+    ViewData["Title"] = "案例列表";
 }
 
-
-@model X.PagedList.IPagedList<Entity.AdminEntity>
+@model X.PagedList.IPagedList<Entity.CaseEntity>
 @using X.PagedList.Mvc.Core;
 
 <div class="page-title">
     <div class="title_left">
-        <h3>管理员列表</h3>
+        <h3>案例列表</h3>
     </div>
 </div>
 
@@ -33,11 +32,9 @@
                 <div class="clearfix"></div>
             </div>
             <div class="x_content">
-
                 <div class="title_left">
-                    <a asp-action="Create"  class="btn btn-round btn-success">创建</a>
+                    <a asp-action="Create" asp-controller="CaseOfficial" class="btn btn-round btn-success">创建</a>
                 </div>
-
                 <div class="title_right">
                     <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
                         <form method="post" asp-action="List">
@@ -83,10 +80,10 @@
                                     <tr role="row">
                                         <th>ID</th>
                                         <th>用户ID</th>
-                                        <th>名称</th>
-                                        <th>账号</th>
-                                        <th>是否禁用</th>
-                                        <th>超级管理员</th>
+                                        <th>状态</th>
+                                        <th>标题</th>
+                                        <th>描述</th>
+                                        <th>是否删除</th>
                                         <th>创建时间</th>
                                         <th>修改时间</th>
                                         <th>操作</th>
@@ -97,22 +94,16 @@
                                     @foreach (var item in Model)
                                     {
                                         <tr role="row" class="odd">
-                                            <td>@item.adminId</td>
+                                            <td>@item.caseId</td>
                                             <td>@item.userId</td>
-                                            <td>@item.name</td>
-                                            <td>@item.account</td>
-                                            <td>@(item.forbidden ? "是" : "否")</td>
-                                            <td>@( item.administrator ? "是" : "否")</td>
+                                            <td>@item.state</td>
+                                            <td>@( item.title.Length > 10 ? item.title.Substring(0, 10) + "..." : item.title)</td>
+                                            <td>@( item.describe.Length > 10 ? item.describe.Substring(0, 10) + "..." : item.describe)</td>
+                                            <td>@(item.isDel ? "是" : "否")</td>
                                             <td>@item.createDate</td>
                                             <td>@item.modifyDate</td>
                                             <td style="text-align:center">
-                                                <a asp-action="Detail" asp-route-id="@item.adminId" title="查看" class="dropdown-toggle"><i class="fa fa-search"></i></a>
-                                                &nbsp;&nbsp;
-                                                @*<a asp-action="Edit" asp-route-id="@item.adminId" title="编辑" class="dropdown-toggle"><i class="fa fa-pencil"></i></a>
-                                                &nbsp;&nbsp;*@
-                                                <a href="#" onclick="OnClickDelete( @item.adminId )" data-toggle="modal" data-target=".bs-example-modal-sm" title="删除" class="dropdown-toggle"><i class="fa fa-close"></i></a>
-                                                &nbsp;&nbsp;
-
+                                                <a asp-action="Detail" asp-route-id="@item.caseId" title="查看" class="dropdown-toggle"><i class="fa fa-search"></i></a>
                                             </td>
                                         </tr>
                                     }
@@ -164,8 +155,10 @@
 
 <script type="text/javascript">
 
-    function OnClickDelete( id) {
+    function OnClickDelete(id) {
         $("#DeleteAdminId").attr("href", "/Admin/Delete?id=" + id);
     }
 
 </script>
+
+

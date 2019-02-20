@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Admin.Base;
 using BLL;
 using Entity;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +9,7 @@ using X.PagedList;
 
 namespace Admin.Controllers
 {
-    public class UserController : BaseController
+    public class CaseController : Controller
     {
         /// <summary>
         /// 列表页面
@@ -23,9 +22,11 @@ namespace Admin.Controllers
             ViewBag.searchString = string.IsNullOrWhiteSpace(searchString) ? "" : searchString;
             int pageNumber = (page ?? 1);
             int pageSize = 15;
-            UserBLL userBLL = new UserBLL();
-            IPagedList<UserEntity> userEntities = userBLL.AdminPageList(pageNumber, pageSize, searchString);
-            return View(userEntities);
+
+            CaseBLL caseBLL = new CaseBLL();
+            IPagedList<CaseEntity> caseEntities = caseBLL.AdminPageList(pageNumber, pageSize, searchString);
+
+            return View(caseEntities);
         }
 
         /// <summary>
@@ -35,14 +36,16 @@ namespace Admin.Controllers
         /// <returns></returns>
         public IActionResult Detail(int id)
         {
-            UserBLL userBLL = new UserBLL();
-            UserEntity userEntity = userBLL.GetById(id);
+            CaseBLL caseBLL = new CaseBLL();
+            CaseEntity caseEntity = caseBLL.GetById(id);
 
-            WxUserBLL wxUserBLL = new WxUserBLL();
-            userEntity.wxUserEntity = wxUserBLL.GetByUserId(userEntity.userId);
+            CaseTagCorrelationBLL caseTagCorrelationBLL = new CaseTagCorrelationBLL();
+            caseEntity.caseTagEntities = caseTagCorrelationBLL.CaseTagListByCaseId(caseEntity.caseId);
 
-            return View(userEntity);
+            CaseStepBLL caseStepBLL = new CaseStepBLL();
+            caseEntity.caseStepEntities = caseStepBLL.ListByCaseId(caseEntity.caseId);
+
+            return View(caseEntity);
         }
-
     }
 }

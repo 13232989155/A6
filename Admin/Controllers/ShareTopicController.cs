@@ -10,7 +10,7 @@ using X.PagedList;
 
 namespace Admin.Controllers
 {
-    public class UserController : BaseController
+    public class ShareTopicController : BaseController
     {
         /// <summary>
         /// 列表页面
@@ -23,9 +23,11 @@ namespace Admin.Controllers
             ViewBag.searchString = string.IsNullOrWhiteSpace(searchString) ? "" : searchString;
             int pageNumber = (page ?? 1);
             int pageSize = 15;
-            UserBLL userBLL = new UserBLL();
-            IPagedList<UserEntity> userEntities = userBLL.AdminPageList(pageNumber, pageSize, searchString);
-            return View(userEntities);
+
+            ShareTopicBLL shareTopicBLL = new ShareTopicBLL();
+            IPagedList<ShareTopicEntity> shareTopicEntities = shareTopicBLL.AdminPageList(pageNumber, pageSize, searchString);
+
+            return View(shareTopicEntities);
         }
 
         /// <summary>
@@ -35,14 +37,9 @@ namespace Admin.Controllers
         /// <returns></returns>
         public IActionResult Detail(int id)
         {
-            UserBLL userBLL = new UserBLL();
-            UserEntity userEntity = userBLL.GetById(id);
-
-            WxUserBLL wxUserBLL = new WxUserBLL();
-            userEntity.wxUserEntity = wxUserBLL.GetByUserId(userEntity.userId);
-
-            return View(userEntity);
+            ShareTopicBLL shareTopicBLL = new ShareTopicBLL();
+            ShareTopicEntity shareTopicEntity = shareTopicBLL.GetById(id);
+            return View(shareTopicEntity);
         }
-
     }
 }

@@ -1,14 +1,24 @@
 ﻿
 @{
-    ViewData["Title"] = "管理员详细";
+    ViewData["Title"] = "说说详细";
+
+    Admin.Models.Tools tools = new Tools();
+    List<string> imgList = new List<string>();
+    if (!string.IsNullOrWhiteSpace(Model.img))
+    {
+
+        imgList = tools.GetStrList(Model.img);
+
+    }
+
 }
 
-@model Entity.AdminEntity;
 
+@model Entity.ShareEntity;
 
 <div class="page-title">
     <div class="title_left">
-        <h3>管理员详细</h3>
+        <h3>说说详细</h3>
     </div>
 </div>
 <div class="row">
@@ -35,10 +45,10 @@
 
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                            用户ID <span class="required">*</span>
+                            ID <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" value="@Model.adminId" disabled class="form-control col-md-7 col-xs-12">
+                            <input type="text" value="@Model.shareId" disabled class="form-control col-md-7 col-xs-12">
                         </div>
                     </div>
 
@@ -53,7 +63,7 @@
 
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                            名称 <span class="required">*</span>
+                            用户名称 <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <input type="text" value="@Model.name" disabled class="form-control col-md-7 col-xs-12">
@@ -62,48 +72,61 @@
 
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                            账号 <span class="required">*</span>
+                            说说类型ID <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" value="@Model.account" disabled class="form-control col-md-7 col-xs-12">
+                            <input type="text" value="@Model.shareTypeId" disabled class="form-control col-md-7 col-xs-12">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                            手机号码 <span class="required"></span>
+                            说说话题ID <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" value="@Model.phone" disabled class="form-control col-md-7 col-xs-12">
+                            <input type="text" value="@Model.shareTopicId" disabled class="form-control col-md-7 col-xs-12">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                            邮箱 <span class="required"></span>
+                            内容<span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" value="@Model.email" disabled class="form-control col-md-7 col-xs-12">
+                            <textarea class="form-control" disabled rows="5">@Model.contents</textarea>
                         </div>
                     </div>
 
-
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                            是否超级管理员 <span class="required">*</span>
+                            图片
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" value="@( Model.administrator ? "是" : "否")" disabled class="form-control col-md-7 col-xs-12">
+                            <label class="control-label col-md-7 col-xs-12"></label>
                         </div>
                     </div>
 
+                    <div class="row">
+                        @foreach (var item in imgList)
+                        {
+                            <div class="col-md-3 col-xs-12 widget widget_tally_box">
+                                <div class="x_panel">
+                                    <div class="x_content" style="display: block;">
+                                        <div style="text-align: center; margin-bottom: 17px">
+                                            <img style="width:100%" src="@item" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
 
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                            是否禁用 <span class="required">*</span>
+                            是否删除 <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" value="@( Model.forbidden ? "是" : "否")" disabled class="form-control col-md-7 col-xs-12">
+                            <input type="text" value="@( Model.isDel ? "是" : "否")" disabled class="form-control col-md-7 col-xs-12">
                         </div>
                     </div>
 
@@ -141,8 +164,10 @@
 
 <script type="text/javascript">
     //
-    $("#liAdminList").addClass("current-page");
-    $("#ulAdmin").show();
+    $("#liShareList").addClass("current-page");
+    $("#ulShare").show();
 
 </script>
+
+
 

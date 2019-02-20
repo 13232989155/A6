@@ -29,7 +29,7 @@
             <div class="col-md-3 left_col">
                 <div class="left_col scroll-view">
                     <div class="navbar nav_title" style="border: 0;">
-                        <a href="/Home/Index" class="site_title"><i class="fa fa-paw"></i> <span>理赔学堂</span></a>
+                        <a asp-controller="Home" asp-action="Index" class="site_title"><i class="fa fa-paw"></i> <span>理赔学堂</span></a>
                     </div>
 
                     <div class="clearfix"></div>
@@ -41,7 +41,7 @@
                         </div>
                         <div class="profile_info">
                             <span>Welcome,</span>
-                            <h2>adminEntity.name</h2>
+                            <h2>@await Component.InvokeAsync("ThisAdmin")</h2>
                         </div>
                     </div>
                     <!-- /menu profile quick info -->
@@ -53,52 +53,40 @@
                             <h3></h3>
                             <ul class="nav side-menu">
                                 <li>
-                                    <a href="/Home/Index"><i class="fa fa-home"></i> 主页 </a>
-                                </li>
-                                <li>
-                                    <a><i class="fa fa-edit"></i> 管理员 <span class="fa fa-chevron-down"></span></a>
-                                    <ul id="ulAdmin" class="nav child_menu">
-                                        <li id="liAdminList"><a href="/Admin/List">管理员列表</a></li>
-                                    </ul>
+                                    <a asp-controller="Home" asp-action="Index"><i class="fa fa-home"></i> 主页 </a>
                                 </li>
 
                                 <li>
-                                    <a><i class="fa fa-table"></i> 用户 <span class="fa fa-chevron-down"></span></a>
+                                    <a><i class="fa fa-user"></i> 用户 <span class="fa fa-chevron-down"></span></a>
                                     <ul id="ulUser" class="nav child_menu">
-                                        <li id="liUserList"><a href="/User/List">用户列表</a></li>
+                                        <li id="liUserList"><a asp-controller="User" asp-action="List">用户列表</a></li>
                                     </ul>
                                 </li>
 
                                 <li>
                                     <a><i class="fa fa-desktop"></i> 说说 <span class="fa fa-chevron-down"></span></a>
-                                    <ul id="ulRecipe" class="nav child_menu">
-                                        <li id="liRecipeList"><a href="/Recipe/List">说说列表</a></li>
-                                        <li id="liRecipeTypeList"><a href="/RecipeType/List">说说分类列表</a></li>
-                                        <li id="liRecommendRecipeList"><a href="/Recommend/RecipeList">话题列表</a></li>
+                                    <ul id="ulShare" class="nav child_menu">
+                                        <li id="liShareList"><a asp-controller="Share" asp-action="List">说说列表</a></li>
+                                        <li id="liShareTypeList"><a asp-controller="ShareType" asp-action="List">分类列表</a></li>
+                                        <li id="liShareTopicList"><a asp-controller="ShareTopic" asp-action="List">话题列表</a></li>
                                     </ul>
                                 </li>
 
                                 <li>
                                     <a><i class="fa fa-bar-chart-o"></i> 案例 <span class="fa fa-chevron-down"></span></a>
-                                    <ul id="ulOrder" class="nav child_menu">
-                                        <li id="liOrderList"><a href="/Order/List">案例列表</a></li>
-                                        <li id="liOrderReasonList"><a href="/OrderReason/List">案例标签列表</a></li>
-                                    </ul>
-                                </li>
-
-                                @*<li>
-                                    <a><i class="fa fa-picture-o"></i> Banner <span class="fa fa-chevron-down"></span></a>
-                                    <ul id="ulBanner" class="nav child_menu">
-                                        <li id="liBannerList"><a href="/Banner/List">Banner列表</a></li>
+                                    <ul id="ulCase" class="nav child_menu">
+                                        <li id="liCaseList"><a asp-controller="Case" asp-action="List">案例列表</a></li>
+                                        <li id="liCaseTagList"><a asp-controller="CaseTag" asp-action="List">标签列表</a></li>
+                                        <li id="liCaseOfficialList"><a asp-controller="CaseOfficial" asp-action="List">官方案例列表</a></li>
                                     </ul>
                                 </li>
 
                                 <li>
-                                    <a><i class="fa fa-tasks"></i> 专区管理 <span class="fa fa-chevron-down"></span></a>
-                                    <ul id="ulPrefecture" class="nav child_menu">
-                                        <li id="liPrefectureList"><a href="/Prefecture/List">专区列表</a></li>
+                                    <a><i class="fa fa-edit"></i> 管理员 <span class="fa fa-chevron-down"></span></a>
+                                    <ul id="ulAdmin" class="nav child_menu">
+                                        <li id="liAdminList"><a asp-controller="Admin" asp-action="List">管理员列表</a></li>
                                     </ul>
-                                </li>*@
+                                </li>
 
                             </ul>
                         </div>
@@ -106,7 +94,7 @@
                     <!-- /sidebar menu -->
                     <!-- /menu footer buttons -->
                     <div class="sidebar-footer hidden-small">
-                        <a data-toggle="tooltip" data-placement="top" title="Logout" href="/login/LogOut" style="width:100%">
+                        <a data-toggle="tooltip" data-placement="top" title="退出登录" asp-controller="Login" asp-action="LogOut" style="width:100%">
                             <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
                         </a>
                     </div>
@@ -125,18 +113,19 @@
                         <ul class="nav navbar-nav navbar-right">
                             <li class="">
                                 <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                    <img src="~/images/img.jpg" alt="">adminEntity.name
+                                    <img src="~/images/img.jpg" alt="">
+                                    @await Component.InvokeAsync("ThisAdmin")
                                     <span class=" fa fa-angle-down"></span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-usermenu pull-right">
-                                    <li><a href="javascript:;"> 个人中心</a></li>
+                                    <li><a asp-controller="Admin" asp-action="Edit"> 个人中心</a></li>
                                     <li>
-                                        <a href="javascript:;">
+                                        <a asp-controller="Admin" asp-action="EditPassword">
                                             <span class="badge bg-red pull-right"></span>
                                             <span>设置</span>
                                         </a>
                                     </li>
-                                    <li><a href="/Login/LogOut"><i class="fa fa-sign-out pull-right"></i>退出登录</a></li>
+                                    <li><a asp-controller="Login" asp-action="LogOut" ><i class="fa fa-sign-out pull-right"></i>退出登录</a></li>
                                 </ul>
                             </li>
 

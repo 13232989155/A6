@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Entity;
 using Microsoft.AspNetCore.Mvc;
 using Admin.Models;
+using Newtonsoft.Json;
 
 namespace Admin.Base
 {
@@ -43,7 +44,6 @@ namespace Admin.Base
 
             return adminEntity;
         }
-
 
     }
 }

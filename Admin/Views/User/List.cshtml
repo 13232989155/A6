@@ -34,7 +34,7 @@
 
                 <div class="title_right">
                     <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-                        <form method="post" action="/User/List">
+                        <form method="post" asp-action="List">
                             <div class="input-group">
                                 <input name="searchString" value="@ViewBag.searchString" type="text" class="form-control" placeholder="输入关键字...">
                                 <span class="input-group-btn">
@@ -96,7 +96,7 @@
                                             <td>@item.createDate</td>
                                             <td>@item.modifyDate</td>
                                             <td style="text-align:center">
-                                                <a href="/User/Detail?userId=@item.userId" title="查看" class="dropdown-toggle"><i class="fa fa-search"></i></a>
+                                                <a asp-action="Detail" asp-route-id="@item.userId"  title="查看" class="dropdown-toggle"><i class="fa fa-search"></i></a>
                                                 &nbsp;&nbsp;
                                                 @*@if (item.forbidden)
                                                     {

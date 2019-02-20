@@ -1,14 +1,14 @@
 ﻿
 @{
-    ViewData["Title"] = "管理员详细";
+    ViewData["Title"] = "案例详细";
 }
 
-@model Entity.AdminEntity;
 
+@model Entity.CaseEntity;
 
 <div class="page-title">
     <div class="title_left">
-        <h3>管理员详细</h3>
+        <h3>案例详细</h3>
     </div>
 </div>
 <div class="row">
@@ -35,10 +35,10 @@
 
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                            用户ID <span class="required">*</span>
+                            ID <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" value="@Model.adminId" disabled class="form-control col-md-7 col-xs-12">
+                            <input type="text" value="@Model.caseId" disabled class="form-control col-md-7 col-xs-12">
                         </div>
                     </div>
 
@@ -53,7 +53,7 @@
 
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                            名称 <span class="required">*</span>
+                            用户名称 <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <input type="text" value="@Model.name" disabled class="form-control col-md-7 col-xs-12">
@@ -62,48 +62,129 @@
 
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                            账号 <span class="required">*</span>
+                            封面图片
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" value="@Model.account" disabled class="form-control col-md-7 col-xs-12">
+                            <label class="control-label col-md-7 col-xs-12"></label>
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                            手机号码 <span class="required"></span>
-                        </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" value="@Model.phone" disabled class="form-control col-md-7 col-xs-12">
+                    <div class="row">
+                        <div class="col-md-3 col-sm-6 col-xs-12">
                         </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                            邮箱 <span class="required"></span>
-                        </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" value="@Model.email" disabled class="form-control col-md-7 col-xs-12">
+                            <div class="x_panel">
+                                <div class="x_content">
+
+                                    <div style="text-align: center; margin-bottom: 17px">
+                                        <img style="width:100%" src="@Model.coverImage" />
+                                    </div>
+
+                                </div>
+                            </div>
                         </div>
-                    </div>
-
-
-                    <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                            是否超级管理员 <span class="required">*</span>
-                        </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" value="@( Model.administrator ? "是" : "否")" disabled class="form-control col-md-7 col-xs-12">
+                        <div class="col-md-3 col-sm-6 col-xs-12">
                         </div>
                     </div>
 
 
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                            是否禁用 <span class="required">*</span>
+                            标题 <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" value="@( Model.forbidden ? "是" : "否")" disabled class="form-control col-md-7 col-xs-12">
+                            <input type="text" value="@Model.title" disabled class="form-control col-md-7 col-xs-12">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            描述<span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <textarea class="form-control" disabled rows="10">@Model.describe</textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            小提示<span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <textarea class="form-control" disabled rows="5">@Model.tips</textarea>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3 col-sm-6 col-xs-12">
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class="x_panel">
+                                <div class="x_title">
+                                    <h2>图文步骤</h2>
+                                    <div class="clearfix"></div>
+                                </div>
+
+                                <div class="x_content">
+
+                                    @foreach (var item in Model.caseStepEntities)
+                                    {
+                                        <div style="text-align: center;">
+                                            <img style="width:100%" src="@item.img" />
+                                        </div>
+                                        <div>
+                                            @item.contents
+                                        </div>
+                                    }
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 col-xs-12">
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-3 col-sm-6 col-xs-12">
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class="x_panel">
+                                <div class="x_title">
+                                    <h2>案例标签</h2>
+                                    <div class="clearfix"></div>
+                                </div>
+
+                                <div class="x_content">
+
+                                    <div class="">
+                                        <ul class="to_do">
+                                            <li>
+                                                @foreach (var item in Model.caseTagEntities)
+                                                {
+
+                                                    <p>
+                                                        @item.name
+                                                    </p>
+                                                }
+
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 col-xs-12">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            是否删除 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" value="@( Model.isDel ? "是" : "否")" disabled class="form-control col-md-7 col-xs-12">
                         </div>
                     </div>
 
@@ -141,8 +222,10 @@
 
 <script type="text/javascript">
     //
-    $("#liAdminList").addClass("current-page");
-    $("#ulAdmin").show();
+    $("#liCaseList").addClass("current-page");
+    $("#ulCase").show();
 
 </script>
+
+
 

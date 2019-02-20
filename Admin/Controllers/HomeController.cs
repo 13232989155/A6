@@ -13,10 +13,11 @@ namespace Admin.Controllers
     {
         public IActionResult Index()
         {
-            //if ( !IsLogin())
-            //{
-            //    return RedirectToAction(controllerName: "Login", actionName: "Login");
-            //}
+            if (!IsLogin())
+            {
+                return RedirectToAction(controllerName: "Login", actionName: "Login");
+            }
+
             return View();
         }
 
@@ -44,7 +45,6 @@ namespace Admin.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-
 
         /// <summary>
         /// 隐私条款

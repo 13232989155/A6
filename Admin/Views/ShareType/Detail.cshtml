@@ -1,14 +1,11 @@
-﻿
-@{
-    ViewData["Title"] = "管理员详细";
+﻿@{
+    ViewData["Title"] = "说说分类详细";
 }
-
-@model Entity.AdminEntity;
-
+@model Entity.ShareTypeEntity;
 
 <div class="page-title">
     <div class="title_left">
-        <h3>管理员详细</h3>
+        <h3>说说分类详细</h3>
     </div>
 </div>
 <div class="row">
@@ -35,25 +32,16 @@
 
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                            用户ID <span class="required">*</span>
+                            ID <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" value="@Model.adminId" disabled class="form-control col-md-7 col-xs-12">
+                            <input type="text" value="@Model.shareTypeId" disabled class="form-control col-md-7 col-xs-12">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                            用户ID <span class="required">*</span>
-                        </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" value="@Model.userId" disabled class="form-control col-md-7 col-xs-12">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                            名称 <span class="required">*</span>
+                            话题 <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <input type="text" value="@Model.name" disabled class="form-control col-md-7 col-xs-12">
@@ -62,50 +50,22 @@
 
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                            账号 <span class="required">*</span>
+                            是否删除 <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" value="@Model.account" disabled class="form-control col-md-7 col-xs-12">
+                            <input type="text" value="@( Model.isDel ? "是" : "否")" disabled class="form-control col-md-7 col-xs-12">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                            手机号码 <span class="required"></span>
+                            最后操作的管理员 <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" value="@Model.phone" disabled class="form-control col-md-7 col-xs-12">
+                            <input type="text" value="@Model.adminId" disabled class="form-control col-md-7 col-xs-12">
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                            邮箱 <span class="required"></span>
-                        </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" value="@Model.email" disabled class="form-control col-md-7 col-xs-12">
-                        </div>
-                    </div>
-
-
-                    <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                            是否超级管理员 <span class="required">*</span>
-                        </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" value="@( Model.administrator ? "是" : "否")" disabled class="form-control col-md-7 col-xs-12">
-                        </div>
-                    </div>
-
-
-                    <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                            是否禁用 <span class="required">*</span>
-                        </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" value="@( Model.forbidden ? "是" : "否")" disabled class="form-control col-md-7 col-xs-12">
-                        </div>
-                    </div>
 
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">
@@ -141,8 +101,10 @@
 
 <script type="text/javascript">
     //
-    $("#liAdminList").addClass("current-page");
-    $("#ulAdmin").show();
+    $("#liShareTypeList").addClass("current-page");
+    $("#ulShare").show();
 
 </script>
+
+
 

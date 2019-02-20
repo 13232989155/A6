@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Admin.Base;
 using BLL;
 using Entity;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +9,7 @@ using X.PagedList;
 
 namespace Admin.Controllers
 {
-    public class UserController : BaseController
+    public class CaseTagController : Controller
     {
         /// <summary>
         /// 列表页面
@@ -23,9 +22,11 @@ namespace Admin.Controllers
             ViewBag.searchString = string.IsNullOrWhiteSpace(searchString) ? "" : searchString;
             int pageNumber = (page ?? 1);
             int pageSize = 15;
-            UserBLL userBLL = new UserBLL();
-            IPagedList<UserEntity> userEntities = userBLL.AdminPageList(pageNumber, pageSize, searchString);
-            return View(userEntities);
+
+            CaseTagBLL caseTagBLL = new CaseTagBLL();
+            IPagedList<CaseTagEntity> caseTagEntities = caseTagBLL.AdminPageList(pageNumber, pageSize, searchString);
+
+            return View(caseTagEntities);
         }
 
         /// <summary>
@@ -35,14 +36,10 @@ namespace Admin.Controllers
         /// <returns></returns>
         public IActionResult Detail(int id)
         {
-            UserBLL userBLL = new UserBLL();
-            UserEntity userEntity = userBLL.GetById(id);
+            CaseTagBLL caseTagBLL = new CaseTagBLL();
+            CaseTagEntity caseTagEntity = caseTagBLL.GetById(id);
 
-            WxUserBLL wxUserBLL = new WxUserBLL();
-            userEntity.wxUserEntity = wxUserBLL.GetByUserId(userEntity.userId);
-
-            return View(userEntity);
+            return View(caseTagEntity);
         }
-
     }
 }

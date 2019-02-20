@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using X.PagedList;
 
 namespace BLL
 {
@@ -36,6 +37,26 @@ namespace BLL
 
             return ActionDal.ActionDBAccess.Insertable(caseEntity).ExecuteReturnEntity();
 
+        }
+
+        /// <summary>
+        /// 分页列表
+        /// </summary>
+        /// <param name="pageNumber"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="searchString"></param>
+        /// <returns></returns>
+        public IPagedList<CaseEntity> AdminPageList(int pageNumber, int pageSize, string searchString)
+        {
+            IPagedList<CaseEntity> caseEntities = ActionDal.ActionDBAccess.Queryable<CaseEntity>()
+                                                  .WhereIF(!string.IsNullOrWhiteSpace(searchString), it => it.describe.Contains(searchString)
+                                                    || it.title.Contains(searchString)
+                                                    || it.tips.Contains(searchString)
+                                                    || SqlFunc.ToString(it.caseId).Contains(searchString))
+                                                  .OrderBy(it => it.createDate, OrderByType.Desc)
+                                                  .ToList()
+                                                  .ToPagedList(pageNumber, pageSize);
+            return caseEntities;
         }
 
         /// <summary>

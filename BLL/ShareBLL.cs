@@ -3,6 +3,7 @@ using SqlSugar;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using X.PagedList;
 
 namespace BLL
 {
@@ -33,6 +34,24 @@ namespace BLL
             };
 
             return ActionDal.ActionDBAccess.Insertable(shareEntity).ExecuteCommand();
+        }
+
+        /// <summary>
+        /// 分页列表
+        /// </summary>
+        /// <param name="pageNumber"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="searchString"></param>
+        /// <returns></returns>
+        public IPagedList<ShareEntity> AdminPageList(int pageNumber, int pageSize, string searchString)
+        {
+            IPagedList<ShareEntity> shareEntities = ActionDal.ActionDBAccess.Queryable<ShareEntity>()
+                                                   .WhereIF(!string.IsNullOrWhiteSpace(searchString), it => it.contents.Contains(searchString)
+                                                      || SqlFunc.ToString(it.userId).Contains(searchString))
+                                                   .OrderBy(it => it.createDate, OrderByType.Desc)
+                                                   .ToList()
+                                                   .ToPagedList(pageNumber, pageSize);
+            return shareEntities;
         }
 
         /// <summary>
