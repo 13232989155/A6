@@ -285,5 +285,128 @@ namespace Api.Base
 
         }
 
+
+        /// <summary>
+        /// 获取评论数量
+        /// </summary>
+        /// <param name="caseOfficialEntities"></param>
+        /// <returns></returns>
+        protected List<CaseOfficialEntity> CaseOfficialCommentCountByList(List<CaseOfficialEntity> caseOfficialEntities)
+        {
+            if (caseOfficialEntities.Count() > 0)
+            {
+                int[] idInts = caseOfficialEntities.Select(it => it.caseOfficialId).ToArray();
+
+                CommentBLL commentBLL = new CommentBLL();
+                List<CommentEntity> commentEntities = commentBLL.ListByTypeAndObjIdInts((int)Entity.TypeEnumEntity.TypeEnum.官方案例, idInts);
+                if (commentEntities.Count() > 0)
+                {
+                    Dictionary<int, int> keyValuePairs = commentEntities
+                                                        .GroupBy(it => it.objId)
+                                                        .Select(it => new
+                                                        {
+                                                            id = it.Key,
+                                                            count = it.Count()
+                                                        })
+                                                        .ToDictionary(it => it.id, it => it.count);
+
+                    caseOfficialEntities = (from c in caseOfficialEntities
+                                            join e in keyValuePairs on c.caseOfficialId equals e.Key into se
+                                    from ses in se.DefaultIfEmpty()
+                                    select new CaseOfficialEntity
+                                    {
+                                        caseOfficialId = c.caseOfficialId,
+                                        coverImage = c.coverImage,
+                                        createDate = c.createDate,
+                                        integral = c.integral,
+                                        isDel = c.isDel,
+                                        modifyDate = c.modifyDate,
+                                        name = c.name,
+                                        portrait = c.portrait,
+                                        state = c.state,
+                                        title = c.title,
+                                        userId = c.userId,
+                                        commentCount = ses.Value,
+                                        endorseCount = c.endorseCount,
+                                        isEndorse = c.isEndorse,
+                                        readCount = c.readCount,
+                                        contents = c.contents
+                                    })
+                                     .ToList();
+                }
+            }
+
+            return caseOfficialEntities;
+        }
+
+        /// <summary>
+        /// 获取点赞数量和判断是否点赞
+        /// </summary>
+        /// <param name="caseOfficialEntities"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        protected List<CaseOfficialEntity> CaseOfficialEndorseCountByList(List<CaseOfficialEntity> caseOfficialEntities, int userId)
+        {
+            if (caseOfficialEntities.Count() > 0)
+            {
+                int[] idInts = caseOfficialEntities.Select(it => it.caseOfficialId).ToArray();
+
+                EndorseBLL endorseBLL = new EndorseBLL();
+                List<EndorseEntity> endorseEntities = endorseBLL.ListByTypeAndObjIdInts((int)Entity.TypeEnumEntity.TypeEnum.官方案例, idInts);
+
+                if (endorseEntities.Count() > 0)
+                {
+                    if (userId > 10000)
+                    {
+                        var userEndorseList = endorseEntities.Where(it => it.userId == userId).ToList();
+
+                        userEndorseList.ToList().ForEach(it =>
+                        {
+                            caseOfficialEntities.First(itt => itt.caseOfficialId == it.objId).isEndorse = true;
+                        });
+                    }
+
+                    Dictionary<int, int> keyValuePairs = endorseEntities
+                                                        .GroupBy(it => it.objId)
+                                                        .Select(it => new
+                                                        {
+                                                            id = it.Key,
+                                                            count = it.Count()
+                                                        })
+                                                        .ToDictionary(it => it.id, it => it.count);
+
+                    caseOfficialEntities = (from c in caseOfficialEntities
+                                            join e in keyValuePairs on c.caseOfficialId equals e.Key into se
+                                    from ses in se.DefaultIfEmpty()
+                                    select new CaseOfficialEntity
+                                    {
+                                        caseOfficialId = c.caseOfficialId,
+                                        coverImage = c.coverImage,
+                                        createDate = c.createDate,
+                                        integral = c.integral,
+                                        isDel = c.isDel,
+                                        modifyDate = c.modifyDate,
+                                        name = c.name,
+                                        portrait = c.portrait,
+                                        state = c.state,
+                                        title = c.title,
+                                        userId = c.userId,
+                                        commentCount = c.commentCount,
+                                        endorseCount = ses.Value,
+                                        isEndorse = c.isEndorse,
+                                        readCount = c.readCount,
+                                        contents = c.contents
+                                    })
+                                     .ToList();
+
+                }
+
+            }
+
+            return caseOfficialEntities;
+        }
+
+
+
     }
 }

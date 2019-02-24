@@ -27,5 +27,8 @@ namespace Entity
         public CaseEntity caseEntity { set; get; }
 
         public ShareEntity shareEntity { set; get; }
+
+        public CaseOfficialEntity caseOfficialEntity { set; get; }
+
     }
 }

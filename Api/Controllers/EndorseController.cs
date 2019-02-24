@@ -24,7 +24,7 @@ namespace Api.Controllers
         /// </summary>
         /// <param name="token">*</param>
         /// <param name="objId">主键ID*</param>
-        /// <param name="type">类型*:1 说说；2 案例</param>
+        /// <param name="type">类型*:1 说说；2 案例3 官方案例;</param>
         /// <returns></returns>
         [HttpPost]
         public JsonResult Create([FromForm] string token, [FromForm] int objId, [FromForm] int type)
@@ -73,7 +73,7 @@ namespace Api.Controllers
         /// </summary>
         /// <param name="token">*</param>
         /// <param name="objId">主键ID*</param>
-        /// <param name="type">类型*:1 说说；2 案例</param>
+        /// <param name="type">类型*:1 说说；2 案例; 3 官方案例;</param>
         /// <returns></returns>
         [HttpPost]
         public JsonResult Delete([FromForm] string token, [FromForm] int objId, [FromForm] int type)

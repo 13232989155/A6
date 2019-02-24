@@ -37,6 +37,8 @@ namespace Admin.Models
             set;
         }
 
+        public int errno { set; get; }
+
         ///// <summary>
         ///// 返回的数据类型
         ///// </summary>

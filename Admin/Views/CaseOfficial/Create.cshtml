@@ -1,7 +1,267 @@
 ﻿
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "创建官方案例";
 }
+<div class="page-title">
+    <div class="title_left">
+        <h3>创建官方案例</h3>
+    </div>
+</div>
+<link href="~/css/pnotify.css" rel="stylesheet" />
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2><small></small></h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle"><i class="fa fa-wrench"></i></a>
+                    </li>
+                    <li>
+                        <a class="close-link"><i class="fa fa-close"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div id="example" class="x_content">
+                <br>
+                <form asp-action="Create" id="demo-form2" class="form-horizontal form-label-left">
 
-<h2>Create</h2>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            标题 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <textarea class="form-control" v-model="title" rows="5"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            图片 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input id="imgFile" onchange="FileOnchange()" type="file" style="width:0; height:0" accept="image/x-png,image/gif,image/jpeg,image/bmp" />
+                            <template v-if="coverImage === ''">
+
+                                <div class="x_panel tile fixed_height_320">
+                                    <div class="x_content">
+                                        <div class="flex" style="justify-content:center; align-items:center;text-align:center">
+                                            <h3 class="name">
+                                                <label>
+                                                    &nbsp;
+                                                </label>
+                                            </h3>
+                                            <h3 class="name">
+                                                <label for="imgFile" style="cursor:pointer">
+                                                    <i class="fa fa-plus fa-5x"></i>
+                                                </label>
+                                            </h3>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </template>
+
+                            <template v-else>
+
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="x_panel">
+                                        <div class="x_title">
+                                            <ul class="nav navbar-right panel_toolbox">
+                                                <li>
+                                                    <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                                </li>
+                                                <li class="dropdown">
+                                                    <a v-on:click="UpdateCoverImage()" class="dropdown-toggle"><i class="fa fa-picture-o"></i></a>
+                                                </li>
+                                                <li>
+                                                    <a class="close-link" v-on:click="DeleteCoverImage()"><i class="fa fa-close"></i></a>
+                                                </li>
+                                            </ul>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="x_content">
+
+                                            <div class="bs-example" data-example-id="simple-jumbotron">
+                                                <img style="width:100%" :src="coverImage" />
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </template>
+
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            内容 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div id="contents">
+                                
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ln_solid"></div>
+
+                    <div class="form-group">
+                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                            <button class="btn btn-primary" onclick="Save()" type="button">创建</button>
+                            <a asp-action="List" class="btn btn-info">返回列表</a>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/pnotify.js"></script>
+<script src="~/js/vue.js"></script>
+<script src="~/js/a6admin.js"></script>
+<script src="~/js/wangEditor.js"></script>
+<script type="text/javascript">
+    //
+    $("#liCaseOfficialList").addClass("current-page");
+    $("#ulCase").show();
+
+    var caseOfficialEntity = {
+        title: "",
+        coverImage: "",
+        contents: "",
+        imgFile: ""
+    }
+
+    var caseOfficialVue = new Vue({
+        el: "#example",
+        data: caseOfficialEntity,
+        methods: {
+            DeleteCoverImage: function () {
+                caseOfficialEntity.coverImage = "";
+                caseOfficialEntity.imgFile = "";
+            },
+            UpdateCoverImage: function () {
+                $("#imgFile").trigger("click");
+            }
+        }
+    })
+
+    function Save() {
+
+        if (caseOfficialEntity.title == "") {
+            ShowPNotify("标题不能为空");
+            return
+        }
+
+        if (editor.txt.html() == "") {
+            ShowPNotify("内容不能为空");
+            return
+        }
+        caseOfficialEntity.contents = editor.txt.html();
+        if (caseOfficialEntity.imgFile != "") {
+            var formData = new FormData();
+
+            formData.append("files", caseOfficialEntity.imgFile);
+
+            caseOfficialEntity.coverImage = UploadFile(formData)[0];
+            caseOfficialEntity.imgFile = "";
+        }
+        if (caseOfficialEntity.coverImage == "") {
+            ShowPNotify("图片不能为空");
+            return
+        }
+        console.log(caseOfficialEntity)
+        $.ajax({
+            type: "post",
+            url: "/CaseOfficial/Create",
+            data: {
+                title: caseOfficialEntity.title,
+                coverImage: caseOfficialEntity.coverImage,
+                contents: caseOfficialEntity.contents,
+
+            },
+            dataType: "json",
+            success: function (result) {
+
+                if (result.code == "200") {
+                    window.location.href = "/CaseOfficial/List";
+                }
+                else {
+                    ShowPNotify(result.msg)
+                }
+            },
+            error: function () {
+                ShowPNotify("请求错误")
+            }
+        });
+    }
+
+    //上传文件
+    function UploadFile(formData) {
+        var url = ""
+
+        $.ajax({
+            type: "post",
+            url: "/Home/UploadFile",
+            data: formData,
+            dataType: "json",
+            contentType: false,
+            async: false,
+            processData: false,
+            success: function (result) {
+                if (result.code == "200") {
+                    url = result.data
+                    return url
+                }
+                else {
+                    ShowPNotify(result.msg)
+                }
+
+            },
+            error: function () {
+                ShowPNotify("请求错误")
+            }
+        });
+        return url
+
+    }
+
+    //图片
+    function FileOnchange() {
+
+        var fileValue = document.getElementById("imgFile");
+        if (fileValue.value.length > 0) {
+            var file = fileValue.files[0]
+            if (typeof file === "object") {
+                if (file.name != null) {
+                    var reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = function (e) {
+                        caseOfficialEntity.coverImage = e.target.result;
+                        caseOfficialEntity.imgFile = file;
+                    }
+                }
+            }
+        }
+    }
+
+    var E = window.wangEditor
+    var editor = new E('#contents')
+    editor.customConfig.uploadFileName = 'files'
+    editor.customConfig.uploadImgServer = '/Home/UploadFile'  // 上传图片到服务器
+    // 隐藏“网络图片”tab
+    editor.customConfig.showLinkImg = false
+    editor.create()
+
+</script>
 

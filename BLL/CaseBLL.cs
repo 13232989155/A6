@@ -60,7 +60,7 @@ namespace BLL
         }
 
         /// <summary>
-        /// 获取最新的说说和食谱
+        /// 获取最新的说说和案例
         /// </summary>
         /// <param name="pageNumber"></param>
         /// <param name="pageSize"></param>
@@ -91,7 +91,19 @@ namespace BLL
                                         id = it.shareId,
                                         createDate = it.createDate,
                                         type = (int)Entity.TypeEnumEntity.TypeEnum.说说
-                                    }))
+                                    }),
+
+                                    ActionDal.ActionDBAccess.Queryable<CaseOfficialEntity>()
+                                    .Where(it => it.isDel == false)
+                                    .In(it => it.userId, userIdInte)
+                                    .Select(it => new CircleResultHelper
+                                    {
+                                        id = it.caseOfficialId,
+                                        createDate = it.createDate,
+                                        type = (int)Entity.TypeEnumEntity.TypeEnum.官方案例
+                                    })
+
+                                    )
                                     .OrderBy(it => it.createDate, OrderByType.Desc)
                                     .ToPageList(pageNumber, pageSize, ref totalCount);
             }
@@ -114,7 +126,19 @@ namespace BLL
                                         id = it.shareId,
                                         createDate = it.createDate,
                                         type = (int)Entity.TypeEnumEntity.TypeEnum.说说
-                                    }))
+                                    }),
+
+                                    ActionDal.ActionDBAccess.Queryable<CaseOfficialEntity>()
+                                    .Where(it => it.isDel == false)
+                                    .Select(it => new CircleResultHelper
+                                    {
+                                        id = it.caseOfficialId,
+                                        createDate = it.createDate,
+                                        type = (int)Entity.TypeEnumEntity.TypeEnum.官方案例
+                                    })
+
+
+                                    )
                                     .OrderBy(it => it.createDate, OrderByType.Desc)
                                     .ToPageList(pageNumber, pageSize, ref totalCount);
             }
@@ -132,7 +156,11 @@ namespace BLL
                 circleResultHelpers.Find(itt => itt.id == it.shareId && itt.type == (int)Entity.TypeEnumEntity.TypeEnum.说说).shareEntity = it;
             });
             
-
+            List<CaseOfficialEntity> caseOfficialEntities = SetCaseOfficialUser(circleResultHelpers.Where(it => it.type == (int)Entity.TypeEnumEntity.TypeEnum.官方案例).Select(it => it.id).ToArray());
+            caseOfficialEntities.ForEach(it =>
+            {
+                circleResultHelpers.Find(itt => itt.id == it.caseOfficialId && itt.type == (int)Entity.TypeEnumEntity.TypeEnum.官方案例).caseOfficialEntity = it;
+            });
 
             return circleResultHelpers;
         }
@@ -212,6 +240,41 @@ namespace BLL
         }
 
         /// <summary>
+        /// 设置案例的个人信息
+        /// </summary>
+        /// <param name="idInts"></param>
+        /// <returns></returns>
+        private List<CaseOfficialEntity> SetCaseOfficialUser(int[] idInts)
+        {
+            List<CaseOfficialEntity> caseOfficialEntities = new List<CaseOfficialEntity>();
+            if (idInts.Length > 0)
+            {
+                caseOfficialEntities = ActionDal.ActionDBAccess.Queryable<CaseOfficialEntity, UserEntity>((c, u) => new object[]
+                               {
+                                    JoinType.Inner, c.userId == u.userId
+                               })
+                               .In(c => c.caseOfficialId, idInts)
+                               .Select((c, u) => new CaseOfficialEntity
+                               {
+                                   caseOfficialId = c.caseOfficialId,
+                                   coverImage = c.coverImage,
+                                   createDate = c.createDate,
+                                   integral = c.integral,
+                                   isDel = c.isDel,
+                                   modifyDate = c.modifyDate,
+                                   name = u.name,
+                                   portrait = u.portrait,
+                                   state = c.state,
+                                   title = c.title,
+                                   userId = c.userId,
+                                   contents = c.contents
+                               })
+                               .ToList();
+            }
+            return caseOfficialEntities;
+        }
+
+        /// <summary>
         /// 根据ID返回实体
         /// </summary>
         /// <param name="caseId"></param>
@@ -242,7 +305,6 @@ namespace BLL
                                 })
                                .First();
         }
-
 
         /// <summary>
         /// 获取案列列表

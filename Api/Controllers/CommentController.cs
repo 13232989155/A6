@@ -32,7 +32,7 @@ namespace Api.Controllers
         /// 获取评论列表
         /// </summary>
         /// <param name="token">*</param>
-        /// <param name="type">类型*： 1 说说； 2 案例；</param>
+        /// <param name="type">类型*： 1 说说； 2 案例；3 官方案例;</param>
         /// <param name="objId">主键ID*</param>
         /// <param name="pageNumber"></param>
         /// <param name="pageSize"></param>
@@ -118,9 +118,9 @@ namespace Api.Controllers
         /// 评论
         /// </summary>
         /// <param name="token">*</param>
-        /// <param name="objId">说说ID*</param>
+        /// <param name="objId">对象ID*</param>
         /// <param name="contents">评论的文字内容*</param>
-        /// <param name="type">类型*：1 说说； 2 案例</param>
+        /// <param name="type">类型*：1 说说； 2 案例；3 官方案例;</param>
         /// <returns></returns>
         [HttpPost]
         public JsonResult Create([FromForm] string token, [FromForm] int objId, [FromForm] string contents, [FromForm] int type)

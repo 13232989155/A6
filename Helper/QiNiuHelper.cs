@@ -17,7 +17,7 @@ namespace Helper
 
         private static string Bucket = "image";
 
-        private static string domain = "http://image.geekann.com/";
+        private static string domain = "https://image.geekann.com/";
 
 
         /// <summary>

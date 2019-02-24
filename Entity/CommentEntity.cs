@@ -39,7 +39,7 @@ namespace Entity
         public int objId { get; set; }
 
         /// <summary>
-        /// Desc:被评论对象的类型：1 说说； 2 案例；
+        /// Desc:被评论对象的类型：1 说说； 2 案例；3 官方案例
         /// Default:-1
         /// Nullable:False
         /// </summary>           

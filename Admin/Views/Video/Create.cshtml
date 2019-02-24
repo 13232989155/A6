@@ -1,0 +1,278 @@
+﻿
+@{
+    ViewData["Title"] = "创建视频";
+}
+<div class="page-title">
+    <div class="title_left">
+        <h3>创建视频</h3>
+    </div>
+</div>
+<link href="~/css/pnotify.css" rel="stylesheet" />
+<link href="~/css/jquery.mloading.css" rel="stylesheet" />
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2><small></small></h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle"><i class="fa fa-wrench"></i></a>
+                    </li>
+                    <li>
+                        <a class="close-link"><i class="fa fa-close"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div id="example" class="x_content">
+                <br>
+                <form asp-action="Create" id="demo-form2" class="form-horizontal form-label-left">
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            备注 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <textarea class="form-control" v-model="remark" rows="5"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            视频 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input id="imgFile" onchange="FileOnchange()" type="file" style="width:0; height:0" accept="video/mp4" />
+                            <template v-if="url === ''">
+
+                                <div class="x_panel tile fixed_height_320">
+                                    <div class="x_content">
+                                        <div class="flex" style="justify-content:center; align-items:center;text-align:center">
+                                            <h3 class="name">
+                                                <label>
+                                                    &nbsp;
+                                                </label>
+                                            </h3>
+                                            <h3 class="name">
+                                                <label for="imgFile" style="cursor:pointer">
+                                                    <i class="fa fa-plus fa-5x"></i>
+                                                </label>
+                                            </h3>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </template>
+
+                            <template v-else>
+
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="x_panel">
+                                        <div class="x_title">
+                                            <ul class="nav navbar-right panel_toolbox">
+                                                <li>
+                                                    <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                                </li>
+                                                <li class="dropdown">
+                                                    <a v-on:click="UpdateCoverImage()" class="dropdown-toggle"><i class="fa fa-video-camera"></i></a>
+                                                </li>
+                                                <li>
+                                                    <a class="close-link" v-on:click="DeleteCoverImage()"><i class="fa fa-close"></i></a>
+                                                </li>
+                                            </ul>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="x_content">
+
+                                            <div class="bs-example" data-example-id="simple-jumbotron">
+                                                <video controls="controls" style="width:100%">
+                                                    <source :src="url" type="video/mp4" />
+                                                    <source :src="url" type="video/webm" />
+                                                    <source :src="url" type="video/ogg" />
+                                                </video>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </template>
+
+                        </div>
+                    </div>
+
+
+                    <div class="ln_solid"></div>
+
+                    <div class="form-group">
+                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                            <button class="btn btn-primary" onclick="Save()" type="button">创建</button>
+                            <a asp-action="List" class="btn btn-info">返回列表</a>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/pnotify.js"></script>
+<script src="~/js/vue.js"></script>
+<script src="~/js/a6admin.js"></script>
+<script src="~/js/jquery.mloading.js"></script>
+<script type="text/javascript">
+    //
+    $("#liVideoList").addClass("current-page");
+    $("#ulVideo").show();
+
+
+
+    var videoEntity = {
+        remark: "",
+        url: "",
+        imgFile: ""
+    }
+
+    var adminVue = new Vue({
+        el: "#example",
+        data: videoEntity,
+        methods: {
+            DeleteCoverImage: function () {
+                videoEntity.url = "";
+                videoEntity.imgFile = "";
+            },
+            UpdateCoverImage: function () {
+                $("#imgFile").trigger("click");
+            }
+        }
+    })
+
+    function Save() {
+
+ 
+        if (videoEntity.imgFile != "") {
+            $("body").mLoading("show");//显示loading组件
+            var formData = new FormData();
+            formData.append("files", videoEntity.imgFile);
+
+            $.when(UploadFile(formData)).done(function (defer) {
+                videoEntity.url = defer[0];
+                videoEntity.imgFile = "";
+                if (videoEntity.url == "") {
+                    ShowPNotify("视频不能为空");
+                    return
+                }
+                $.ajax({
+                    type: "post",
+                    url: "/Video/Create",
+                    data: {
+                        remark: videoEntity.remark,
+                        url: videoEntity.url,
+                    },
+                    dataType: "json",
+                    success: function (result) {
+                      
+                        if (result.code == "200") {
+                            window.location.href = "/Video/List";
+                        }
+                        else {
+                            ShowPNotify(result.msg)
+                        }
+                    },
+                    error: function () {
+                        ShowPNotify("请求错误")
+                    },
+                    complete: function (XMLHttpRequest, status) {
+                        $("body").mLoading("hide");//显示loading组件
+                    }
+                });
+            });
+
+
+        }
+        else {
+            ShowPNotify("请先选中文件！");
+        }
+
+    }
+
+    function UploadFile(formData) {
+        var defer = $.Deferred();
+        $.ajax({
+            type: "post",
+            url: "/Home/UploadFile",
+            data: formData,
+            dataType: "json",
+            contentType: false,
+            async: true,
+            processData: false,
+            success: function (result) {
+                if (result.code == "200") {
+                    defer.resolve(result.data)
+                }
+                else {
+                    ShowPNotify(result.msg)
+                }
+
+            },
+            error: function () {
+                ShowPNotify("请求错误")
+            }
+        });
+        return defer;
+    }
+
+    //上传文件
+    //function UploadFile(formData) {
+    //    var url = ""
+    //    $.ajax({
+    //        type: "post",
+    //        url: "/Home/UploadFile",
+    //        data: formData,
+    //        dataType: "json",
+    //        contentType: false,
+    //        async: false,
+    //        processData: false,
+    //        success: function (result) {
+    //            if (result.code == "200") {
+    //                url = result.data
+    //                return url
+    //            }
+    //            else {
+    //                ShowPNotify(result.msg)
+    //            }
+
+    //        },
+    //        error: function () {
+    //            ShowPNotify("请求错误")
+    //        }
+    //    });
+    //    return url
+
+    //}
+
+    function FileOnchange() {
+        $("body").mLoading("show");//显示loading组件
+        var fileValue = document.getElementById("imgFile");
+        if (fileValue.value.length > 0) {
+            var file = fileValue.files[0]
+            if (typeof file === "object") {
+                if (file.name != null) {
+                    var reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = function (e) {
+                        videoEntity.url = e.target.result;
+                        videoEntity.imgFile = file;
+                        $("body").mLoading("hide");//显示loading组件
+                    }
+                }
+            }
+        }
+    }
+
+</script>
+

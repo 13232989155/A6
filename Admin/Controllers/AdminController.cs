@@ -50,6 +50,13 @@ namespace Admin.Controllers
         /// <returns></returns>
         public IActionResult Create()
         {
+            AdminBLL adminBLL = new AdminBLL();
+            AdminEntity adminEntity = adminBLL.GetById(ThisAdmin().adminId);
+            if ( !adminEntity.administrator)
+            {
+                return View(viewName: "ErrorDisplay", model: "没有权限创建账号！！！");
+            }
+
             UserBLL userBLL = new UserBLL();
             List<UserEntity> userEntities = userBLL.List();
             return View(userEntities);  

@@ -35,9 +35,11 @@ namespace Api.Controllers
             {
                 CaseBLL caseBLL = new CaseBLL();
                 ShareBLL shareBLL = new ShareBLL();
+                CaseOfficialBLL caseOfficialBLL = new CaseOfficialBLL();
                 int caseCount = caseBLL.Count();
                 int shareCount = shareBLL.Count();
-                int totalItemCount = caseCount + shareCount;
+                int caseOfficialCount = caseOfficialBLL.Count();
+                int totalItemCount = caseCount + shareCount + caseOfficialCount;
 
                 List<CircleResultHelper> circleResultHelpers = caseBLL.CaseAndShareList(pageNumber:pageNumber, pageSize:pageSize, totalCount:totalItemCount);
 
@@ -47,7 +49,7 @@ namespace Api.Controllers
                     userEntity = this.GetUserByToken(token); 
                 }
 
-                List<CaseEntity> caseEntities = circleResultHelpers.Where(it => it.type == 2).Select(it => it.caseEntity).ToList();
+                List<CaseEntity> caseEntities = circleResultHelpers.Where(it => it.type == (int)Entity.TypeEnumEntity.TypeEnum.案例).Select(it => it.caseEntity).ToList();
                 if ( caseEntities.Count > 0)
                 {
                     caseEntities = CaseListEndorseCountByList(caseEntities, userEntity.userId > 10000 ? userEntity.userId : -1);
@@ -59,7 +61,7 @@ namespace Api.Controllers
                     });
                 }
 
-                List<ShareEntity> shareEntities = circleResultHelpers.Where(it => it.type == 1).Select(it => it.shareEntity).ToList();
+                List<ShareEntity> shareEntities = circleResultHelpers.Where(it => it.type == (int)Entity.TypeEnumEntity.TypeEnum.说说).Select(it => it.shareEntity).ToList();
                 if (shareEntities.Count > 0)
                 {
                     shareEntities = ShareListEndorseCountByList(shareEntities, userEntity.userId > 10000 ? userEntity.userId : -1);
@@ -69,7 +71,18 @@ namespace Api.Controllers
                     {
                         circleResultHelpers.Find(itt => itt.id == it.shareId).shareEntity = it;
                     });
+                }
 
+                List<CaseOfficialEntity> caseOfficialEntities = circleResultHelpers.Where(it => it.type == (int)Entity.TypeEnumEntity.TypeEnum.官方案例).Select(it => it.caseOfficialEntity).ToList();
+                if (caseOfficialEntities.Count > 0)
+                {
+                    caseOfficialEntities = CaseOfficialEndorseCountByList(caseOfficialEntities, userEntity.userId > 10000 ? userEntity.userId : -1);
+                    caseOfficialEntities = CaseOfficialCommentCountByList(caseOfficialEntities);
+
+                    caseOfficialEntities.ForEach(it =>
+                    {
+                        circleResultHelpers.Find(itt => itt.id == it.caseOfficialId).caseOfficialEntity = it;
+                    });
                 }
 
                 circleResultHelpers = (from crh in circleResultHelpers
@@ -121,16 +134,18 @@ namespace Api.Controllers
 
                 CaseBLL caseBLL = new CaseBLL();
                 ShareBLL shareBLL = new ShareBLL();
+                CaseOfficialBLL caseOfficialBLL = new CaseOfficialBLL();
 
                 int[] userIdInts = fansUserResults.Select(it => it.userId).ToArray();
 
                 int caseCount = caseBLL.CountByUserIdInts(userIdInts);
                 int shareCount = shareBLL.CountByUserIdInts(userIdInts);
-                int totalItemCount = caseCount + shareCount;
+                int caseOfficialCount = caseOfficialBLL.CountByUserIdInts(userIdInts);
+                int totalItemCount = caseCount + shareCount + caseOfficialCount;
 
                 List<CircleResultHelper> circleResultHelpers = caseBLL.CaseAndShareList(pageNumber: pageNumber, pageSize: pageSize, totalCount: totalItemCount, userIdInte:userIdInts);
 
-                List<CaseEntity> caseEntities = circleResultHelpers.Where(it => it.type == 2).Select(it => it.caseEntity).ToList();
+                List<CaseEntity> caseEntities = circleResultHelpers.Where(it => it.type == (int)Entity.TypeEnumEntity.TypeEnum.案例).Select(it => it.caseEntity).ToList();
                 if (caseEntities.Count > 0)
                 {
                     caseEntities = CaseListEndorseCountByList(caseEntities, userEntity.userId);
@@ -142,7 +157,7 @@ namespace Api.Controllers
                     });
                 }
 
-                List<ShareEntity> shareEntities = circleResultHelpers.Where(it => it.type == 1).Select(it => it.shareEntity).ToList();
+                List<ShareEntity> shareEntities = circleResultHelpers.Where(it => it.type == (int)Entity.TypeEnumEntity.TypeEnum.说说).Select(it => it.shareEntity).ToList();
                 if (shareEntities.Count > 0)
                 {
                     shareEntities = ShareListEndorseCountByList(shareEntities, userEntity.userId);
@@ -154,6 +169,21 @@ namespace Api.Controllers
                     });
 
                 }
+
+
+                List<CaseOfficialEntity> caseOfficialEntities = circleResultHelpers.Where(it => it.type == (int)Entity.TypeEnumEntity.TypeEnum.官方案例).Select(it => it.caseOfficialEntity).ToList();
+                if (caseOfficialEntities.Count > 0)
+                {
+                    caseOfficialEntities = CaseOfficialEndorseCountByList(caseOfficialEntities, userEntity.userId);
+                    caseOfficialEntities = CaseOfficialCommentCountByList(caseOfficialEntities);
+
+                    caseOfficialEntities.ForEach(it =>
+                    {
+                        circleResultHelpers.Find(itt => itt.id == it.caseOfficialId).caseOfficialEntity = it;
+                    });
+
+                }
+
 
                 circleResultHelpers = (from crh in circleResultHelpers
                                        orderby crh.createDate descending

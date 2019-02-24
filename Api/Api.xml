@@ -46,6 +46,21 @@
             <param name="userId"></param>
             <returns></returns>
         </member>
+        <member name="M:Api.Base.BaseController.CaseOfficialCommentCountByList(System.Collections.Generic.List{Entity.CaseOfficialEntity})">
+            <summary>
+            获取评论数量
+            </summary>
+            <param name="caseOfficialEntities"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Api.Base.BaseController.CaseOfficialEndorseCountByList(System.Collections.Generic.List{Entity.CaseOfficialEntity},System.Int32)">
+            <summary>
+            获取点赞数量和判断是否点赞
+            </summary>
+            <param name="caseOfficialEntities"></param>
+            <param name="userId"></param>
+            <returns></returns>
+        </member>
         <member name="T:Api.Controllers.CaseController">
             <summary>
             
@@ -89,6 +104,24 @@
             </summary>
             <param name="token">*</param>
             <param name="caseId">*</param>
+            <returns></returns>
+        </member>
+        <member name="T:Api.Controllers.CaseOfficialController">
+            <summary>
+            官方案例
+            </summary>
+        </member>
+        <member name="M:Api.Controllers.CaseOfficialController.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Api.Controllers.CaseOfficialController.GetById(System.String,System.Int32)">
+            <summary>
+            根据ID获取详细内容
+            </summary>
+            <param name="token">*</param>
+            <param name="caseOfficialId">*</param>
             <returns></returns>
         </member>
         <member name="T:Api.Controllers.CaseTagController">
@@ -141,7 +174,7 @@
             获取评论列表
             </summary>
             <param name="token">*</param>
-            <param name="type">类型*： 1 说说； 2 案例；</param>
+            <param name="type">类型*： 1 说说； 2 案例；3 官方案例;</param>
             <param name="objId">主键ID*</param>
             <param name="pageNumber"></param>
             <param name="pageSize"></param>
@@ -152,9 +185,9 @@
             评论
             </summary>
             <param name="token">*</param>
-            <param name="objId">说说ID*</param>
+            <param name="objId">对象ID*</param>
             <param name="contents">评论的文字内容*</param>
-            <param name="type">类型*：1 说说； 2 案例</param>
+            <param name="type">类型*：1 说说； 2 案例；3 官方案例;</param>
             <returns></returns>
         </member>
         <member name="M:Api.Controllers.CommentController.Delete(System.String,System.Int32)">
@@ -194,7 +227,7 @@
             </summary>
             <param name="token">*</param>
             <param name="objId">主键ID*</param>
-            <param name="type">类型*:1 说说；2 案例</param>
+            <param name="type">类型*:1 说说；2 案例3 官方案例;</param>
             <returns></returns>
         </member>
         <member name="M:Api.Controllers.EndorseController.Delete(System.String,System.Int32,System.Int32)">
@@ -203,7 +236,7 @@
             </summary>
             <param name="token">*</param>
             <param name="objId">主键ID*</param>
-            <param name="type">类型*:1 说说；2 案例</param>
+            <param name="type">类型*:1 说说；2 案例; 3 官方案例;</param>
             <returns></returns>
         </member>
         <member name="T:Api.Controllers.FansController">
@@ -288,7 +321,7 @@
             </summary>
             <param name="token">*</param>
             <param name="objId">对象主键ID*</param>
-            <param name="type">对象类型*：1 说说； 2 案列；</param>
+            <param name="type">对象类型*：1 说说； 2 案列；；3 官方案例;</param>
             <returns></returns>
         </member>
         <member name="M:Api.Controllers.IntegralController.SponsorShare(Entity.UserEntity,System.Int32)">
@@ -305,6 +338,14 @@
             </summary>
             <param name="userEntity"></param>
             <param name="caseId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Api.Controllers.IntegralController.SponsorCaseOfficial(Entity.UserEntity,System.Int32)">
+            <summary>
+            打赏官方案例
+            </summary>
+            <param name="userEntity"></param>
+            <param name="caseOfficialId"></param>
             <returns></returns>
         </member>
         <member name="T:Api.Controllers.ReadController">

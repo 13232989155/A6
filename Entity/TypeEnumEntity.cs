@@ -13,7 +13,8 @@ namespace Entity
         public enum TypeEnum
         {
             说说 = 1,
-            案例 = 2
+            案例 = 2,
+            官方案例 = 3
         }
 
 
