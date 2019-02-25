@@ -55,6 +55,24 @@ namespace Helper
 
         }
 
-
+        /// <summary>
+        /// 获取上传token
+        /// </summary>
+        /// <returns></returns>
+        public static string GetToken()
+        {
+            string token = string.Empty;
+            // 生成(上传)凭证时需要使用此Mac
+            Mac mac = new Mac(AK, SK);
+            string bucket = Bucket;
+            ZoneID zoneId = ZoneID.CN_South;
+            Qiniu.Common.Config.SetZone(zoneId, false);
+            PutPolicy putPolicy = new PutPolicy();
+            putPolicy.Scope = bucket;
+            putPolicy.SetExpires(3600);
+            string jstr = putPolicy.ToJsonString();
+            token = Auth.CreateUploadToken(mac, jstr);
+            return token;
+        }
     }
 }

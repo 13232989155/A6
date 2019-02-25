@@ -70,6 +70,7 @@ namespace Admin.Controllers
         {
 
             DataResult dataResult = new DataResult();
+            dataResult.msg = DateTime.Now.ToLongTimeString();
             try
             {
                 if (files != null && files.Count > 0)
@@ -116,6 +117,7 @@ namespace Admin.Controllers
                     dataResult.code = "200";
                     dataResult.data = fileUrl;
                     dataResult.errno = 0;
+                    dataResult.msg += "|" + DateTime.Now.ToLongTimeString();
                 }
                 else
                 {
@@ -172,6 +174,20 @@ namespace Admin.Controllers
                     return format;
             }
         }
+
+        /// <summary>
+        /// 获取七牛上传token
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult<DataResult> GetQiNiuToken()
+        {
+            DataResult dataResult = new DataResult();
+            dataResult.code = "200";
+            dataResult.data = Helper.QiNiuHelper.GetToken();
+            return dataResult;
+        }
+
 
     }
 }
