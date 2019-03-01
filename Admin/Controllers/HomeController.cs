@@ -180,11 +180,11 @@ namespace Admin.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult<DataResult> GetQiNiuToken()
+        public ActionResult<DataResult> GetQiNiuToken( string bucket)
         {
             DataResult dataResult = new DataResult();
             dataResult.code = "200";
-            dataResult.data = Helper.QiNiuHelper.GetToken();
+            dataResult.data = Helper.QiNiuHelper.GetToken(bucket);
             return dataResult;
         }
 

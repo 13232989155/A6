@@ -15,7 +15,9 @@ namespace Helper
 
         private static string SK = "K0tXo4vkPfWInUZXm4sIT1zf1YOrai0ZvIOOdVmY";
 
-        private static string Bucket = "image";
+        private static string imageBucket = "image";
+
+        private static string videoBucket = "video";
 
         private static string domain = "https://image.geekann.com/";
 
@@ -29,7 +31,7 @@ namespace Helper
 
             // 生成(上传)凭证时需要使用此Mac
             Mac mac = new Mac(AK, SK);
-            string bucket = Bucket;
+            string bucket = imageBucket;
             ZoneID zoneId = ZoneID.CN_South;
             Qiniu.Common.Config.SetZone(zoneId, false);
             // 上传策略，参见 
@@ -59,12 +61,12 @@ namespace Helper
         /// 获取上传token
         /// </summary>
         /// <returns></returns>
-        public static string GetToken()
+        public static string GetToken( string bucket)
         {
             string token = string.Empty;
             // 生成(上传)凭证时需要使用此Mac
             Mac mac = new Mac(AK, SK);
-            string bucket = Bucket;
+            string Bucket = bucket == "video" ? videoBucket : imageBucket;
             ZoneID zoneId = ZoneID.CN_South;
             Qiniu.Common.Config.SetZone(zoneId, false);
             PutPolicy putPolicy = new PutPolicy();

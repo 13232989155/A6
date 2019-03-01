@@ -10,6 +10,17 @@ function ShowPNotify(text) {
     });
 }
 
+//成功通知
+function ShowSuccessPNotify(text) {
+    new PNotify({
+        title: '成功',
+        text: text,
+        type: 'success',
+        delay: 1000,
+        styling: 'bootstrap3'
+    });
+}
+
 //生成guid
 function GUID() {
     this.date = new Date();
@@ -87,8 +98,16 @@ function GUID() {
 }
 
 //获取七牛资源地址
-function GetQiNiuDomain(){
-    return "https://image.geekann.com/";
+function GetQiNiuDomain(bucket) {
+    var url
+    switch (bucket) {
+        case "video":
+            url = "https://video.geekann.com/";
+            break;
+        default:
+            url = "https://image.geekann.com/";
+    }
+    return url;
 }
 
 //上传文件
@@ -121,42 +140,8 @@ function UploadFile(formData) {
     return defer;
 }
 
-//七牛上传文件
-function QiNiuUpload(file, key, token) {
-
-    var putExtra = {
-        fname: "",  //文件原文件名
-        params: {}, //用来放置自定义变量
-        mimeType: null  //用来限制上传文件类型，为 null 时表示不对文件类型限制；限制类型放到数组里： ["image/png", "image/jpeg", "image/gif"]
-    };
-
-    let config = {
-        useCdnDomain: true,   //表示是否使用 cdn 加速域名，为布尔值，true 表示使用，默认为 false。
-        region: qiniu.region.z2     // 根据具体提示修改上传地区,当为 null 或 undefined 时，自动分析上传域名区域
-    };
-
-    var observable = qiniu.upload(file, key, token, putExtra, config)
-
-    var subscription = observable.subscribe({
-        next: (res) => {
-
-        },
-        error: (err) => {
-            // 失败报错信息
-            console.log(err)
-            return "err"
-        },
-        complete: (res) => {
-            // 接收成功后返回的信息
-            console.log(res)
-            return res
-        }
-    })
-
-}
-
 //获取图片大小
-function GetImageSize( file) {
+function GetImageSize(file) {
     var AllImgExt = ".jpg|.jpeg|.gif|.bmp|.png|";
     if (AllImgExt.indexOf(GetFileType(file) + "|") == -1) {
         ErrMsg = "该文件类型不允许上传。请上传 " + AllImgExt + " 类型的文件，当前文件类型为" + extName;
@@ -180,15 +165,19 @@ function GetImageSize( file) {
 }
 
 //获取七牛token
-function GetQiNiuToken() {
+function GetQiNiuToken(bucket) {
     var defer = $.Deferred();
     $.ajax({
         type: "post",
         url: "/Home/GetQiNiuToken",
         dataType: "json",
+        data: {
+            bucket: bucket
+        },
         success: function (result) {
             if (result.code == "200") {
                 defer.resolve(result.data)
+                token = result.data
             }
             else {
                 ShowPNotify(result.msg)
@@ -201,12 +190,8 @@ function GetQiNiuToken() {
     return defer;
 }
 
-/**
- * dataURL to blob, ref to https://gist.github.com/fupslot/5015897
- * @param dataURI
- * @returns {Blob}
- */
-function dataURItoBlob(dataURI) {
+//文件二进制地址转blob对象
+function DataURItoBlob(dataURI) {
     var byteString = atob(dataURI.split(',')[1]);
     var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
     var ab = new ArrayBuffer(byteString.length);
@@ -215,4 +200,45 @@ function dataURItoBlob(dataURI) {
         ia[i] = byteString.charCodeAt(i);
     }
     return new Blob([ab], { type: mimeString });
+}
+
+//文件file转blob对象
+function FileToBlob(file) {
+    var reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function (e) {
+        return dataURItoBlob(e.target.result);
+    }
+}
+
+
+//mime转换
+function MimeToSuffix(mime) {
+    var suffix
+    switch (mime) {
+        case "video/mp4":
+            suffix = ".mp4";
+            break;
+        case "image/jpeg":
+            suffix = ".jpeg";
+            break;
+        case "image/gif":
+            suffix = ".gif";
+            break;
+        case "image/png":
+            suffix = ".png";
+            break;
+        case "audio/mpeg":
+            suffix = ".mp3";
+            break;
+        case "image/bmp":
+            suffix = ".bmp";
+            break;
+        case "image/x-png":
+            suffix = ".png";
+            break;
+        default:
+            suffix = "";
+    }
+    return suffix;
 }

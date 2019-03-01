@@ -9,6 +9,7 @@
 </div>
 <link href="~/css/pnotify.css" rel="stylesheet" />
 <link href="~/css/jquery.mloading.css" rel="stylesheet" />
+<link href="~/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet" />
 <div class="row">
     <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x_panel">
@@ -33,19 +34,10 @@
 
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                            备注 <span class="required">*</span>
-                        </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <textarea class="form-control" v-model="remark" rows="5"></textarea>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
                             视频 <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input id="imgFile" onchange="FileOnchange()" type="file" style="width:0; height:0" accept="video/mp4" />
+                            <input id="fileVideo" type="file" style="width:0; height:0" accept="video/mp4" />
                             <template v-if="url === ''">
 
                                 <div class="x_panel tile fixed_height_320">
@@ -57,7 +49,7 @@
                                                 </label>
                                             </h3>
                                             <h3 class="name">
-                                                <label for="imgFile" style="cursor:pointer">
+                                                <label for="fileVideo" style="cursor:pointer">
                                                     <i class="fa fa-plus fa-5x"></i>
                                                 </label>
                                             </h3>
@@ -104,6 +96,25 @@
                         </div>
                     </div>
 
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class="progress" id="divProgress">
+                                <div id="videoProgress" class="progress-bar progress-bar-success" style="width: 0%;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            备注 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <textarea class="form-control" v-model="remark" rows="5"></textarea>
+                        </div>
+                    </div>
 
                     <div class="ln_solid"></div>
 
@@ -125,15 +136,91 @@
 <script src="~/js/a6admin.js"></script>
 <script src="~/js/jquery.mloading.js"></script>
 <script src="~/js/qiniu.min.js"></script>
+<script src="~/js/bootstrap-progressbar.min.js"></script>
 <script type="text/javascript">
     //
     $("#liVideoList").addClass("current-page");
     $("#ulVideo").show();
+    $("#divProgress").hide();
+
+    $(document).ready(function () {
+        $("#fileVideo").on("change", function (e) {
+            GetFileVideoUrl(e)
+        });
+    });
+
+    //获取视频文件地址
+    function GetFileVideoUrl(e) {
+        var file = e.currentTarget.files[0];
+        var suffix = MimeToSuffix(file.type)//文件后缀
+        if (suffix != ".mp4") {
+            ShowPNotify("文件类型错误")
+            return
+        }
+        videoEntity.url = "";
+        $("body").mLoading("show");//显示loading组件
+        var bucket = "video"//存放的存储空间
+        $.when(GetQiNiuToken(bucket)).done(function (defer) {
+            var reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function (e) {
+                blob = DataURItoBlob(e.target.result);
+                $("body").mLoading("hide");
+                var token
+                var key
+                var blob
+
+                token = defer
+
+                var guid = new GUID();
+                key = guid.newGUID();
+
+                var putExtra = {
+                    fname: "",  //文件原文件名
+                    params: {}, //用来放置自定义变量
+                    mimeType: null  //用来限制上传文件类型，为 null 时表示不对文件类型限制；限制类型放到数组里： ["image/png", "image/jpeg", "image/gif"]
+                };
+
+                var config = {
+                    useCdnDomain: true,   //表示是否使用 cdn 加速域名，为布尔值，true 表示使用，默认为 false。
+                    region: qiniu.region.z2     // 根据具体提示修改上传地区,当为 null 或 undefined 时，自动分析上传域名区域
+                };
+
+                var observable = qiniu.upload(blob, key + suffix, token, putExtra, config)
+                new PNotify({
+                    title: '文件上传中!',
+                    text: '请等待...',
+                    type: 'info',
+                    delay: 180000,
+                    styling: 'bootstrap3',
+                    addclass: 'dark'
+                });
+                var progress = $("#videoProgress")
+                var divProgress = $("#divProgress")
+                divProgress.show()
+                var subscription = observable.subscribe({
+                    next: (res) => {
+                        progress.css("width", res.total.percent + "%")
+                    },
+                    error: (err) => {
+                        // 失败报错信息
+                        ShowPNotify(err);
+                    },
+                    complete: (res) => {
+                        // 接收成功后返回的信息
+                        PNotify.removeAll()
+                        ShowSuccessPNotify("文件上传完成")
+                        videoEntity.url = GetQiNiuDomain(bucket) + res.key
+                        divProgress.hide()
+                    }
+                })
+            }
+        });
+    }
 
     var videoEntity = {
         remark: "",
-        url: "",
-        imgFile: ""
+        url: ""
     }
 
     var videoVue = new Vue({
@@ -142,10 +229,9 @@
         methods: {
             DeleteCoverImage: function () {
                 videoEntity.url = "";
-                videoEntity.imgFile = "";
             },
             UpdateCoverImage: function () {
-                $("#imgFile").trigger("click");
+                $("#fileVideo").trigger("click");
             }
         }
     })
@@ -153,130 +239,32 @@
     function Save() {
 
         if (videoEntity.url != "") {
-
-            $("body").mLoading("show");//显示loading组件
-
-            $.when(GetQiNiuToken()).done(function (defer) {
-                var guid = new GUID();
-                var saveKey = guid.newGUID();
-
-                var putExtra = {
-                    fname: "",  //文件原文件名
-                    params: {}, //用来放置自定义变量
-                    mimeType: null  //用来限制上传文件类型，为 null 时表示不对文件类型限制；限制类型放到数组里： ["image/png", "image/jpeg", "image/gif"]
-                };
-
-                let config = {
-                    useCdnDomain: true,   //表示是否使用 cdn 加速域名，为布尔值，true 表示使用，默认为 false。
-                    region: qiniu.region.z2     // 根据具体提示修改上传地区,当为 null 或 undefined 时，自动分析上传域名区域
-                };
-
-                var observable = qiniu.upload(dataURItoBlob(videoEntity.url), saveKey + ".mp4", defer, putExtra, config)
-
-                var subscription = observable.subscribe({
-                    next: (res) => {
-
-                    },
-                    error: (err) => {
-                        // 失败报错信息
-                        $("body").mLoading("hide");
-                        ShowPNotify(err);
-                    },
-                    complete: (res) => {
-                        // 接收成功后返回的信息
-                        videoEntity.url = GetQiNiuDomain() + saveKey + ".mp4";
-                        videoEntity.imgFile = "";
-                        if (videoEntity.url == "") {
-                            ShowPNotify("视频不能为空");
-                            return
-                        }
-                        $.ajax({
-                            type: "post",
-                            url: "/Video/Create",
-                            data: {
-                                remark: videoEntity.remark,
-                                url: videoEntity.url,
-                            },
-                            dataType: "json",
-                            success: function (result) { 
-                                if (result.code == "200") {
-                                    window.location.href = "/Video/List";
-                                }
-                                else {
-                                    ShowPNotify(result.msg)
-                                }
-                            },
-                            error: function () {
-                                ShowPNotify("请求错误")
-                            },
-                            complete: function (res) {
-                                $("body").mLoading("hide");
-                            }
-                        });
+            $.ajax({
+                type: "post",
+                url: "/Video/Create",
+                data: {
+                    remark: videoEntity.remark,
+                    url: videoEntity.url,
+                },
+                dataType: "json",
+                success: function (result) {
+                    if (result.code == "200") {
+                        window.location.href = "/Video/List";
                     }
-                })
+                    else {
+                        ShowPNotify(result.msg)
+                    }
+                },
+                error: function () {
+                    ShowPNotify("请求错误")
+                },
+                complete: function (res) {
+                    $("body").mLoading("hide");
+                }
             });
         }
         else {
-            ShowPNotify("请先选中文件！");
-        }
-
-        //if (videoEntity.imgFile != "") {
-        //    var formData = new FormData();
-        //    formData.append("files", videoEntity.imgFile);
-
-        //    $.when(UploadFile(formData)).done(function (defer) {
-        //        videoEntity.url = defer[0];
-        //        videoEntity.imgFile = "";
-        //        if (videoEntity.url == "") {
-        //            ShowPNotify("视频不能为空");
-        //            return
-        //        }
-        //        $.ajax({
-        //            type: "post",
-        //            url: "/Video/Create",
-        //            data: {
-        //                remark: videoEntity.remark,
-        //                url: videoEntity.url,
-        //            },
-        //            dataType: "json",
-        //            success: function (result) {
-        //                $("body").mLoading("hide");//显示loading组件
-        //                if (result.code == "200") {
-        //                    window.location.href = "/Video/List";
-        //                }
-        //                else {
-        //                    ShowPNotify(result.msg)
-        //                }
-        //            },
-        //            error: function () {
-        //                ShowPNotify("请求错误")
-        //            }
-        //        });
-        //    });
-        //}
-        //else {
-        //    ShowPNotify("请先选中文件！");
-        //}
-    }
-
-    //文件选择框
-    function FileOnchange() {
-        $("body").mLoading("show");//显示loading组件
-        var fileValue = document.getElementById("imgFile");
-        if (fileValue.value.length > 0) {
-            var file = fileValue.files[0]
-            if (typeof file === "object") {
-                if (file.name != null) {
-                    var reader = new FileReader();
-                    reader.readAsDataURL(file);
-                    reader.onload = function (e) {
-                        videoEntity.url = e.target.result;
-                        videoEntity.imgFile = file;
-                        $("body").mLoading("hide");//显示loading组件
-                    }
-                }
-            }
+            ShowPNotify("请先选择文件！");
         }
     }
 
