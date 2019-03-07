@@ -337,10 +337,11 @@ namespace Api.Controllers
         /// <summary>
         /// 获取他人信息
         /// </summary>
-        /// <param name="token">*</param>
+        /// <param name="token"></param>
         /// <param name="userId">*</param>
         /// <returns></returns>
         [HttpPost]
+        [SkipCheckLogin]
         public JsonResult GetById([FromForm] string token, [FromForm] int userId)
         {
             DataResult dr = new DataResult();

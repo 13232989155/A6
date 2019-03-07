@@ -26,6 +26,12 @@ namespace Admin.Controllers
             int pageSize = 15;
 
             AdminBLL adminBLL = new AdminBLL();
+
+            //adminBLL.ActionDal.ActionDBAccess.DbFirst.Where("t_course_banner").CreateClassFile("c:\\A6");
+            //adminBLL.ActionDal.ActionDBAccess.DbFirst.Where("t_course_recommend_correlation").CreateClassFile("c:\\A6");
+            //adminBLL.ActionDal.ActionDBAccess.DbFirst.Where("t_course_section").CreateClassFile("c:\\A6");
+            //adminBLL.ActionDal.ActionDBAccess.DbFirst.Where("t_course_type").CreateClassFile("c:\\A6");
+
             IPagedList<AdminEntity> adminEntities = adminBLL.AdminPageList(pageNumber, pageSize, searchString);
 
             return View(adminEntities);
@@ -150,7 +156,7 @@ namespace Admin.Controllers
             }
             catch (Exception e)
             {
-                dataResult.code = "202";
+                dataResult.code = "999";
                 dataResult.msg = e.Message;
                 return dataResult;
             }
@@ -266,7 +272,7 @@ namespace Admin.Controllers
             }
             catch (Exception e)
             {
-                dataResult.code = "202";
+                dataResult.code = "999";
                 dataResult.msg = e.Message;
                 return dataResult;
             }
@@ -337,7 +343,7 @@ namespace Admin.Controllers
             }
             catch (Exception e)
             {
-                dataResult.code = "202";
+                dataResult.code = "999";
                 dataResult.msg = e.Message;
                 return dataResult;
             }

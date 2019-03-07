@@ -126,7 +126,7 @@ namespace Admin.Controllers
             }
             catch (Exception e)
             {
-                dataResult.code = "202";
+                dataResult.code = "999";
                 dataResult.msg = e.Message;
                 return dataResult;
             }
@@ -205,7 +205,7 @@ namespace Admin.Controllers
             }
             catch (Exception e)
             {
-                dataResult.code = "202";
+                dataResult.code = "999";
                 dataResult.msg = e.Message;
                 return dataResult;
             }

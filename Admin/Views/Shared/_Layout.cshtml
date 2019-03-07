@@ -90,6 +90,16 @@
                                 </li>
 
                                 <li>
+                                    <a><i class="fa fa-book"></i> 课程 <span class="fa fa-chevron-down"></span></a>
+                                    <ul id="ulCourse" class="nav child_menu">
+                                        <li id="liCourseList"><a asp-controller="Course" asp-action="List">课程列表</a></li>
+                                        <li id="liCourseTypeList"><a asp-controller="CourseType" asp-action="List">课程分类列表</a></li>
+                                        <li id="liCourseRecommendList"><a asp-controller="CourseRecommend" asp-action="List">课程推荐列表</a></li>
+                                        <li id="liCourseBannerList"><a asp-controller="CourseBanner" asp-action="List">课程Banner列表</a></li>
+                                    </ul>
+                                </li>
+
+                                <li>
                                     <a><i class="fa fa-edit"></i> 管理员 <span class="fa fa-chevron-down"></span></a>
                                     <ul id="ulAdmin" class="nav child_menu">
                                         <li id="liAdminList"><a asp-controller="Admin" asp-action="List">管理员列表</a></li>

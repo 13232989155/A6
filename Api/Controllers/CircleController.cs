@@ -41,16 +41,16 @@ namespace Api.Controllers
                 int caseOfficialCount = caseOfficialBLL.Count();
                 int totalItemCount = caseCount + shareCount + caseOfficialCount;
 
-                List<CircleResultHelper> circleResultHelpers = caseBLL.CaseAndShareList(pageNumber:pageNumber, pageSize:pageSize, totalCount:totalItemCount);
-
                 UserEntity userEntity = new UserEntity();
-                if( !string.IsNullOrWhiteSpace(token))
+                if (!string.IsNullOrWhiteSpace(token))
                 {
-                    userEntity = this.GetUserByToken(token); 
+                    userEntity = this.GetUserByToken(token);
                 }
 
+                List<CircleResultHelper> circleResultHelpers = caseBLL.CaseAndShareList(pageNumber:pageNumber, pageSize:pageSize, totalCount:totalItemCount, thisUserId: userEntity.userId > 10000 ? userEntity.userId : -1);
+
                 List<CaseEntity> caseEntities = circleResultHelpers.Where(it => it.type == (int)Entity.TypeEnumEntity.TypeEnum.案例).Select(it => it.caseEntity).ToList();
-                if ( caseEntities.Count > 0)
+                if (caseEntities.Count > 0)
                 {
                     caseEntities = CaseListEndorseCountByList(caseEntities, userEntity.userId > 10000 ? userEntity.userId : -1);
                     caseEntities = CaseListCommentCountByList(caseEntities);

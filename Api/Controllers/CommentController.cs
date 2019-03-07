@@ -31,13 +31,14 @@ namespace Api.Controllers
         /// <summary>
         /// 获取评论列表
         /// </summary>
-        /// <param name="token">*</param>
+        /// <param name="token"></param>
         /// <param name="type">类型*： 1 说说； 2 案例；3 官方案例;</param>
         /// <param name="objId">主键ID*</param>
         /// <param name="pageNumber"></param>
         /// <param name="pageSize"></param>
         /// <returns></returns>
         [HttpPost]
+        [SkipCheckLogin]
         public JsonResult PageListByObjId( [FromForm] string token, [FromForm] int type, [FromForm] int objId, [FromForm] int pageNumber = 1, [FromForm] int pageSize = 10)
         {
 

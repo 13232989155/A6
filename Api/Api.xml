@@ -173,7 +173,7 @@
             <summary>
             获取评论列表
             </summary>
-            <param name="token">*</param>
+            <param name="token"></param>
             <param name="type">类型*： 1 说说； 2 案例；3 官方案例;</param>
             <param name="objId">主键ID*</param>
             <param name="pageNumber"></param>
@@ -272,7 +272,7 @@
             <summary>
             查看关注列表
             </summary>
-            <param name="token">*</param>
+            <param name="token"></param>
             <param name="userId">*</param>
             <returns></returns>
         </member>
@@ -280,7 +280,7 @@
             <summary>
             查看粉丝列表
             </summary>
-            <param name="token">*</param>
+            <param name="token"></param>
             <param name="userId">*</param>
             <returns></returns>
         </member>
@@ -395,7 +395,7 @@
             <summary>
             根据类型获取说说分页数据
             </summary>
-            <param name="token">*</param>
+            <param name="token"></param>
             <param name="userId"></param>
             <param name="shareTypeId"></param>
             <param name="shareTopicId"></param>
@@ -407,7 +407,7 @@
             <summary>
             根据说说ID获取详细内容
             </summary>
-            <param name="token">*</param>
+            <param name="token"></param>
             <param name="shareId">*</param>
             <returns></returns>
         </member>
@@ -486,7 +486,7 @@
             <summary>
             获取他人信息
             </summary>
-            <param name="token">*</param>
+            <param name="token"></param>
             <param name="userId">*</param>
             <returns></returns>
         </member>

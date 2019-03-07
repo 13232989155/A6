@@ -1,0 +1,166 @@
+﻿
+@{
+    ViewData["Title"] = "课程分类列表";
+}
+
+
+@model X.PagedList.IPagedList<Entity.CourseTypeEntity>
+@using X.PagedList.Mvc.Core;
+
+<div class="page-title">
+    <div class="title_left">
+        <h3>课程分类列表</h3>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>工具</h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <ul class="dropdown-menu" role="menu"></ul>
+                    </li>
+                    <li>
+                        <a class="close-link"><i class="fa fa-close"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+
+                <div class="title_left">
+                    <a asp-action="Create" class="btn btn-round btn-success">创建</a>
+                </div>
+
+                <div class="title_right">
+                    <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                        <form method="post" asp-action="List">
+                            <div class="input-group">
+                                <input name="searchString" value="@ViewBag.searchString" type="text" class="form-control" placeholder="输入关键字...">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="submit">Go!</button>
+                                </span>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>搜索列表 <small></small></h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-refresh"></i></a>
+                    </li>
+                    <li>
+                        <a class="close-link"><i class="fa fa-close"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix">
+                </div>
+            </div>
+            <div class="x_content">
+                <div id="datatable_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table id="datatable" class="table table-striped table-bordered dataTable no-footer">
+                                <thead>
+                                    <tr role="row">
+                                        <th>ID</th>
+                                        <th>名称</th>
+                                        <th>是否删除</th>
+                                        <th>管理员</th>
+                                        <th>创建时间</th>
+                                        <th>修改时间</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr role="row" class="odd">
+                                            <td>@item.courseTypeId</td>
+                                            <td>@item.name</td>
+                                            <td>@(item.isDel ? "是" : "否")</td>
+                                            <td>@item.adminId</td>
+                                            <td>@item.createDate</td>
+                                            <td>@item.modifyDate</td>
+                                            <td style="text-align:center">
+                                                <a asp-action="Detail" asp-route-id="@item.courseTypeId" title="查看" class="dropdown-toggle"><i class="fa fa-search"></i></a>
+                                                &nbsp;&nbsp;
+                                                <a asp-action="Edit" asp-route-id="@item.courseTypeId" title="编辑" class="dropdown-toggle"><i class="fa fa-pencil"></i></a>
+                                                    &nbsp;&nbsp;
+                                                <a href="#" onclick="OnClickDelete( @item.courseTypeId )" data-toggle="modal" data-target=".bs-example-modal-sm" title="删除" class="dropdown-toggle"><i class="fa fa-close"></i></a>
+                                                &nbsp;&nbsp;
+                                            </td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <div class="dataTables_info">
+                                每页 @Model.PageSize 条记录，共有 @Model.TotalItemCount 条记录。
+                                当前第 @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) 页，共 @Model.PageCount 页。
+                            </div>
+                        </div>
+                        <div class="col-sm-7">
+
+                            @Html.PagedListPager(Model, page => Url.Action("List", new { page, searchString = ViewBag.searchString }))
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel2">提示！</h4>
+            </div>
+            <div class="modal-body">
+                <h4>确定要删除吗？</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <a id="DeleteId" href="#" class="btn btn-primary">确定</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    function OnClickDelete( id) {
+        $("#DeleteId").attr("href", "/CourseType/Delete?id=" + id);
+    }
+
+</script>

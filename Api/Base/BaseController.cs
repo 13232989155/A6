@@ -222,7 +222,7 @@ namespace Api.Base
         /// <param name="shareEntities"></param>
         /// <param name="userId"></param>
         /// <returns></returns>
-        protected List<ShareEntity> ShareListEndorseCountByList(List<ShareEntity> shareEntities, int userId)
+        protected List<ShareEntity> ShareListEndorseCountByList(List<ShareEntity> shareEntities, int userId = -1)
         {
             if (shareEntities.Count() > 0)
             {

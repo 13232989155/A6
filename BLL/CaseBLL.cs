@@ -65,8 +65,9 @@ namespace BLL
         /// <param name="pageNumber"></param>
         /// <param name="pageSize"></param>
         /// <param name="totalCount"></param>
+        /// <param name="thisUserId">当前用户</param>
         /// <returns></returns>
-        public List<CircleResultHelper> CaseAndShareList( int pageNumber = 1, int pageSize = 10, int totalCount = 0, int[] userIdInte = null)
+        public List<CircleResultHelper> CaseAndShareList( int pageNumber = 1, int pageSize = 10, int totalCount = 0, int[] userIdInte = null, int thisUserId = -1)
         {
             List<CircleResultHelper> circleResultHelpers = new List<CircleResultHelper>();
 
@@ -137,26 +138,24 @@ namespace BLL
                                         type = (int)Entity.TypeEnumEntity.TypeEnum.官方案例
                                     })
 
-
                                     )
                                     .OrderBy(it => it.createDate, OrderByType.Desc)
                                     .ToPageList(pageNumber, pageSize, ref totalCount);
             }
 
-            List<CaseEntity> caseEntities = SetCaseUser(circleResultHelpers.Where(it => it.type == (int)Entity.TypeEnumEntity.TypeEnum.案例).Select( it => it.id).ToArray());
+            List<CaseEntity> caseEntities = SetCaseUser(circleResultHelpers.Where(it => it.type == (int)Entity.TypeEnumEntity.TypeEnum.案例).Select( it => it.id).ToArray(), thisUserId);
             caseEntities.ForEach(it =>
             {
                 circleResultHelpers.Find(itt => itt.id == it.caseId && itt.type == (int)Entity.TypeEnumEntity.TypeEnum.案例).caseEntity = it;
             });
 
-
-            List<ShareEntity> shareEntities = SetShareUser(circleResultHelpers.Where(it => it.type == (int)Entity.TypeEnumEntity.TypeEnum.说说).Select(it => it.id).ToArray());
+            List<ShareEntity> shareEntities = SetShareUser(circleResultHelpers.Where(it => it.type == (int)Entity.TypeEnumEntity.TypeEnum.说说).Select(it => it.id).ToArray(), thisUserId);
             shareEntities.ForEach(it =>
             {
                 circleResultHelpers.Find(itt => itt.id == it.shareId && itt.type == (int)Entity.TypeEnumEntity.TypeEnum.说说).shareEntity = it;
             });
             
-            List<CaseOfficialEntity> caseOfficialEntities = SetCaseOfficialUser(circleResultHelpers.Where(it => it.type == (int)Entity.TypeEnumEntity.TypeEnum.官方案例).Select(it => it.id).ToArray());
+            List<CaseOfficialEntity> caseOfficialEntities = SetCaseOfficialUser(circleResultHelpers.Where(it => it.type == (int)Entity.TypeEnumEntity.TypeEnum.官方案例).Select(it => it.id).ToArray(), thisUserId);
             caseOfficialEntities.ForEach(it =>
             {
                 circleResultHelpers.Find(itt => itt.id == it.caseOfficialId && itt.type == (int)Entity.TypeEnumEntity.TypeEnum.官方案例).caseOfficialEntity = it;
@@ -170,7 +169,7 @@ namespace BLL
         /// </summary>
         /// <param name="idInts"></param>
         /// <returns></returns>
-        private List<CaseEntity> SetCaseUser( int[] idInts)
+        private List<CaseEntity> SetCaseUser( int[] idInts, int thisUserId = -1)
         {
             List<CaseEntity> caseEntities = new List<CaseEntity>();
             if (idInts.Length > 0)
@@ -185,7 +184,7 @@ namespace BLL
                                    caseId = c.caseId,
                                    coverImage = c.coverImage,
                                    createDate = c.createDate,
-                                   describe = c.describe,
+                                   describe = "",
                                    integral = c.integral,
                                    isDel = c.isDel,
                                    modifyDate = c.modifyDate,
@@ -197,6 +196,30 @@ namespace BLL
                                    userId = c.userId
 
                                })
+                                //.Mapper((c, cache) =>
+                                //{
+                                //    var commentEntities = cache.Get(list =>
+                                //      {
+                                //          var ids = list.Select(i => c.caseId).ToList();
+                                //          return ActionDal.ActionDBAccess.Queryable<CommentEntity>().In(ids).Where(it => it.isDel == false && it.objId == c.caseId && it.type == (int)Entity.TypeEnumEntity.TypeEnum.案例).ToList();
+                                //      });
+                                //    c.commentCount = commentEntities.Where(ce => ce.objId == c.caseId).Count();
+
+                                //    var endorseEntities = cache.Get(list =>
+                                //    {
+                                //        var ids = list.Select(i => c.caseId).ToList();
+                                //        return ActionDal.ActionDBAccess.Queryable<EndorseEntity>().In(ids).Where(it => it.isDel == false && it.objId == c.caseId && it.type == (int)Entity.TypeEnumEntity.TypeEnum.案例).ToList();
+                                //    });
+                                //    var thisEndorseEntities = endorseEntities.Where(e => e.objId == c.caseId).ToList();
+                                //    if (thisUserId > 10000)
+                                //    {
+                                //        if (thisEndorseEntities.FirstOrDefault(te => te.userId == thisUserId) != null)
+                                //        {
+                                //            c.isEndorse = true;
+                                //        }
+                                //    }
+                                //    c.endorseCount = thisEndorseEntities.Count();
+                                //})
                                .ToList();
             }
                 return caseEntities;
@@ -207,7 +230,7 @@ namespace BLL
         /// </summary>
         /// <param name="idInts"></param>
         /// <returns></returns>
-        private List<ShareEntity> SetShareUser(int[] idInts)
+        private List<ShareEntity> SetShareUser(int[] idInts, int thisUserId = -1)
         {
             List<ShareEntity> shareEntities = new List<ShareEntity>();
             if (idInts.Length > 0)
@@ -232,6 +255,31 @@ namespace BLL
                                         shareTypeId = s.shareTypeId,
                                         userId = s.userId
                                     })
+                                    //.Mapper((s, cache) =>
+                                    //{
+                                    //    var commentEntities = cache.Get(list =>
+                                    //    {
+                                    //        var ids = list.Select(i => s.shareId).ToList();
+                                    //        return ActionDal.ActionDBAccess.Queryable<CommentEntity>().In(ids).Where(it => it.isDel == false && it.objId == s.shareId && it.type == (int)Entity.TypeEnumEntity.TypeEnum.说说).ToList();
+                                    //    });
+                                    //    s.commentCount = commentEntities.Where(ce => ce.objId == s.shareId).Count();
+
+                                    //    var endorseEntities = cache.Get(list =>
+                                    //    {
+                                    //        var ids = list.Select(i => s.shareId).ToList();
+                                    //        return ActionDal.ActionDBAccess.Queryable<EndorseEntity>().In(ids).Where(it => it.isDel == false && it.objId == s.shareId && it.type == (int)Entity.TypeEnumEntity.TypeEnum.说说).ToList();
+                                    //    });
+                                    //    var thisEndorseEntities = endorseEntities.Where(e => e.objId == s.shareId).ToList();
+                                    //    if (thisUserId > 10000)
+                                    //    {
+                                    //        if (thisEndorseEntities.FirstOrDefault(te => te.userId == thisUserId) != null)
+                                    //        {
+                                    //            s.isEndorse = true;
+                                    //        }
+                                    //    }
+                                    //    s.endorseCount = thisEndorseEntities.Count();
+
+                                    //})
                                     .ToList();
             }
 
@@ -244,7 +292,7 @@ namespace BLL
         /// </summary>
         /// <param name="idInts"></param>
         /// <returns></returns>
-        private List<CaseOfficialEntity> SetCaseOfficialUser(int[] idInts)
+        private List<CaseOfficialEntity> SetCaseOfficialUser(int[] idInts, int thisUserId = -1)
         {
             List<CaseOfficialEntity> caseOfficialEntities = new List<CaseOfficialEntity>();
             if (idInts.Length > 0)
@@ -267,8 +315,33 @@ namespace BLL
                                    state = c.state,
                                    title = c.title,
                                    userId = c.userId,
-                                   contents = c.contents
+                                   contents = ""
                                })
+                                //.Mapper((c, cache) =>
+                                //{
+                                //    var commentEntities = cache.Get(list =>
+                                //    {
+                                //        var ids = list.Select(i => c.caseOfficialId).ToList();
+                                //        return ActionDal.ActionDBAccess.Queryable<CommentEntity>().In(ids).Where(it => it.isDel == false && it.objId == c.caseOfficialId && it.type == (int)Entity.TypeEnumEntity.TypeEnum.官方案例).ToList();
+                                //    });
+                                //    c.commentCount = commentEntities.Where(ce => ce.objId == c.caseOfficialId).Count();
+
+                                //    var endorseEntities = cache.Get(list =>
+                                //    {
+                                //        var ids = list.Select(i => c.caseOfficialId).ToList();
+                                //        return ActionDal.ActionDBAccess.Queryable<EndorseEntity>().In(ids).Where(it => it.isDel == false && it.objId == c.caseOfficialId && it.type == (int)Entity.TypeEnumEntity.TypeEnum.官方案例).ToList();
+                                //    });
+                                //    var thisEndorseEntities = endorseEntities.Where(e => e.objId == c.caseOfficialId).ToList();
+                                //    if (thisUserId > 10000)
+                                //    {
+                                //        if (thisEndorseEntities.FirstOrDefault(te => te.userId == thisUserId) != null)
+                                //        {
+                                //            c.isEndorse = true;
+                                //        }
+                                //    }
+                                //    c.endorseCount = thisEndorseEntities.Count();
+
+                                //})
                                .ToList();
             }
             return caseOfficialEntities;

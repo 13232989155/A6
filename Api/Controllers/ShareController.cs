@@ -145,7 +145,7 @@ namespace Api.Controllers
         /// <summary>
         /// 根据类型获取说说分页数据
         /// </summary>
-        /// <param name="token">*</param>
+        /// <param name="token"></param>
         /// <param name="userId"></param>
         /// <param name="shareTypeId"></param>
         /// <param name="shareTopicId"></param>
@@ -153,16 +153,25 @@ namespace Api.Controllers
         /// <param name="pageSize"></param>
         /// <returns></returns>
         [HttpPost]
+        [SkipCheckLogin]
         public JsonResult PageList([FromForm] string token, [FromForm] int userId = -1, [FromForm] int shareTypeId = -1, [FromForm] int shareTopicId = -1, [FromForm] int pageNumber = 1, [FromForm] int pageSize = 10)
         {
             DataResult dr = new DataResult();
             try
             {
                 int totalItemCount = shareBLL.Count(shareTypeId, shareTopicId, userId: userId);
-                List<ShareEntity> shareEntities = shareBLL.List(shareTypeId, shareTopicId, userId:userId, pageNumber:pageNumber, pageSize:pageSize, totalCount:totalItemCount);
-                UserEntity userEntity = this.GetUserByToken(token);
 
-                shareEntities = ShareListEndorseCountByList(shareEntities, userEntity.userId);
+                List<ShareEntity> shareEntities = shareBLL.List(shareTypeId, shareTopicId, userId:userId, pageNumber:pageNumber, pageSize:pageSize, totalCount:totalItemCount);
+                UserEntity userEntity = new UserEntity();
+                if (!string.IsNullOrWhiteSpace(token))
+                {
+                    userEntity = this.GetUserByToken(token);
+                    shareEntities = ShareListEndorseCountByList(shareEntities, userEntity.userId);
+                }
+                else
+                {
+                    shareEntities = ShareListEndorseCountByList(shareEntities);
+                }
 
                 shareEntities = ShareListCommentCountByList(shareEntities);
 
@@ -183,17 +192,18 @@ namespace Api.Controllers
         /// <summary>
         /// 根据说说ID获取详细内容
         /// </summary>
-        /// <param name="token">*</param>
+        /// <param name="token"></param>
         /// <param name="shareId">*</param>
         /// <returns></returns>
         [HttpPost]
+        [SkipCheckLogin]
         public JsonResult GetById( [FromForm] string token, [FromForm] int shareId)
         {
             DataResult dr = new DataResult();
             try
             {
                 ShareEntity shareEntity = shareBLL.GetById(shareId);
-                UserEntity userEntity = this.GetUserByToken(token);
+                UserEntity userEntity = new UserEntity();
 
                 CommentBLL commentBLL = new CommentBLL();
                 shareEntity.commentCount = commentBLL.ListByTypeAndObjId((int)Entity.TypeEnumEntity.TypeEnum.说说, shareEntity.shareId).Count();
@@ -202,9 +212,13 @@ namespace Api.Controllers
                 List<EndorseEntity> endorseEntities = endorseBLL.ListByTypeAndObjId((int)Entity.TypeEnumEntity.TypeEnum.说说, shareEntity.shareId);
 
                 shareEntity.endorseCount = endorseEntities.Count();
-                if ( endorseEntities.ToList().Exists( it => it.userId == userEntity.userId))
+                if (!string.IsNullOrWhiteSpace(token))
                 {
-                    shareEntity.isEndorse = true;
+                    userEntity = this.GetUserByToken(token);
+                    if (endorseEntities.ToList().Exists(it => it.userId == userEntity.userId))
+                    {
+                        shareEntity.isEndorse = true;
+                    }
                 }
 
                 dr.code = "200";

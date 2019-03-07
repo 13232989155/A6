@@ -23,6 +23,16 @@ namespace BLL
                                                     || it.contents.Contains(searchString)
                                                     || SqlFunc.ToString(it.caseOfficialId).Contains(searchString))
                                                   .OrderBy(it => it.createDate, OrderByType.Desc)
+                                                  .Select( it => new CaseOfficialEntity
+                                                  {
+                                                      caseOfficialId = it.caseOfficialId,
+                                                      userId = it.userId,
+                                                      title = it.title,
+                                                      createDate = it.createDate,
+                                                      modifyDate = it.modifyDate,
+                                                      isDel = it.isDel,
+                                                      state = it.state
+                                                  })
                                                   .ToList()
                                                   .ToPagedList(pageNumber, pageSize);
             return caseOfficialEntities;

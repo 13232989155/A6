@@ -189,10 +189,11 @@ namespace Api.Controllers
         /// <summary>
         /// 查看关注列表
         /// </summary>
-        /// <param name="token">*</param>
+        /// <param name="token"></param>
         /// <param name="userId">*</param>
         /// <returns></returns>
         [HttpPost]
+        [SkipCheckLogin]
         public JsonResult AttentionList([FromForm] string token, [FromForm] int userId)
         {
 
@@ -212,16 +213,20 @@ namespace Api.Controllers
 
                 if ( fansUserResults.Count > 0)
                 {
-                    UserEntity userEntity = this.GetUserByToken(token);
-                    List<FansUserResult> fansUsers = fansBLL.AttentionList(userEntity.userId);
-                    int[] vs = fansUserResults.Select(it => it.userId).ToArray().Intersect(fansUsers.Select(it => it.userId).ToArray()).ToArray();
-                    fansUserResults.ForEach(it =>
+                    UserEntity userEntity = new UserEntity();
+                    if (!string.IsNullOrWhiteSpace(token))
                     {
-                        if (vs.Where(itt => itt == it.userId).FirstOrDefault() > 1000)
+                        userEntity = this.GetUserByToken(token);
+                        List<FansUserResult> fansUsers = fansBLL.AttentionList(userEntity.userId);
+                        int[] vs = fansUserResults.Select(it => it.userId).ToArray().Intersect(fansUsers.Select(it => it.userId).ToArray()).ToArray();
+                        fansUserResults.ForEach(it =>
                         {
-                            it.attention = true;
-                        }
-                    });
+                            if (vs.Where(itt => itt == it.userId).FirstOrDefault() > 1000)
+                            {
+                                it.attention = true;
+                            }
+                        });
+                    }
                 }
 
                 dr.code = "200";
@@ -238,17 +243,17 @@ namespace Api.Controllers
         /// <summary>
         /// 查看粉丝列表
         /// </summary>
-        /// <param name="token">*</param>
+        /// <param name="token"></param>
         /// <param name="userId">*</param>
         /// <returns></returns>
         [HttpPost]
+        [SkipCheckLogin]
         public JsonResult FansList( [FromForm] string token, [FromForm] int userId)
         {
 
             DataResult dr = new DataResult();
             try
             {
-                UserEntity userEntity = this.GetUserByToken(token);
 
                 FansBLL fansBLL = new FansBLL();
 
@@ -256,20 +261,23 @@ namespace Api.Controllers
 
                 if (fansUserResults.Count > 0)
                 {
-                    List<FansUserResult> users = fansBLL.AttentionList(userEntity.userId);
-
-                    int[] vs = fansUserResults.Select(it => it.userId).ToArray().Intersect(users.Select(it => it.userId).ToArray()).ToArray();
-                    fansUserResults.ForEach(it =>
+                    UserEntity userEntity = new UserEntity();
+                    if (!string.IsNullOrWhiteSpace(token))
                     {
-                        if (vs.Where(itt => itt == it.userId).FirstOrDefault() > 1000)
+                        userEntity = this.GetUserByToken(token);
+                        List<FansUserResult> users = fansBLL.AttentionList(userEntity.userId);
+
+                        int[] vs = fansUserResults.Select(it => it.userId).ToArray().Intersect(users.Select(it => it.userId).ToArray()).ToArray();
+                        fansUserResults.ForEach(it =>
                         {
-                            it.attention = true;
-                        }
+                            if (vs.Where(itt => itt == it.userId).FirstOrDefault() > 1000)
+                            {
+                                it.attention = true;
+                            }
+                        });
+                    }
 
-                    });
                 }
-
-                
 
                 dr.code = "200";
                 dr.data = fansUserResults;

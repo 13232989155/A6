@@ -2,6 +2,7 @@
 using SqlSugar;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using X.PagedList;
 
@@ -98,14 +99,15 @@ namespace BLL
         /// </summary>
         /// <param name="shareTypeId"></param>
         /// <param name="shareTypeId"></param>
-        /// <param name="userId"></param>
+        /// <param name="userId">要查找的用户id</param>
         /// <param name="isDel">是否包含已删除的说说</param>
         /// <param name="forbidden">是否包含禁用的用户的说说</param>
         /// <param name="pageNumber"></param>
         /// <param name="pageSize"></param>
         /// <param name="totalCount"></param>
+        /// <param name="thisUserId">当前用户id</param>
         /// <returns></returns>
-        public List<ShareEntity> List(int shareTypeId = -1, int shareTopicId = -1, int userId = -1, bool isDel = false, bool forbidden = false, int pageNumber = 1, int pageSize = 10, int totalCount = 0)
+        public List<ShareEntity> List(int shareTypeId = -1, int shareTopicId = -1, int userId = -1, bool isDel = false, bool forbidden = false, int pageNumber = 1, int pageSize = 10, int totalCount = 0, int thisUserId = -1)
         {
             return ActionDal.ActionDBAccess.Queryable<ShareEntity, UserEntity>( ( s, u) => new object[]
                     {
@@ -132,6 +134,33 @@ namespace BLL
                         shareTypeId = s.shareTypeId,
                         userId = s.userId
                     })
+                     //.Mapper((s, cache) =>
+                     //{
+
+                     //    var commentEntities = cache.Get(list =>
+                     //      {
+                     //          var ids = list.Select(i => s.shareId).ToList();
+                     //          return ActionDal.ActionDBAccess.Queryable<CommentEntity>().In(ids).Where(it => it.isDel == false && it.objId == s.shareId && it.type == (int)Entity.TypeEnumEntity.TypeEnum.说说).ToList();
+                     //      }); 
+                     //    s.commentCount = commentEntities.Where(c => c.objId == s.shareId).Count();
+
+                     //    var endorseEntities = cache.Get(list =>
+                     //    {
+                     //        var ids = list.Select(i => s.shareId).ToList();
+                     //        return ActionDal.ActionDBAccess.Queryable<EndorseEntity>().In(ids).Where(it => it.isDel == false && it.objId == s.shareId && it.type == (int)Entity.TypeEnumEntity.TypeEnum.说说).ToList();
+                     //    }); 
+
+                     //    var thisEndorseEntities = endorseEntities.Where(e => e.objId == s.shareId).ToList();
+                     //    if (thisUserId > 10000)
+                     //    {
+                     //        if (thisEndorseEntities.FirstOrDefault(te => te.userId == thisUserId) != null)
+                     //        {
+                     //            s.isEndorse = true;
+                     //        }
+                     //    }
+                     //    s.endorseCount = thisEndorseEntities.Count();
+
+                     //})
                     .ToPageList(pageNumber, pageSize, ref totalCount);
         }
 

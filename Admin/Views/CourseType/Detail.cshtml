@@ -1,13 +1,14 @@
 ﻿
 @{
-    ViewData["Title"] = "查看官方案例";
+    ViewData["Title"] = "课程分类详细";
 }
 
-@model Entity.CaseOfficialEntity;
+@model Entity.CourseTypeEntity;
+
 
 <div class="page-title">
     <div class="title_left">
-        <h3>查看官方案例</h3>
+        <h3>课程分类详细</h3>
     </div>
 </div>
 <div class="row">
@@ -30,79 +31,23 @@
             </div>
             <div id="example" class="x_content">
                 <br>
-                <form asp-action="Create" id="demo-form2" class="form-horizontal form-label-left">
+                <form id="demo-form2" class="form-horizontal form-label-left">
 
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">
                             ID <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" value="@Model.caseOfficialId" disabled class="form-control col-md-7 col-xs-12">
+                            <input type="text" value="@Model.courseTypeId" disabled class="form-control col-md-7 col-xs-12">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                            用户ID <span class="required">*</span>
-                        </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" value="@Model.userId" disabled class="form-control col-md-7 col-xs-12">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                            用户名称 <span class="required">*</span>
+                            名称 <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <input type="text" value="@Model.name" disabled class="form-control col-md-7 col-xs-12">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                            标题 <span class="required">*</span>
-                        </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <textarea class="form-control" rows="5" disabled>@Model.title</textarea>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                            封面图片
-                        </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <label class="control-label col-md-7 col-xs-12"></label>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-3 col-sm-6 col-xs-12">
-                        </div>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <div class="x_panel">
-                                <div class="x_content">
-
-                                    <div style="text-align: center; margin-bottom: 17px">
-                                        <img style="width:100%" src="@Model.coverImage" />
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-sm-6 col-xs-12">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                            内容 <span class="required">*</span>
-                        </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <div id="contents">
-                                @Html.Raw(Model.contents)
-                            </div>
                         </div>
                     </div>
 
@@ -112,6 +57,15 @@
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <input type="text" value="@( Model.isDel ? "是" : "否")" disabled class="form-control col-md-7 col-xs-12">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            最后修改的管理员 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" value="@Model.adminId" disabled class="form-control col-md-7 col-xs-12">
                         </div>
                     </div>
 
@@ -147,20 +101,10 @@
     </div>
 </div>
 
-<script src="~/js/wangEditor.js"></script>
 <script type="text/javascript">
     //
-    $("#liCaseOfficialList").addClass("current-page");
-    $("#ulCase").show();
-
-    var E = window.wangEditor
-    var editor = new E('#contents')
-
-    // 隐藏“网络图片”tab
-    editor.customConfig.showLinkImg = false
-    editor.create()
-
-    editor.$textElem.attr('contenteditable', false)
+    $("#liCourseTypeList").addClass("current-page");
+    $("#ulCourse").show();
 
 </script>
 

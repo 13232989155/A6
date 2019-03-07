@@ -37,13 +37,13 @@ namespace Api.Controllers
         /// <param name="caseOfficialId">*</param>
         /// <returns></returns>
         [HttpPost]
+        [SkipCheckLogin]
         public JsonResult GetById([FromForm] string token, [FromForm] int caseOfficialId)
         {
             DataResult dr = new DataResult();
             try
             {
                 CaseOfficialEntity caseOfficialEntity = caseOfficialBLL.GetById(caseOfficialId);
-                UserEntity userEntity = this.GetUserByToken(token);
 
                 CommentBLL commentBLL = new CommentBLL();
                 caseOfficialEntity.commentCount = commentBLL.ListByTypeAndObjId((int)Entity.TypeEnumEntity.TypeEnum.官方案例, caseOfficialEntity.caseOfficialId).Count();
@@ -52,14 +52,20 @@ namespace Api.Controllers
                 List<EndorseEntity> endorseEntities = endorseBLL.ListByTypeAndObjId((int)Entity.TypeEnumEntity.TypeEnum.官方案例, caseOfficialEntity.caseOfficialId);
 
                 caseOfficialEntity.endorseCount = endorseEntities.Count();
-                if (endorseEntities.ToList().Exists(it => it.userId == userEntity.userId))
-                {
-                    caseOfficialEntity.isEndorse = true;
-                }
 
-                //增加阅读记录
-                ReadBLL readBLL = new ReadBLL();
-                readBLL.Create(userEntity.userId, (int)Entity.TypeEnumEntity.TypeEnum.官方案例, caseOfficialId);
+                UserEntity userEntity = new UserEntity();
+                if (!string.IsNullOrWhiteSpace(token))
+                {
+                    userEntity = this.GetUserByToken(token);
+                    if (endorseEntities.ToList().Exists(it => it.userId == userEntity.userId))
+                    {
+                        caseOfficialEntity.isEndorse = true;
+                    }
+
+                    //增加阅读记录
+                    ReadBLL readBLL = new ReadBLL();
+                    readBLL.Create(userEntity.userId, (int)Entity.TypeEnumEntity.TypeEnum.官方案例, caseOfficialId);
+                }
 
                 dr.code = "200";
                 dr.data = caseOfficialEntity;

@@ -1,0 +1,719 @@
+﻿
+@{
+    ViewData["Title"] = "编辑课程";
+    List<Entity.CourseTypeEntity> courseTypeEntities = ViewBag.courseTypeEntities;
+}
+@model Entity.CourseEntity;
+<div class="page-title">
+    <div class="title_left">
+        <h3>编辑课程</h3>
+    </div>
+</div>
+<link href="~/css/pnotify.css" rel="stylesheet" />
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2><small></small></h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle"><i class="fa fa-wrench"></i></a>
+                    </li>
+                    <li>
+                        <a class="close-link"><i class="fa fa-close"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div id="example" class="x_content">
+                <br>
+                <form asp-action="Edit" id="demo-form2" class="form-horizontal form-label-left">
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            ID <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" v-model="courseId" readonly class="form-control col-md-7 col-xs-12">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            标题 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" v-model="title" class="form-control col-md-7 col-xs-12">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            价格(保留两位小数) <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="number" v-model="price" class="form-control col-md-7 col-xs-12">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            分类 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <select v-model="courseTypeId" class="form-control">
+                                @foreach (var item in courseTypeEntities)
+                                {
+                                    <option value="@item.courseTypeId" selected>@item.name</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            课程视频 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input id="fileVideo" type="file" style="width:0; height:0" accept="video/mp4" />
+                            <template v-if="videoUrl === ''">
+
+                                <div class="x_panel tile fixed_height_320">
+                                    <div class="x_content">
+                                        <div class="flex" style="justify-content:center; align-items:center;text-align:center">
+                                            <h3 class="name">
+                                                <label>
+                                                    &nbsp;
+                                                </label>
+                                            </h3>
+                                            <h3 class="name">
+                                                <label for="fileVideo" style="cursor:pointer">
+                                                    <i class="fa fa-plus fa-5x"></i>
+                                                </label>
+                                            </h3>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </template>
+
+                            <template v-else>
+
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="x_panel">
+                                        <div class="x_title">
+                                            <ul class="nav navbar-right panel_toolbox">
+                                                <li>
+                                                    <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                                </li>
+                                                <li class="dropdown">
+                                                    <a v-on:click="UpdateVideo()" class="dropdown-toggle"><i class="fa fa-video-camera"></i></a>
+                                                </li>
+                                                <li>
+                                                    <a class="close-link" v-on:click="DeleteVideo()"><i class="fa fa-close"></i></a>
+                                                </li>
+                                            </ul>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="x_content">
+
+                                            <div class="bs-example" data-example-id="simple-jumbotron">
+                                                <video controls="controls" style="width:100%">
+                                                    <source :src="videoUrl" type="video/mp4" />
+                                                    <source :src="videoUrl" type="video/webm" />
+                                                    <source :src="videoUrl" type="video/ogg" />
+                                                </video>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </template>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class="progress" id="divProgressVideoUrl">
+                                <div id="videoProgressVideoUrl" class="progress-bar progress-bar-success" style="width: 0%;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            课程封面视频 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input id="fileCoverVideo" type="file" style="width:0; height:0" accept="video/mp4" />
+                            <template v-if="coverVideo === ''">
+
+                                <div class="x_panel tile fixed_height_320">
+                                    <div class="x_content">
+                                        <div class="flex" style="justify-content:center; align-items:center;text-align:center">
+                                            <h3 class="name">
+                                                <label>
+                                                    &nbsp;
+                                                </label>
+                                            </h3>
+                                            <h3 class="name">
+                                                <label for="fileCoverVideo" style="cursor:pointer">
+                                                    <i class="fa fa-plus fa-5x"></i>
+                                                </label>
+                                            </h3>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </template>
+
+                            <template v-else>
+
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="x_panel">
+                                        <div class="x_title">
+                                            <ul class="nav navbar-right panel_toolbox">
+                                                <li>
+                                                    <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                                </li>
+                                                <li class="dropdown">
+                                                    <a v-on:click="UpdateCoverVideo()" class="dropdown-toggle"><i class="fa fa-video-camera"></i></a>
+                                                </li>
+                                                <li>
+                                                    <a class="close-link" v-on:click="DeleteCoverVideo()"><i class="fa fa-close"></i></a>
+                                                </li>
+                                            </ul>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="x_content">
+
+                                            <div class="bs-example" data-example-id="simple-jumbotron">
+                                                <video controls="controls" style="width:100%">
+                                                    <source :src="coverVideo" type="video/mp4" />
+                                                    <source :src="coverVideo" type="video/webm" />
+                                                    <source :src="coverVideo" type="video/ogg" />
+                                                </video>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </template>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class="progress" id="divProgressCoverVideo">
+                                <div id="videoProgressCoverVideo" class="progress-bar progress-bar-success" style="width: 0%;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            封面图片 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input id="fileCoverImage" type="file" style="width:0; height:0" accept="image/png,image/gif,image/jpeg,image/bmp" />
+                            <template v-if="coverImage === ''">
+
+                                <div class="x_panel tile fixed_height_320">
+                                    <div class="x_content">
+                                        <div class="flex" style="justify-content:center; align-items:center;text-align:center">
+                                            <h3 class="name">
+                                                <label>
+                                                    &nbsp;
+                                                </label>
+                                            </h3>
+                                            <h3 class="name">
+                                                <label for="fileCoverImage" style="cursor:pointer">
+                                                    <i class="fa fa-plus fa-5x"></i>
+                                                </label>
+                                            </h3>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </template>
+
+                            <template v-else>
+
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="x_panel">
+                                        <div class="x_title">
+                                            <ul class="nav navbar-right panel_toolbox">
+                                                <li>
+                                                    <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                                </li>
+                                                <li class="dropdown">
+                                                    <a v-on:click="UpdateCoverImage()" class="dropdown-toggle"><i class="fa fa-picture-o"></i></a>
+                                                </li>
+                                                <li>
+                                                    <a class="close-link" v-on:click="DeleteCoverImage()"><i class="fa fa-close"></i></a>
+                                                </li>
+                                            </ul>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="x_content">
+
+                                            <div class="bs-example" data-example-id="simple-jumbotron">
+                                                <img style="width:100%" :src="coverImage" />
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </template>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            课程介绍 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div id="describe">
+                                @Html.Raw(Model.describe)
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            教师介绍 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div id="teacherDescribe">
+                                @Html.Raw(Model.teacherDescribe)
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            提示 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div id="tips">
+                                @Html.Raw(Model.tips)
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            是否删除 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <select v-model="isDel" class="form-control">
+                                <option value="True" selected>是</option>
+                                <option value="False">否</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="ln_solid"></div>
+
+                    <div class="form-group">
+                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                            <button class="btn btn-primary" onclick="Save()" type="button">确定</button>
+                            <a asp-action="List" class="btn btn-info">返回列表</a>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/pnotify.js"></script>
+<script src="~/js/vue.js"></script>
+<script src="~/js/a6admin.js"></script>
+<script src="~/js/jquery.mloading.js"></script>
+<script src="~/js/qiniu.min.js"></script>
+<script src="~/js/bootstrap-progressbar.min.js"></script>
+<script src="~/js/wangEditor.js"></script>
+<script type="text/javascript">
+    //
+    $("#liCourseList").addClass("current-page");
+    $("#ulCourse").show();
+    $("#divProgressVideoUrl").hide();
+    $("#divProgressCoverVideo").hide();
+
+    $(document).ready(function () {
+        $("#fileVideo").on("change", function (e) {
+            GetFileVideoUrl(e, "videoUrl")
+        });
+        $("#fileCoverVideo").on("change", function (e) {
+            GetFileVideoUrl(e, "coverVideo")
+        });
+        $("#fileCoverImage").on("change", function (e) {
+            GetFileImageUrl(e)
+        });
+    });
+
+    var courseEntity = {
+        courseTypeId: "",
+        title: "",
+        describe: "",
+        coverImage: "",
+        coverVideo: "",
+        teacherDescribe: "",
+        videoUrl: "",
+        tips: "",
+        price: "",
+        courseId: "",
+        isDel: ""
+    }
+
+    var courseVue = new Vue({
+        el: "#example",
+        data: courseEntity,
+        beforeCreate: function () {
+
+            courseEntity.title = "@Html.Raw(Model.title)"
+            courseEntity.coverImage = "@Html.Raw(Model.coverImage)"
+            courseEntity.describe = ""
+            courseEntity.courseTypeId = "@Html.Raw(Model.courseTypeId)"
+            courseEntity.coverVideo = "@Html.Raw(Model.coverVideo)"
+            courseEntity.price = "@Html.Raw(Model.price)"
+            courseEntity.teacherDescribe = ""
+            courseEntity.tips = ""
+            courseEntity.isDel = "@Html.Raw(Model.isDel)"
+            courseEntity.courseId = "@Html.Raw(Model.courseId)"
+            courseEntity.videoUrl = "@Html.Raw(Model.videoUrl)"
+
+        },
+        methods: {
+            DeleteVideo: function () {
+                courseEntity.videoUrl = "";
+            },
+            UpdateVideo: function () {
+                $("#fileVideo").trigger("click");
+            },
+            DeleteCoverVideo: function () {
+                courseEntity.coverVideo = "";
+            },
+            UpdateCoverVideo: function () {
+                $("#fileCoverVideo").trigger("click");
+            },
+            DeleteCoverImage: function () {
+                courseEntity.coverImage = "";
+            },
+            UpdateCoverImage: function () {
+                $("#fileCoverImage").trigger("click");
+            }
+        }
+    })
+
+    function Save() {
+
+        if (courseEntity.title == "") {
+            ShowPNotify("标题不能为空");
+            return
+        }
+
+        if (courseEntity.price == "") {
+            ShowPNotify("价格不能为空");
+            return
+        }
+
+        if (courseEntity.videoUrl == "") {
+            ShowPNotify("课程视频不能为空");
+            return
+        }
+
+        if (courseEntity.coverImage == "") {
+            ShowPNotify("封面图片不能为空");
+            return
+        }
+
+        if (describeEditor.txt.html() == "") {
+            ShowPNotify("课程介绍不能为空");
+            return
+        }
+        courseEntity.describe = describeEditor.txt.html();
+
+        if (teacherDescribeEditor.txt.html() == "") {
+            ShowPNotify("教师介绍不能为空");
+            return
+        }
+        courseEntity.teacherDescribe = teacherDescribeEditor.txt.html();
+        courseEntity.tips = tipsEditor.txt.html();
+
+        $.ajax({
+            type: "post",
+            url: "/Course/Edit",
+            data: {
+                courseTypeId: courseEntity.courseTypeId,
+                title: courseEntity.title,
+                describe: courseEntity.describe,
+                coverImage: courseEntity.coverImage,
+                coverVideo: courseEntity.coverVideo,
+                teacherDescribe: courseEntity.teacherDescribe,
+                videoUrl: courseEntity.videoUrl,
+                tips: courseEntity.tips,
+                price: courseEntity.price,
+                courseId: courseEntity.courseId,
+                isDel: courseEntity.isDel
+            },
+            dataType: "json",
+            success: function (result) {
+                if (result.code == "200") {
+                    window.location.href = "/Course/List";
+                }
+                else {
+                    ShowPNotify(result.msg)
+                }
+            },
+            error: function () {
+                ShowPNotify("请求错误")
+            },
+            complete: function (res) {
+                $("body").mLoading("hide");
+            }
+        });
+
+    }
+
+    var E = window.wangEditor
+
+    var describeEditor = new E('#describe')
+
+    describeEditor.customConfig.customUploadImg = function (files, insert) {
+        // files 是 input 中选中的文件列表
+        // insert 是获取图片 url 后，插入到编辑器的方法
+        var file = files[0]
+        var suffix = MimeToSuffix(file.type)//文件后缀
+
+        var arr = ['.jpeg', '.png', '.gif', '.bmp'];
+        if (arr.indexOf(suffix) == -1) {
+            ShowPNotify("课程介绍文件类型错误")
+            return
+        }
+
+        var bucket = "image"//存放的存储空间
+        $.when(GetQiNiuToken(bucket)).done(function (defer) {
+            var reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function (e) {
+                blob = DataURItoBlob(e.target.result);
+                var token
+                var key
+                var blob
+
+                token = defer
+
+                var guid = new GUID();
+                key = guid.newGUID();
+
+                var putExtra = {
+                    fname: "",  //文件原文件名
+                    params: {}, //用来放置自定义变量
+                    mimeType: null  //用来限制上传文件类型，为 null 时表示不对文件类型限制；限制类型放到数组里： ["image/png", "image/jpeg", "image/gif"]
+                };
+
+                var config = {
+                    useCdnDomain: true,   //表示是否使用 cdn 加速域名，为布尔值，true 表示使用，默认为 false。
+                    region: qiniu.region.z2     // 根据具体提示修改上传地区,当为 null 或 undefined 时，自动分析上传域名区域
+                };
+
+                var observable = qiniu.upload(blob, key + suffix, token, putExtra, config)
+                new PNotify({
+                    title: '课程介绍文件上传中!',
+                    text: '请等待...',
+                    type: 'info',
+                    delay: 1000,
+                    styling: 'bootstrap3',
+                    addclass: 'dark'
+                });
+                var subscription = observable.subscribe({
+                    next: (res) => {
+
+                    },
+                    error: (err) => {
+                        // 失败报错信息
+                        ShowPNotify(err);
+                    },
+                    complete: (res) => {
+                        // 接收成功后返回的信息
+                        ShowSuccessPNotify("课程介绍文件上传完成")
+                        insert(GetQiNiuDomain(bucket) + res.key)
+                    }
+                })
+            }
+        });
+    }
+
+    //editor.customConfig.uploadFileName = 'files'
+    //editor.customConfig.uploadImgServer = '/Home/UploadFile'  // 上传图片到服务器
+    // 隐藏“网络图片”tab
+    describeEditor.customConfig.showLinkImg = false
+    describeEditor.create()
+
+    var teacherDescribeEditor = new E('#teacherDescribe')
+
+    teacherDescribeEditor.customConfig.customUploadImg = function (files, insert) {
+        // files 是 input 中选中的文件列表
+        // insert 是获取图片 url 后，插入到编辑器的方法
+        var file = files[0]
+        var suffix = MimeToSuffix(file.type)//文件后缀
+
+        var arr = ['.jpeg', '.png', '.gif', '.bmp'];
+        if (arr.indexOf(suffix) == -1) {
+            ShowPNotify("教师介绍文件类型错误")
+            return
+        }
+
+        var bucket = "image"//存放的存储空间
+        $.when(GetQiNiuToken(bucket)).done(function (defer) {
+            var reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function (e) {
+                blob = DataURItoBlob(e.target.result);
+                var token
+                var key
+                var blob
+
+                token = defer
+
+                var guid = new GUID();
+                key = guid.newGUID();
+
+                var putExtra = {
+                    fname: "",  //文件原文件名
+                    params: {}, //用来放置自定义变量
+                    mimeType: null  //用来限制上传文件类型，为 null 时表示不对文件类型限制；限制类型放到数组里： ["image/png", "image/jpeg", "image/gif"]
+                };
+
+                var config = {
+                    useCdnDomain: true,   //表示是否使用 cdn 加速域名，为布尔值，true 表示使用，默认为 false。
+                    region: qiniu.region.z2     // 根据具体提示修改上传地区,当为 null 或 undefined 时，自动分析上传域名区域
+                };
+
+                var observable = qiniu.upload(blob, key + suffix, token, putExtra, config)
+                new PNotify({
+                    title: '教师介绍文件上传中!',
+                    text: '请等待...',
+                    type: 'info',
+                    delay: 1000,
+                    styling: 'bootstrap3',
+                    addclass: 'dark'
+                });
+                var subscription = observable.subscribe({
+                    next: (res) => {
+
+                    },
+                    error: (err) => {
+                        // 失败报错信息
+                        ShowPNotify(err);
+                    },
+                    complete: (res) => {
+                        // 接收成功后返回的信息
+                        ShowSuccessPNotify("教师介绍文件上传完成")
+                        insert(GetQiNiuDomain(bucket) + res.key)
+                    }
+                })
+            }
+        });
+    }
+
+    //editor.customConfig.uploadFileName = 'files'
+    //editor.customConfig.uploadImgServer = '/Home/UploadFile'  // 上传图片到服务器
+    // 隐藏“网络图片”tab
+    teacherDescribeEditor.customConfig.showLinkImg = false
+    teacherDescribeEditor.create()
+
+    var tipsEditor = new E('#tips')
+
+    tipsEditor.customConfig.customUploadImg = function (files, insert) {
+        // files 是 input 中选中的文件列表
+        // insert 是获取图片 url 后，插入到编辑器的方法
+        var file = files[0]
+        var suffix = MimeToSuffix(file.type)//文件后缀
+
+        var arr = ['.jpeg', '.png', '.gif', '.bmp'];
+        if (arr.indexOf(suffix) == -1) {
+            ShowPNotify("提示文件类型错误")
+            return
+        }
+
+        var bucket = "image"//存放的存储空间
+        $.when(GetQiNiuToken(bucket)).done(function (defer) {
+            var reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function (e) {
+                blob = DataURItoBlob(e.target.result);
+                var token
+                var key
+                var blob
+
+                token = defer
+
+                var guid = new GUID();
+                key = guid.newGUID();
+
+                var putExtra = {
+                    fname: "",  //文件原文件名
+                    params: {}, //用来放置自定义变量
+                    mimeType: null  //用来限制上传文件类型，为 null 时表示不对文件类型限制；限制类型放到数组里： ["image/png", "image/jpeg", "image/gif"]
+                };
+
+                var config = {
+                    useCdnDomain: true,   //表示是否使用 cdn 加速域名，为布尔值，true 表示使用，默认为 false。
+                    region: qiniu.region.z2     // 根据具体提示修改上传地区,当为 null 或 undefined 时，自动分析上传域名区域
+                };
+
+                var observable = qiniu.upload(blob, key + suffix, token, putExtra, config)
+                new PNotify({
+                    title: '提示介绍文件上传中!',
+                    text: '请等待...',
+                    type: 'info',
+                    delay: 1000,
+                    styling: 'bootstrap3',
+                    addclass: 'dark'
+                });
+                var subscription = observable.subscribe({
+                    next: (res) => {
+
+                    },
+                    error: (err) => {
+                        // 失败报错信息
+                        ShowPNotify(err);
+                    },
+                    complete: (res) => {
+                        // 接收成功后返回的信息
+                        ShowSuccessPNotify("提示介绍文件上传完成")
+                        insert(GetQiNiuDomain(bucket) + res.key)
+                    }
+                })
+            }
+        });
+    }
+
+    //editor.customConfig.uploadFileName = 'files'
+    //editor.customConfig.uploadImgServer = '/Home/UploadFile'  // 上传图片到服务器
+    // 隐藏“网络图片”tab
+    tipsEditor.customConfig.showLinkImg = false
+    tipsEditor.create()
+
+
+</script>
+

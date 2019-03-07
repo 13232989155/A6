@@ -1,13 +1,13 @@
 ﻿
 @{
-    ViewData["Title"] = "查看官方案例";
+    ViewData["Title"] = "查看课程详细";
 }
 
-@model Entity.CaseOfficialEntity;
+@model Entity.CourseEntity;
 
 <div class="page-title">
     <div class="title_left">
-        <h3>查看官方案例</h3>
+        <h3>查看课程详细</h3>
     </div>
 </div>
 <div class="row">
@@ -37,25 +37,7 @@
                             ID <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" value="@Model.caseOfficialId" disabled class="form-control col-md-7 col-xs-12">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                            用户ID <span class="required">*</span>
-                        </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" value="@Model.userId" disabled class="form-control col-md-7 col-xs-12">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                            用户名称 <span class="required">*</span>
-                        </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" value="@Model.name" disabled class="form-control col-md-7 col-xs-12">
+                            <input type="text" value="@Model.courseId" disabled class="form-control col-md-7 col-xs-12">
                         </div>
                     </div>
 
@@ -64,7 +46,74 @@
                             标题 <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <textarea class="form-control" rows="5" disabled>@Model.title</textarea>
+                            <input type="text" value="@Model.title" disabled class="form-control col-md-7 col-xs-12">
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            价格(保留两位小数) <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" value="@Model.price" disabled class="form-control col-md-7 col-xs-12">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            课程分类 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" value="@Model.courseTypeId" disabled class="form-control col-md-7 col-xs-12">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            课程视频 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="x_panel">
+                                    <div class="x_content">
+
+                                        <div class="bs-example" data-example-id="simple-jumbotron">
+                                            <video controls="controls" style="width:100%">
+                                                <source src="@Model.videoUrl" type="video/mp4" />
+                                                <source src="@Model.videoUrl" type="video/webm" />
+                                                <source src="@Model.videoUrl" type="video/ogg" />
+                                            </video>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            课程封面视频 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="x_panel">
+                                    <div class="x_content">
+
+                                        <div class="bs-example" data-example-id="simple-jumbotron">
+                                            <video controls="controls" style="width:100%">
+                                                <source src="@Model.coverVideo" type="video/mp4" />
+                                                <source src="@Model.coverVideo" type="video/webm" />
+                                                <source src="@Model.coverVideo" type="video/ogg" />
+                                            </video>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -97,11 +146,33 @@
 
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                            内容 <span class="required">*</span>
+                            课程介绍 <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <div id="contents">
-                                @Html.Raw(Model.contents)
+                            <div id="describe">
+                                @Html.Raw(Model.describe)
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            教师介绍 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div id="teacherDescribe">
+                                @Html.Raw(Model.teacherDescribe)
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            提示 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div id="tips">
+                                @Html.Raw(Model.tips)
                             </div>
                         </div>
                     </div>
@@ -150,17 +221,28 @@
 <script src="~/js/wangEditor.js"></script>
 <script type="text/javascript">
     //
-    $("#liCaseOfficialList").addClass("current-page");
-    $("#ulCase").show();
+    $("#liCourseList").addClass("current-page");
+    $("#ulCourse").show();
 
     var E = window.wangEditor
-    var editor = new E('#contents')
 
+
+    var describeEditor = new E('#describe')
     // 隐藏“网络图片”tab
-    editor.customConfig.showLinkImg = false
-    editor.create()
+    describeEditor.customConfig.showLinkImg = false
+    describeEditor.create()
+    describeEditor.$textElem.attr('contenteditable', false)
 
-    editor.$textElem.attr('contenteditable', false)
+    var teacherDescribeEditor = new E('#teacherDescribe')
+    // 隐藏“网络图片”tab
+    teacherDescribeEditor.customConfig.showLinkImg = false
+    teacherDescribeEditor.create()
+    teacherDescribeEditor.$textElem.attr('contenteditable', false)
 
+    var tipsEditor = new E('#tips')
+    // 隐藏“网络图片”tab
+    tipsEditor.customConfig.showLinkImg = false
+    tipsEditor.create()
+    tipsEditor.$textElem.attr('contenteditable', false)
 </script>
 

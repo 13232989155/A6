@@ -243,6 +243,7 @@ namespace Api.Controllers
         /// <param name="caseId">*</param>
         /// <returns></returns>
         [HttpPost]
+        [SkipCheckLogin]
         public JsonResult GetById([FromForm] string token, [FromForm] int caseId)
         {
             DataResult dr = new DataResult();
@@ -250,7 +251,7 @@ namespace Api.Controllers
             {
                 CaseBLL caseBLL = new CaseBLL();
                 CaseEntity caseEntity = caseBLL.GetById(caseId);
-                UserEntity userEntity = this.GetUserByToken(token);
+                
                 CommentBLL commentBLL = new CommentBLL();
                 caseEntity.commentCount = commentBLL.ListByTypeAndObjId((int)Entity.TypeEnumEntity.TypeEnum.案例, caseEntity.caseId).Count();
 
@@ -258,9 +259,14 @@ namespace Api.Controllers
                 List<EndorseEntity> endorseEntities = endorseBLL.ListByTypeAndObjId((int)Entity.TypeEnumEntity.TypeEnum.案例, caseEntity.caseId);
 
                 caseEntity.endorseCount = endorseEntities.Count();
-                if (endorseEntities.ToList().Exists(it => it.userId == userEntity.userId))
+                UserEntity userEntity = new UserEntity();
+                if (!string.IsNullOrWhiteSpace(token))
                 {
-                    caseEntity.isEndorse = true;
+                    userEntity = this.GetUserByToken(token);
+                    if (endorseEntities.ToList().Exists(it => it.userId == userEntity.userId))
+                    {
+                        caseEntity.isEndorse = true;
+                    }
                 }
 
                 CaseStepBLL caseStepBLL = new CaseStepBLL();
