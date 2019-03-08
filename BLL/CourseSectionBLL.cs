@@ -22,7 +22,7 @@ namespace BLL
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public List<CourseSectionEntity> ListByCourse(int id)
+        public List<CourseSectionEntity> ListByCourseId(int id)
         {
             return ActionDal.ActionDBAccess.Queryable<CourseSectionEntity>().Where(it => it.courseId == id).ToList();
         }

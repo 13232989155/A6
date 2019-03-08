@@ -31,7 +31,7 @@ namespace Admin.Controllers
             DataResult dataResult = new DataResult();
             try
             {
-                List<CourseSectionEntity> courseSectionEntities = courseSectionBLL.ListByCourse(id);
+                List<CourseSectionEntity> courseSectionEntities = courseSectionBLL.ListByCourseId(id);
                 dataResult.data = courseSectionEntities;
                 dataResult.code = "200";
             }

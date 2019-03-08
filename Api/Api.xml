@@ -216,6 +216,65 @@
             <param name="commentReplyId">回复评论ID*</param>
             <returns></returns>
         </member>
+        <member name="T:Api.Controllers.CourseBannerController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Api.Controllers.CourseBannerController.List(System.String)">
+            <summary>
+            获取课程Banner列表
+            </summary>
+            <param name="token"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Api.Controllers.CourseController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Api.Controllers.CourseController.PageList(System.String,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            获取课程列表
+            </summary>
+            <param name="token"></param>
+            <param name="courseTypeId"></param>
+            <param name="pageNumber"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Api.Controllers.CourseController.GetById(System.String,System.Int32)">
+            <summary>
+            根据课程获取详细内容
+            </summary>
+            <param name="token"></param>
+            <param name="courseId">*</param>
+            <returns></returns>
+        </member>
+        <member name="T:Api.Controllers.CourseRecommendController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Api.Controllers.CourseRecommendController.List(System.String)">
+            <summary>
+            获取课程推荐列表
+            </summary>
+            <param name="token"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Api.Controllers.CourseTypeController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Api.Controllers.CourseTypeController.List(System.String)">
+            <summary>
+            获取课程分类列表
+            </summary>
+            <param name="token"></param>
+            <returns></returns>
+        </member>
         <member name="T:Api.Controllers.EndorseController">
             <summary>
             

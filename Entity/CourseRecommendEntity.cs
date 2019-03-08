@@ -58,5 +58,11 @@ namespace Entity
         [SugarColumn(IsIgnore = true)]
         public List<CourseRecommendCorrelationEntity> courseRecommendCorrelationEntities { set; get; }
 
+        /// <summary>
+        /// 课程列表
+        /// </summary>
+        [SugarColumn(IsIgnore = true)]
+        public List<CourseEntity> courseEntities { set; get; }
+
     }
 }
