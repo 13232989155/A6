@@ -43,10 +43,10 @@
 
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                            标题 <span class="required">*</span>
+                            名称 <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" v-model="title" class="form-control col-md-7 col-xs-12">
+                            <input type="text" v-model="name" class="form-control col-md-7 col-xs-12">
                         </div>
                     </div>
 
@@ -371,7 +371,7 @@
 
     var courseEntity = {
         courseTypeId: "",
-        title: "",
+        name: "",
         describe: "",
         coverImage: "",
         coverVideo: "",
@@ -388,7 +388,7 @@
         data: courseEntity,
         beforeCreate: function () {
 
-            courseEntity.title = "@Html.Raw(Model.title)"
+            courseEntity.name = "@Html.Raw(Model.name)"
             courseEntity.coverImage = "@Html.Raw(Model.coverImage)"
             courseEntity.describe = ""
             courseEntity.courseTypeId = "@Html.Raw(Model.courseTypeId)"
@@ -425,8 +425,8 @@
 
     function Save() {
 
-        if (courseEntity.title == "") {
-            ShowPNotify("标题不能为空");
+        if (courseEntity.name == "") {
+            ShowPNotify("名称不能为空");
             return
         }
 
@@ -463,7 +463,7 @@
             url: "/Course/Edit",
             data: {
                 courseTypeId: courseEntity.courseTypeId,
-                title: courseEntity.title,
+                name: courseEntity.name,
                 describe: courseEntity.describe,
                 coverImage: courseEntity.coverImage,
                 coverVideo: courseEntity.coverVideo,

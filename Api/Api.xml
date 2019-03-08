@@ -459,6 +459,14 @@
             <param name="code"></param>
             <returns></returns>
         </member>
+        <member name="M:Api.Controllers.UserController.PhonePasswordLogin(System.String,System.String)">
+            <summary>
+            手机号码和密码登录
+            </summary>
+            <param name="phone"></param>
+            <param name="password"></param>
+            <returns></returns>
+        </member>
         <member name="M:Api.Controllers.UserController.ExaminePhoneAndCode(System.String,System.String)">
             <summary>
             检查手机号码

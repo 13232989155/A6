@@ -29,7 +29,14 @@ namespace Entity
         /// Default:
         /// Nullable:False
         /// </summary>           
-        public string title { get; set; }
+        public string name { get; set; }
+
+        /// <summary>
+        /// Desc:
+        /// Default:
+        /// Nullable:False
+        /// </summary>        
+        public int adminId{ get;set; }
 
         /// <summary>
         /// Desc:
@@ -44,6 +51,12 @@ namespace Entity
         /// Nullable:False
         /// </summary>           
         public DateTime modifyDate { get; set; }
+
+        /// <summary>
+        /// 推荐课程列表
+        /// </summary>
+        [SugarColumn(IsIgnore = true)]
+        public List<CourseRecommendCorrelationEntity> courseRecommendCorrelationEntities { set; get; }
 
     }
 }

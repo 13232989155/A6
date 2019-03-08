@@ -1,10 +1,10 @@
 ﻿
 @{
-    ViewData["Title"] = "创建课程分类";
+    ViewData["Title"] = "创建课程推荐";
 }
 <div class="page-title">
     <div class="title_left">
-        <h3>创建课程分类</h3>
+        <h3>创建课程推荐</h3>
     </div>
 </div>
 <link href="~/css/pnotify.css" rel="stylesheet" />
@@ -59,36 +59,36 @@
 <script src="~/js/a6admin.js"></script>
 <script type="text/javascript">
     //
-    $("#liCourseTypeList").addClass("current-page");
+    $("#liCourseRecommendList").addClass("current-page");
     $("#ulCourse").show();
 
-    var courseTypeEntity = {
+    var courseRecommendEntity = {
         name: ""
     }
 
     var adminVue = new Vue({
         el: "#example",
-        data: courseTypeEntity
+        data: courseRecommendEntity
     })
 
     function Save() {
 
-        if (courseTypeEntity.name == "") {
+        if (courseRecommendEntity.name == "") {
             ShowPNotify("名称不能为空");
             return
         }
 
         $.ajax({
             type: "post",
-            url: "/CourseType/Create",
+            url: "/CourseRecommend/Create",
             data: {
-                name: courseTypeEntity.name
+                name: courseRecommendEntity.name
             },
             dataType: "json",
             success: function (result) {
 
                 if (result.code == "200") {
-                    window.location.href = "/CourseType/List";
+                    window.location.href = "/CourseRecommend/List";
                 }
                 else {
                     ShowPNotify(result.msg)

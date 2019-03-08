@@ -65,14 +65,14 @@ namespace Admin.Controllers
         /// <param name="courseEntity"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult<DataResult> Create([Bind("courseTypeId, title, describe, coverImage, coverVideo, teacherDescribe, videoUrl, tips, price")] CourseEntity courseEntity)
+        public ActionResult<DataResult> Create([Bind("courseTypeId, name, describe, coverImage, coverVideo, teacherDescribe, videoUrl, tips, price")] CourseEntity courseEntity)
         {
             DataResult dataResult = new DataResult();
 
             try
             {
 
-                if (string.IsNullOrWhiteSpace(courseEntity.title))
+                if (string.IsNullOrWhiteSpace(courseEntity.name))
                 {
                     dataResult.code = "201";
                     dataResult.msg = "标题不能为空";
@@ -107,7 +107,7 @@ namespace Admin.Controllers
                     state = 1,
                     teacherDescribe = courseEntity.teacherDescribe ?? "",
                     tips = courseEntity.tips ?? "",
-                    title = courseEntity.title,
+                    name = courseEntity.name,
                     videoUrl = courseEntity.videoUrl
                 };
 
@@ -155,13 +155,13 @@ namespace Admin.Controllers
         /// <param name="adminEntity"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult<DataResult> Edit([Bind("courseTypeId, title, describe, coverImage, coverVideo, teacherDescribe, videoUrl, tips, price, isDel, courseId")] CourseEntity courseEntity)
+        public ActionResult<DataResult> Edit([Bind("courseTypeId, name, describe, coverImage, coverVideo, teacherDescribe, videoUrl, tips, price, isDel, courseId")] CourseEntity courseEntity)
         {
             DataResult dataResult = new DataResult();
 
             try
             {
-                if (string.IsNullOrWhiteSpace(courseEntity.title))
+                if (string.IsNullOrWhiteSpace(courseEntity.name))
                 {
                     dataResult.code = "201";
                     dataResult.msg = "标题不能为空";
@@ -193,7 +193,7 @@ namespace Admin.Controllers
                 course.price = courseEntity.price == 0 ? -1 : courseEntity.price;
                 course.teacherDescribe = courseEntity.teacherDescribe ?? "";
                 course.tips = courseEntity.tips ?? "";
-                course.title = courseEntity.title ?? "";
+                course.name = courseEntity.name ?? "";
                 course.videoUrl = courseEntity.videoUrl;
 
                 int rows = courseBLL.ActionDal.ActionDBAccess.Updateable(course).ExecuteCommand();
@@ -237,6 +237,49 @@ namespace Admin.Controllers
             int rows = courseBLL.ActionDal.ActionDBAccess.Updateable(course).ExecuteCommand();
 
             return RedirectToAction("List");
+        }
+
+
+
+        /// <summary>
+        /// 视频章节列表
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public IActionResult SectionList(int id)
+        {
+            return View(id);
+        }
+
+
+        /// <summary>
+        /// 获取全部课程
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult<DataResult> ListCourse()
+        {
+            DataResult dataResult = new DataResult();
+
+            try
+            {
+                List<CourseEntity> courseEntities = courseBLL.ActionDal.ActionDBAccess.Queryable<CourseEntity>()
+                                                    .Where(it => it.isDel == false)
+                                                    .ToList();
+
+                dataResult.data = courseEntities;
+                dataResult.code = "200";
+                dataResult.msg = "成功";
+            }
+            catch (Exception e)
+            {
+                dataResult.code = "999";
+                dataResult.msg = e.Message;
+                return dataResult;
+            }
+
+            return dataResult;
+
         }
 
     }

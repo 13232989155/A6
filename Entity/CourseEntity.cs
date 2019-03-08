@@ -36,7 +36,7 @@ namespace Entity
         /// Default:
         /// Nullable:False
         /// </summary>           
-        public string title { get; set; }
+        public string name { get; set; }
 
         /// <summary>
         /// Desc:课程描述
@@ -121,6 +121,13 @@ namespace Entity
         /// Nullable:False
         /// </summary>           
         public DateTime modifyDate { get; set; }
+
+
+        /// <summary>
+        /// 章节
+        /// </summary>
+        [SugarColumn(IsIgnore = true)]
+        public List<CourseSectionEntity> courseSectionEntities { set; get; }
 
     }
 }

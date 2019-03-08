@@ -20,7 +20,8 @@ namespace Entity
         /// Desc:
         /// Default:
         /// Nullable:False
-        /// </summary>           
+        /// </summary>         
+        [SugarColumn(IsPrimaryKey = true, IsIdentity = true)]
         public int courseSectionId { get; set; }
 
         /// <summary>
@@ -35,7 +36,7 @@ namespace Entity
         /// Default:
         /// Nullable:False
         /// </summary>           
-        public string title { get; set; }
+        public string name { get; set; }
 
         /// <summary>
         /// Desc:

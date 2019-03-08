@@ -1,10 +1,13 @@
 ﻿
 @{
-    ViewData["Title"] = "创建课程分类";
+    ViewData["Title"] = "编辑课程推荐";
+
 }
+@model Entity.CourseRecommendEntity
+
 <div class="page-title">
     <div class="title_left">
-        <h3>创建课程分类</h3>
+        <h3>编辑课程推荐</h3>
     </div>
 </div>
 <link href="~/css/pnotify.css" rel="stylesheet" />
@@ -28,7 +31,16 @@
             </div>
             <div id="example" class="x_content">
                 <br>
-                <form asp-action="Create" id="demo-form2" class="form-horizontal form-label-left">
+                <form asp-action="Edit" id="demo-form2" class="form-horizontal form-label-left">
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            ID <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" v-model="courseRecommendId" readonly class="form-control col-md-7 col-xs-12">
+                        </div>
+                    </div>
 
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">
@@ -43,7 +55,7 @@
 
                     <div class="form-group">
                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                            <button class="btn btn-primary" onclick="Save()" type="button">创建</button>
+                            <button class="btn btn-primary" onclick="Save()" type="button">保存</button>
                             <a asp-action="List" class="btn btn-info">返回列表</a>
                         </div>
                     </div>
@@ -59,36 +71,42 @@
 <script src="~/js/a6admin.js"></script>
 <script type="text/javascript">
     //
-    $("#liCourseTypeList").addClass("current-page");
+    $("#liCourseRecommendList").addClass("current-page");
     $("#ulCourse").show();
 
-    var courseTypeEntity = {
-        name: ""
+    var courseRecommendEntity = {
+        name: "",
+        courseRecommendId: ""
     }
 
     var adminVue = new Vue({
         el: "#example",
-        data: courseTypeEntity
+        data: courseRecommendEntity,
+        beforeCreate: function () {
+            courseRecommendEntity.name = "@Html.Raw(Model.name)"
+            courseRecommendEntity.courseRecommendId = "@Html.Raw(Model.courseRecommendId)"
+        }
     })
 
     function Save() {
-
-        if (courseTypeEntity.name == "") {
+        if (courseRecommendEntity.name == "") {
             ShowPNotify("名称不能为空");
             return
         }
 
         $.ajax({
             type: "post",
-            url: "/CourseType/Create",
+            url: "/CourseRecommend/Edit",
             data: {
-                name: courseTypeEntity.name
+                name: courseRecommendEntity.name,
+                courseRecommendId: courseRecommendEntity.courseRecommendId,
+               
             },
             dataType: "json",
             success: function (result) {
 
                 if (result.code == "200") {
-                    window.location.href = "/CourseType/List";
+                    window.location.href = "/CourseRecommend/List";
                 }
                 else {
                     ShowPNotify(result.msg)
@@ -101,7 +119,6 @@
     }
 
 
-
-
 </script>
+
 

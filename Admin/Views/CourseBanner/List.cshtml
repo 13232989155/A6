@@ -1,15 +1,15 @@
 ﻿
 @{
-    ViewData["Title"] = "课程列表";
+    ViewData["Title"] = "课程Banner列表";
 }
 
 
-@model X.PagedList.IPagedList<Entity.CourseEntity>
+@model X.PagedList.IPagedList<Entity.CourseBannerEntity>
 @using X.PagedList.Mvc.Core;
 
 <div class="page-title">
     <div class="title_left">
-        <h3>课程列表</h3>
+        <h3>课程Banner列表</h3>
     </div>
 </div>
 
@@ -82,11 +82,9 @@
                                 <thead>
                                     <tr role="row">
                                         <th>ID</th>
-                                        <th>分类ID</th>
-                                        <th>名称</th>
-                                        <th>价格</th>
-                                        <th>是否删除</th>
-                                        <th>管理员ID</th>
+                                        <th>课程ID</th>
+                                        <th>标题</th>
+                                        <th>管理员</th>
                                         <th>创建时间</th>
                                         <th>修改时间</th>
                                         <th>操作</th>
@@ -97,22 +95,18 @@
                                     @foreach (var item in Model)
                                     {
                                         <tr role="row" class="odd">
+                                            <td>@item.courseBannerId</td>
                                             <td>@item.courseId</td>
-                                            <td>@item.courseTypeId</td>
-                                            <td>@item.name</td>
-                                            <td>@item.price</td>
-                                            <td>@(item.isDel ? "是" : "否")</td>
+                                            <td>@item.title</td>
                                             <td>@item.adminId</td>
                                             <td>@item.createDate</td>
                                             <td>@item.modifyDate</td>
                                             <td style="text-align:center">
-                                                <a asp-action="Detail" asp-route-id="@item.courseId" title="查看" class="dropdown-toggle"><i class="fa fa-search"></i></a>
+                                                <a asp-action="Detail" asp-route-id="@item.courseBannerId" title="查看" class="dropdown-toggle"><i class="fa fa-search"></i></a>
                                                 &nbsp;&nbsp;
-                                                <a asp-action="Edit" asp-route-id="@item.courseId" title="编辑" class="dropdown-toggle"><i class="fa fa-pencil"></i></a>
+                                                <a asp-action="Edit" asp-route-id="@item.courseBannerId" title="编辑" class="dropdown-toggle"><i class="fa fa-pencil"></i></a>
                                                 &nbsp;&nbsp;
-                                                <a asp-action="SectionList" asp-route-id="@item.courseId" title="课程章节" class="dropdown-toggle"><i class="fa fa-book"></i></a>
-                                                &nbsp;&nbsp;
-                                                <a href="#" onclick="OnClickDelete( @item.courseId )" data-toggle="modal" data-target=".bs-example-modal-sm" title="删除" class="dropdown-toggle"><i class="fa fa-close"></i></a>
+                                                <a href="#" onclick="OnClickDelete( @item.courseBannerId )" data-toggle="modal" data-target=".bs-example-modal-sm" title="删除" class="dropdown-toggle"><i class="fa fa-close"></i></a>
                                                 &nbsp;&nbsp;
                                             </td>
                                         </tr>
@@ -165,8 +159,8 @@
 
 <script type="text/javascript">
 
-    function OnClickDelete(id) {
-        $("#DeleteId").attr("href", "/Course/Delete?id=" + id);
+    function OnClickDelete( id) {
+        $("#DeleteId").attr("href", "/CourseBanner/Delete?id=" + id);
     }
 
 </script>

@@ -204,6 +204,66 @@ namespace Api.Controllers
         }
 
         /// <summary>
+        /// 手机号码和密码登录
+        /// </summary>
+        /// <param name="phone"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        [SkipCheckLogin]
+        [HttpPost]
+        public JsonResult PhonePasswordLogin([FromForm] string phone, [FromForm] string password)
+        {
+
+            DataResult dr = new DataResult();
+            try
+            {
+                if (string.IsNullOrWhiteSpace(phone) || phone.Length != 11)
+                {
+                    dr.code = "201";
+                    dr.msg = "手机号码错误";
+                    return Json(dr);
+                }
+                UserEntity user = userBLL.GetByPhoneAndPassword(phone, Helper.DataEncrypt.DataMd5( password));
+
+                if (user == null)
+                {
+                    dr.code = "201";
+                    dr.msg = "手机号码或密码错误错误";
+                    return Json(dr);
+                }
+
+                UserTokenBLL userTokenBLL = new UserTokenBLL();
+                UserTokenEntity userTokenEntity = userTokenBLL.GetByUserId(user.userId);
+                UserTokenEntity userToken = new UserTokenEntity();
+
+                if (userTokenEntity == null)
+                {
+                    userToken = userTokenBLL.Create(user.userId);
+                }
+                else
+                {
+                    userToken = userTokenBLL.Update(userTokenEntity);
+                }
+
+                LoginResult loginResult = new LoginResult();
+                loginResult.token = userToken.token;
+                loginResult.userEntity = user;
+
+                dr.code = "200";
+                dr.data = loginResult;
+
+            }
+            catch (Exception ex)
+            {
+                dr.code = "999";
+                dr.msg = ex.Message;
+            }
+
+            return Json(dr);
+
+        }
+
+        /// <summary>
         /// 检查手机号码
         /// </summary>
         /// <param name="phone"></param>

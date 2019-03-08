@@ -1,0 +1,355 @@
+﻿
+@{
+    ViewData["Title"] = "课程章节列表";
+}
+
+@model int;
+<link href="~/css/pnotify.css" rel="stylesheet" />
+<link href="~/css/jquery.mloading.css" rel="stylesheet" />
+<link href="~/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet" />
+<div class="page-title">
+    <div class="title_left">
+        <h3>课程章节列表</h3>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2><small></small></h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle"><i class="fa fa-wrench"></i></a>
+                    </li>
+                    <li>
+                        <a class="close-link"><i class="fa fa-close"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div id="example" class="x_content">
+                <br>
+                <form asp-action="Create" id="demo-form2" class="form-horizontal form-label-left">
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            ID <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" value="@Model" disabled class="form-control col-md-7 col-xs-12">
+                        </div>
+                    </div>
+
+                    <br />
+                    <div class="row">
+
+                        <template v-for="(item, index) in courseSectionEntities">
+
+                            <div class="col-md-3 col-xs-12 widget widget_tally_box">
+                                <div class="x_panel">
+                                    <div class="x_title">
+                                        <h2>
+                                            {{item.courseSectionId}}
+                                        </h2>
+                                        <ul class="nav navbar-right panel_toolbox">
+                                            <li>
+                                                <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                            </li>
+                                            <li class="dropdown">
+                                                <a v-on:click="UpdateCourseSection( index)" class="dropdown-toggle"><i class="fa fa-video-camera"></i></a>
+                                            </li>
+                                            <li>
+                                                <a class="close-link" v-on:click="DeleteCourseSection( index)"><i class="fa fa-close"></i></a>
+                                            </li>
+                                        </ul>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="x_content" style="display: block;">
+                                        <div style="text-align: center; margin-bottom: 17px">
+
+                                            <template v-if="item.videoUrl !== ''">
+                                                <video controls="controls" style="width:100%">
+                                                    <source :src="item.videoUrl" type="video/mp4" />
+                                                    <source :src="item.videoUrl" type="video/webm" />
+                                                    <source :src="item.videoUrl" type="video/ogg" />
+                                                </video>
+                                            </template>
+
+                                        </div>
+
+                                        <div class="divider"></div>
+
+                                        <div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                                                    名称
+                                                </label>
+                                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                                    <input type="text" v-model="item.name" class="form-control col-md-7 col-xs-12">
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group" style="text-align:center">
+                                                <button v-on:click="SaveCourseSection(index)" type="button" class="btn btn-info">保存</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </template>
+
+                        <div class="col-md-3 col-sm-3 col-xs-12">
+                            <div class="x_panel tile fixed_height_320">
+                                <div class="x_content">
+                                    <div class="flex" style="justify-content:center; align-items:center;text-align:center">
+                                        <input id="fileVideo" type="file" style="width:0; height:0" accept="video/mp4" />
+                                        <h3 class="name">
+                                            <label>
+                                                &nbsp;
+                                            </label>
+                                        </h3>
+                                        <h3 class="name">
+                                            <label onclick="AddCourseSection()" style="cursor:pointer">
+                                                <i class="fa fa-plus fa-5x"></i>
+                                            </label>
+                                        </h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="ln_solid"></div>
+
+                    <div class="form-group">
+                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                            <a asp-action="List" class="btn btn-info">返回列表</a>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/pnotify.js"></script>
+<script src="~/js/vue.js"></script>
+<script src="~/js/a6admin.js"></script>
+<script src="~/js/jquery.mloading.js"></script>
+<script src="~/js/qiniu.min.js"></script>
+<script src="~/js/bootstrap-progressbar.min.js"></script>
+<script src="~/js/wangEditor.js"></script>
+<script type="text/javascript">
+    //
+    $("#liCourseList").addClass("current-page");
+    $("#ulCourse").show();
+
+    $(document).ready(function () {
+        $("#fileVideo").on("change", function (e) {
+            GetFileVideoUrl(e)
+        });
+    });
+
+    //获取视频文件地址
+    function GetFileVideoUrl(e) {
+        var file = e.currentTarget.files[0];
+        var suffix = MimeToSuffix(file.type)//文件后缀
+        if (suffix != ".mp4") {
+            ShowPNotify("文件类型错误")
+            return
+        }
+        courseEntity.courseSectionEntities[courseEntity.index].videoUrl = ""
+        $("body").mLoading("show");//显示loading组件
+        var bucket = "video"//存放的存储空间
+        $.when(GetQiNiuToken(bucket)).done(function (defer) {
+            var reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function (e) {
+                blob = DataURItoBlob(e.target.result);
+                $("body").mLoading("hide");
+                var token
+                var key
+                var blob
+
+                token = defer
+
+                var guid = new GUID();
+                key = guid.newGUID();
+
+                var putExtra = {
+                    fname: "",  //文件原文件名
+                    params: {}, //用来放置自定义变量
+                    mimeType: null  //用来限制上传文件类型，为 null 时表示不对文件类型限制；限制类型放到数组里： ["image/png", "image/jpeg", "image/gif"]
+                };
+
+                var config = {
+                    useCdnDomain: true,   //表示是否使用 cdn 加速域名，为布尔值，true 表示使用，默认为 false。
+                    region: qiniu.region.z2     // 根据具体提示修改上传地区,当为 null 或 undefined 时，自动分析上传域名区域
+                };
+
+                var observable = qiniu.upload(blob, key + suffix, token, putExtra, config)
+                new PNotify({
+                    title: '提示介绍文件上传中!',
+                    text: '请等待...',
+                    type: 'info',
+                    delay: 3000,
+                    styling: 'bootstrap3',
+                    addclass: 'dark'
+                });
+                var subscription = observable.subscribe({
+                    next: (res) => {
+
+                    },
+                    error: (err) => {
+                        // 失败报错信息
+                        ShowPNotify(err);
+                    },
+                    complete: (res) => {
+                        // 接收成功后返回的信息
+                        ShowSuccessPNotify("文件上传完成")
+                        courseEntity.courseSectionEntities[courseEntity.index].videoUrl = GetQiNiuDomain(bucket) + res.key
+                    }
+                })
+            }
+        });
+    }
+
+    var courseEntity = {
+        courseId: "",
+        courseSectionEntities: [],
+        index:0
+    }
+
+    var courseVue = new Vue({
+        el: "#example",
+        data: courseEntity,
+        beforeCreate: function () {
+            courseEntity.courseId = "@Html.Raw(Model)"
+            ListSection()
+        },
+        methods: {
+            DeleteCourseSection: function (e) {
+                if (courseEntity.courseSectionEntities[e].courseSectionId != 0) {
+                    DeleteCourseSection(courseEntity.courseSectionEntities[e].courseSectionId)
+                } else {
+                    courseEntity.courseSectionEntities.splice(e, 1)
+                }
+            },
+            UpdateCourseSection: function (e) {
+                $("#fileVideo").trigger("click");
+                courseEntity.index = e
+            },
+            SaveCourseSection: function (e) {
+                CreateCourseSection(e)
+            }
+        }
+    })
+
+    //获取章节
+    function ListSection() {
+        $.ajax({
+            type: "post",
+            url: "/CourseSection/List",
+
+            data: {
+                id: "@Model"
+            },
+            dataType: "json",
+            success: function (result) {
+                if (result.code == "200") {
+                    courseEntity.courseSectionEntities = result.data;
+                }
+                else {
+                    ShowPNotify(result.msg)
+                }
+            },
+            error: function () {
+                ShowPNotify("请求错误")
+            }
+        });
+    }
+
+    //增加空数组
+    function AddCourseSection() {
+        var obj = {
+            courseId: courseEntity.courseId,
+            name: "",
+            videoUrl: "",
+            courseSectionId: 0
+        }
+        courseEntity.courseSectionEntities.push(obj)
+    }
+
+    //删除
+    function DeleteCourseSection( id) {
+        $.ajax({
+            type: "post",
+            url: "/CourseSection/Delete",
+
+            data: {
+                id: id
+            },
+            dataType: "json",
+            success: function (result) {
+                if (result.code == "200") {
+                    ShowSuccessPNotify("删除成功")
+                    ListSection()
+                }
+                else {
+                    ShowPNotify(result.msg)
+                }
+            },
+            error: function () {
+                ShowPNotify("请求错误")
+            }
+        });
+    }
+
+    //保存
+    function CreateCourseSection(e) {
+        var obj  = courseEntity.courseSectionEntities[e]
+
+        if ( obj.videoUrl == "") {
+            ShowPNotify("视频不能为空")
+            return
+        }
+
+        $.ajax({
+            type: "post",
+            url: "/CourseSection/Create",
+
+            data: {
+                courseId: obj.courseId,
+                name: obj.name,
+                videoUrl: obj.videoUrl,
+                courseSectionId: obj.courseSectionId
+            },
+            dataType: "json",
+            success: function (result) {
+                if (result.code == "200") {
+                    ShowSuccessPNotify("保存成功")
+                    ListSection();
+                }
+                else {
+                    ShowPNotify(result.msg)
+                }
+            },
+            error: function () {
+                ShowPNotify("请求错误")
+            }
+        });
+
+
+
+    }
+
+</script>
+
+
+

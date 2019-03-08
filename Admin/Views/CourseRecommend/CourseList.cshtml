@@ -1,0 +1,199 @@
+﻿
+@{
+    ViewData["Title"] = "设置课程推荐";
+}
+@model Entity.CourseRecommendEntity;
+
+<div class="page-title">
+    <div class="title_left">
+        <h3>设置课程推荐</h3>
+    </div>
+</div>
+<link href="~/css/pnotify.css" rel="stylesheet" />
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2><small></small></h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle"><i class="fa fa-wrench"></i></a>
+                    </li>
+                    <li>
+                        <a class="close-link"><i class="fa fa-close"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div id="example" class="x_content">
+                <br>
+                <form id="demo-form2" class="form-horizontal form-label-left">
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            ID <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" disabled value="@Model.courseRecommendId" class="form-control col-md-7 col-xs-12">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            标题 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" disabled value="@Model.name" class="form-control col-md-7 col-xs-12">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            课程列表 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+
+                            <template v-for="(item, index) in courseEntities">
+
+                                <div class="checkbox">
+                                    <label>
+                                        <input :value="item.courseId" v-model="checkIdInts" type="checkbox"> {{item.name}}
+                                    </label>
+                                </div>
+
+                            </template>
+
+                        </div>
+                    </div>
+
+
+                    <div class="ln_solid"></div>
+
+                    <div class="form-group">
+                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                            <button class="btn btn-primary" onclick="Save()" type="button">确定</button>
+                            <a asp-action="List" class="btn btn-info">返回列表</a>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/pnotify.js"></script>
+<script src="~/js/vue.js"></script>
+<script src="~/js/a6admin.js"></script>
+<script type="text/javascript">
+    //
+    $("#liCourseRecommendList").addClass("current-page");
+    $("#ulCourse").show();
+
+    var data = {
+        courseRecommendId: "",
+        checkIdInts: [],
+        courseEntities: []
+    }
+
+    var dataVue = new Vue({
+        el: "#example",
+        data: data,
+        beforeCreate: function () {
+            var courseRecommendId = @Model.courseRecommendId;
+            data.courseRecommendId = courseRecommendId;
+            $.ajax({
+                type: "post",
+                url: "/CourseRecommend/ListById",
+                data: {
+                    id: courseRecommendId
+                },
+                dataType: "json",
+                success: function (result) {
+                    if (result.code == "200") {
+                        ListCourse(result.data)
+                    }
+                    else {
+                        ShowPNotify(result.msg)
+                    }
+                },
+                error: function () {
+                    ShowPNotify("请求错误")
+                }
+            });
+
+
+        }
+    })
+
+    function ListCourse(courseRecommendCorrelationEntities) {
+
+        $.ajax({
+            type: "post",
+            url: "/Course/ListCourse",
+            dataType: "json",
+            success: function (result) {
+                if (result.code == "200") {
+                    data.courseEntities = result.data
+
+                    var idInts = Array()
+
+                    for (var item of result.data) {
+                        idInts.push(item.courseId)
+                    }
+
+                    var checkIdInts = Array()
+                    if (typeof( courseRecommendCorrelationEntities) == "object") {
+                        for (var it of courseRecommendCorrelationEntities) {
+                            var obj = idInts.find((itt) => {
+                                return itt == it.courseId
+                            })
+                            if (obj > 10000) {
+                                checkIdInts.push(obj)
+                            }
+                        }
+                    }
+                    data.checkIdInts = checkIdInts
+                }
+                else {
+                    ShowPNotify(result.msg)
+                }
+            },
+            error: function () {
+                ShowPNotify("请求错误")
+            }
+        });
+    }
+
+    function Save() {
+
+        $.ajax({
+            type: "post",
+            url: "/CourseRecommend/CourseList",
+            data: {
+                courseRecommendId: data.courseRecommendId,
+                courseIdInts: data.checkIdInts
+            },
+            dataType: "json",
+            success: function (result) {
+                if (result.code == "200") {
+                    window.location.href = "/CourseRecommend/List";
+                }
+                else {
+                    ShowPNotify(result.msg)
+                }
+            },
+            error: function () {
+                ShowPNotify("请求错误")
+            }
+        });
+    }
+
+
+
+
+</script>
+

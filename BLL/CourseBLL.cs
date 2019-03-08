@@ -20,7 +20,7 @@ namespace BLL
         {
             IPagedList<CourseEntity> courseEntities = ActionDal.ActionDBAccess.Queryable<CourseEntity>()
                                                   .WhereIF(!string.IsNullOrWhiteSpace(searchString), it => it.tips.Contains(searchString)
-                                                     || it.title.Contains(searchString)
+                                                     || it.name.Contains(searchString)
                                                      || SqlFunc.ToString(it.courseId).Contains(searchString))
                                                   .OrderBy(it => it.createDate, OrderByType.Desc)
                                                   .Select( it => new CourseEntity
@@ -28,7 +28,7 @@ namespace BLL
                                                       adminId = it.adminId,
                                                       courseId = it.courseId,
                                                       courseTypeId = it.courseTypeId,
-                                                      title = it.title,
+                                                      name = it.name,
                                                       isDel = it.isDel,
                                                       state = it.state,
                                                       createDate = it.createDate,

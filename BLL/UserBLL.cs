@@ -151,5 +151,16 @@ namespace BLL
 
             return ActionDal.ActionDBAccess.Insertable(userEntity).ExecuteCommand();
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="phone"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        public UserEntity GetByPhoneAndPassword(string phone, string password)
+        {
+            return ActionDal.ActionDBAccess.Queryable<UserEntity>().Where(it => it.phone == phone && it.password == password).First();
+        }
     }
 }
