@@ -298,6 +298,37 @@
             <param name="type">类型*:1 说说；2 案例; 3 官方案例;</param>
             <returns></returns>
         </member>
+        <member name="T:Api.Controllers.EnshrineController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Api.Controllers.EnshrineController.List(System.String,Entity.TypeEnumEntity.TypeEnum)">
+            <summary>
+            获取收藏列表
+            </summary>
+            <param name="token">*</param>
+            <param name="typeId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Api.Controllers.EnshrineController.Create(System.String,System.Int32,Entity.TypeEnumEntity.TypeEnum)">
+            <summary>
+            收藏
+            </summary>
+            <param name="token">*</param>
+            <param name="objId">*</param>
+            <param name="typeId">案例：2；官方案例：3；课程：4；</param>
+            <returns></returns>
+        </member>
+        <member name="M:Api.Controllers.EnshrineController.Delete(System.String,System.Int32,Entity.TypeEnumEntity.TypeEnum)">
+            <summary>
+            取消
+            </summary>
+            <param name="token">*</param>
+            <param name="objId">*</param>
+            <param name="typeId">案例：2；官方案例：3；课程：4；</param>
+            <returns></returns>
+        </member>
         <member name="T:Api.Controllers.FansController">
             <summary>
             

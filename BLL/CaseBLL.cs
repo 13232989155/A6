@@ -60,6 +60,26 @@ namespace BLL
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="caseOfficialIdInts"></param>
+        /// <returns></returns>
+        public List<CaseOfficialEntity> ListByCaseOfficialIdInts(int[] caseOfficialIdInts)
+        {
+            return SetCaseOfficialUser(caseOfficialIdInts);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="caseIdInts"></param>
+        /// <returns></returns>
+        public List<CaseEntity> ListByCaseIdInts(int[] caseIdInts)
+        {
+            return SetCaseUser(caseIdInts);
+        }
+
+        /// <summary>
         /// 获取最新的说说和案例
         /// </summary>
         /// <param name="pageNumber"></param>

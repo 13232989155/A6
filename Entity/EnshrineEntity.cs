@@ -46,13 +46,6 @@ namespace Entity
         public int objId { get; set; }
 
         /// <summary>
-        /// Desc:是否删除
-        /// Default:0
-        /// Nullable:False
-        /// </summary>           
-        public bool isDel { get; set; }
-
-        /// <summary>
         /// Desc:收藏时间
         /// Default:DateTime.Now
         /// Nullable:False
@@ -60,11 +53,16 @@ namespace Entity
         public DateTime createDate { get; set; }
 
         /// <summary>
-        /// Desc:取消收藏时间
-        /// Default:DateTime.Now
-        /// Nullable:False
-        /// </summary>           
-        public DateTime modifyDate { get; set; }
+        /// 案例
+        /// </summary>
+        [SugarColumn(IsIgnore = true)]
+        public CaseEntity caseEntity { set; get; }
+
+        /// <summary>
+        /// 官方案例
+        /// </summary>
+        [SugarColumn(IsIgnore = true)]
+        public CaseOfficialEntity caseOfficialEntity { set; get; }
 
     }
 }
