@@ -251,6 +251,49 @@
             <param name="courseId">*</param>
             <returns></returns>
         </member>
+        <member name="T:Api.Controllers.CourseOrderController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Api.Controllers.CourseOrderController.courseOrderBLL">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Api.Controllers.CourseOrderController._client">
+            <summary>
+            微信支付请求客户端(用于处理请求与其响应)
+            </summary>
+        </member>
+        <member name="M:Api.Controllers.CourseOrderController.#ctor(Essensoft.AspNetCore.Payment.WeChatPay.IWeChatPayClient)">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Api.Controllers.CourseOrderController.Create(System.String,System.Int32)">
+            <summary>
+            创建订单并支付
+            </summary>
+            <param name="token">*</param>
+            <param name="courseId">*</param>
+            <returns></returns>
+        </member>
+        <member name="M:Api.Controllers.CourseOrderController.Get(System.String,System.Int32)">
+            <summary>
+            查询课程是否已购买
+            </summary>
+            <param name="token">*</param>
+            <param name="courseId">*</param>
+            <returns></returns>
+        </member>
+        <member name="M:Api.Controllers.CourseOrderController.ListByUserId(System.String)">
+            <summary>
+            查看已购买的课程
+            </summary>
+            <param name="token">*</param>
+            <returns></returns>
+        </member>
         <member name="T:Api.Controllers.CourseRecommendController">
             <summary>
             
@@ -541,6 +584,13 @@
             <param name="code"></param>
             <returns></returns>
         </member>
+        <member name="M:Api.Controllers.UserController.CreateWxUser(WeChat.WxUserEntity)">
+            <summary>
+            创建微信用户
+            </summary>
+            <param name="wxUserEntity"></param>
+            <returns></returns>
+        </member>
         <member name="M:Api.Controllers.UserController.PhoneLogin(System.String,System.String)">
             <summary>
             手机号码登录
@@ -629,6 +679,38 @@
             
             </summary>
             <param name="id"></param>
+        </member>
+        <member name="T:Api.Controllers.WeChatController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Api.Controllers.WeChatController.#ctor(Essensoft.AspNetCore.Payment.WeChatPay.IWeChatPayNotifyClient)">
+            <summary>
+            
+            </summary>
+            <param name="client"></param>
+        </member>
+        <member name="M:Api.Controllers.WeChatController.CoursePayNotify">
+            <summary>
+            微信支付结果通知
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Api.Models.CoursePayResult">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Api.Models.CoursePayResult.courseOrderEntity">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Api.Models.CoursePayResult.payResult">
+            <summary>
+            
+            </summary>
         </member>
         <member name="T:Api.Models.DataResult">
             <summary>

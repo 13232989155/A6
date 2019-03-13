@@ -12,12 +12,12 @@ namespace WeChat
         /// <summary>
         /// AppID
         /// </summary>
-        private static readonly string AppID = "wxc793d8dfec06bf31";
+        public static readonly string AppID = "wxc793d8dfec06bf31";
 
         /// <summary>
         /// AppSecret
         /// </summary>
-        private static readonly string AppSecret = "5834ca5c640d3ab421db1dde33005d51";
+        public static readonly string AppSecret = "5834ca5c640d3ab421db1dde33005d51";
 
 
         /// <summary>

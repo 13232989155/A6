@@ -1,5 +1,6 @@
 ﻿using BLL;
 using Entity;
+using Essensoft.AspNetCore.Payment.WeChatPay;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;

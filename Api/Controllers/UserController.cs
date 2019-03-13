@@ -94,7 +94,7 @@ namespace Api.Controllers
 
                 if (wxUser == null)
                 {
-                    int rows = wxUserBLL.CreateWxUser(wxUserEntity);
+                    int rows = CreateWxUser(wxUserEntity);
                     if (rows > 0)
                     {
                         dr.code = "201";
@@ -138,6 +138,56 @@ namespace Api.Controllers
             }
 
             return Json(dr);
+        }
+
+        /// <summary>
+        /// 创建微信用户
+        /// </summary>
+        /// <param name="wxUserEntity"></param>
+        /// <returns></returns>
+        private int CreateWxUser(WeChat.WxUserEntity wxUserEntity)
+        {
+            UserEntity userEntity = new UserEntity()
+            {
+                account = "",
+                address = "",
+                birthday = Helper.ConvertHelper.DEFAULT_DATE,
+                createDate = DateTime.Now,
+                email = "",
+                forbidden = false,
+                gender = Convert.ToInt32(wxUserEntity.sex),
+                grade = 1,
+                integral = 1000,
+                modifyDate = DateTime.Now,
+                name = wxUserEntity.nickname,
+                password = "",
+                phone = "",
+                portrait = wxUserEntity.headimgurl,
+                remark = "",
+                signature = "",
+                state = -1,
+                type = -1
+            };
+
+            UserEntity user = userBLL.ActionDal.ActionDBAccess.Insertable(userEntity).ExecuteReturnEntity();
+
+            Entity.WxUserEntity wxUser = new Entity.WxUserEntity()
+            {
+                avatarUrl = wxUserEntity.headimgurl,
+                city = wxUserEntity.city,
+                country = wxUserEntity.country,
+                createDate = DateTime.Now,
+                gender = wxUserEntity.sex,
+                modifyDate = DateTime.Now,
+                nickName = wxUserEntity.nickname,
+                openId = wxUserEntity.openid,
+                province = wxUserEntity.province,
+                unionId = wxUserEntity.unionId ?? "",
+                userId = user.userId
+            };
+            int rows = userBLL.ActionDal.ActionDBAccess.Insertable(wxUser).ExecuteCommand();
+
+            return rows;
         }
 
         /// <summary>

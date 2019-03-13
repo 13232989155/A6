@@ -282,5 +282,72 @@ namespace Admin.Controllers
 
         }
 
+
+
+        /// <summary>
+        /// 每节汇总统计
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult<DataResult> CourseSectionStatistics()
+        {
+            DataResult dataResult = new DataResult();
+
+            try
+            {
+                List<CourseEntity> courseEntities = courseBLL.ActionDal.ActionDBAccess.Queryable<CourseEntity>()
+                                                    .Where(it => it.isDel == false)
+                                                    .ToList();
+
+                dataResult.data = courseEntities;
+                dataResult.code = "200";
+                dataResult.msg = "成功";
+            }
+            catch (Exception e)
+            {
+                dataResult.code = "999";
+                dataResult.msg = e.Message;
+                return dataResult;
+            }
+
+            return dataResult;
+
+        }
+
+        /// <summary>
+        /// 每天汇总统计
+        /// </summary>
+        /// <param name="staDate"></param>
+        /// <param name="endDate"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult<DataResult> CourseDayStatistics( DateTime staDate, DateTime endDate)
+        {
+            DataResult dataResult = new DataResult();
+
+            try
+            {
+                List<CourseEntity> courseEntities = courseBLL.ActionDal.ActionDBAccess.Queryable<CourseEntity>()
+                                                    .Where(it => it.isDel == false)
+                                                    .ToList();
+
+                dataResult.data = courseEntities;
+                dataResult.code = "200";
+                dataResult.msg = "成功";
+            }
+            catch (Exception e)
+            {
+                dataResult.code = "999";
+                dataResult.msg = e.Message;
+                return dataResult;
+            }
+
+            return dataResult;
+
+        }
+
+
+
+
     }
 }

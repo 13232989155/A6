@@ -27,7 +27,7 @@ namespace Admin.Controllers
 
             AdminBLL adminBLL = new AdminBLL();
 
-            //adminBLL.ActionDal.ActionDBAccess.DbFirst.Where("t_course_banner").CreateClassFile("c:\\A6");
+            //adminBLL.ActionDal.ActionDBAccess.DbFirst.Where("t_course_order").CreateClassFile("c:\\A6");
             //adminBLL.ActionDal.ActionDBAccess.DbFirst.Where("t_course_recommend_correlation").CreateClassFile("c:\\A6");
             //adminBLL.ActionDal.ActionDBAccess.DbFirst.Where("t_course_section").CreateClassFile("c:\\A6");
             //adminBLL.ActionDal.ActionDBAccess.DbFirst.Where("t_course_type").CreateClassFile("c:\\A6");
