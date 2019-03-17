@@ -1,5 +1,225 @@
 ﻿@{
     ViewData["Title"] = "主页";
 }
+<link href="~/css/pnotify.css" rel="stylesheet" />
+<link href="~/css/daterangepicker.css" rel="stylesheet" />
 
-首页
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>课程每天汇总统计</h2>
+
+                <div class="col-md-4">
+                    <form class="form-horizontal">
+                        <fieldset>
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class="input-prepend input-group">
+                                        <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
+                                        <input type="text" style="width: 200px" name="staDateAndEndDate" id="staDateAndEndDate" class="form-control" value="">
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                    </li>
+                    <li>
+                        <a class="close-link"><i class="fa fa-close"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div id="CourseDayStatistics" style="height: 350px; -webkit-tap-highlight-color: transparent; user-select: none; position: relative; background-color: transparent;" _echarts_instance_="ec_1552462880868">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>每节汇总统计</h2>
+
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                    </li>
+                    <li>
+                        <a class="close-link"><i class="fa fa-close"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div id="CourseSectionStatistics" style="height: 350px; -webkit-tap-highlight-color: transparent; user-select: none; position: relative; background-color: transparent;" _echarts_instance_="ec_1552462880868">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/moment.min.js"></script>
+<script src="~/js/daterangepicker.js"></script>
+<script src="~/js/echarts.min.js"></script>
+<script src="~/js/pnotify.js"></script>
+<script src="~/js/a6admin.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        var nowDate = new Date()
+        var staDate = addDate(nowDate, -7)
+        var endDate = addDate(nowDate, 0)
+        $("#staDateAndEndDate").val(staDate + " - " + endDate)
+        GetCourseDayStatistics(staDate, endDate)
+        $("#staDateAndEndDate").daterangepicker(null,
+            function (a, b) {
+                GetCourseDayStatistics(a.toISOString(), b.toISOString())
+            })
+        GetCourseSectionStatistics()
+
+    });
+
+    var dayChart = echarts.init(document.getElementById("CourseDayStatistics"));
+    dayChart.setOption({
+        title: {
+            text: "课程每天汇总统计"
+        },
+        tooltip: {
+            trigger: "axis"
+        },
+        toolbox: {
+            show: !1
+        },
+        calculable: !1,
+        xAxis: {
+            type: 'category',
+            data: []
+        },
+        yAxis: {
+            type: 'value',
+            axisLabel: { formatter: '{value} ￥' }
+        },
+        series: [{
+            data: [],
+            type: 'line',
+            smooth: true,
+            name: '销售额',
+            itemStyle: {
+                normal: {
+                    label: {
+                        show: true
+                    }
+                }
+            }
+        }]
+    })
+
+    var sectionChart = echarts.init(document.getElementById('CourseSectionStatistics'));
+    sectionChart.setOption({
+        title: {
+            text: '每节汇总统计'
+        },
+        tooltip: {},
+        xAxis: {
+            data: []
+        },
+        yAxis: {
+            type: 'value',
+            axisLabel: { formatter: '{value} ￥' }
+        },
+        series: [{
+            name: '销售额',
+            type: 'bar',
+            data: [],
+            itemStyle: {
+                normal: {
+                    label: {
+                        show: true
+                    }
+                }
+            }
+        }]
+    });
+
+    //每天汇总统计
+    function GetCourseDayStatistics(staDate, endDate) {
+
+        $.ajax({
+            type: "post",
+            url: "/Course/CourseDayStatistics",
+            data: {
+                staDate: staDate,
+                endDate: endDate
+            },
+            dataType: "json",
+            success: function (result) {
+
+                if (result.code == "200") {
+                    dayChart.setOption({
+                        xAxis: {
+                            data: result.data.xAxis
+                        },
+                        series: [{
+                            data: result.data.yAxis
+                        }]
+                    });
+                }
+                else {
+                    ShowPNotify(result.msg)
+                }
+            },
+            error: function () {
+                ShowPNotify("请求错误")
+            }
+        });
+    }
+
+    //每节汇总统计
+    function GetCourseSectionStatistics() {
+        $.ajax({
+            type: "post",
+            url: "/Course/CourseSectionStatistics",
+            dataType: "json",
+            success: function (result) {
+
+                if (result.code == "200") {
+                    sectionChart.setOption({
+                        xAxis: {
+                            data: result.data.xAxis
+                        },
+                        series: [{
+                            data: result.data.yAxis
+                        }]
+                    });
+                }
+                else {
+                    ShowPNotify(result.msg)
+                }
+            },
+            error: function () {
+                ShowPNotify("请求错误")
+            }
+        });
+    }
+
+
+
+
+</script>

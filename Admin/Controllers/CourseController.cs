@@ -7,7 +7,9 @@ using Admin.Models;
 using BLL;
 using Entity;
 using Microsoft.AspNetCore.Mvc;
+using SqlSugar;
 using X.PagedList;
+using static Admin.Models.EChartsResult;
 
 namespace Admin.Controllers
 {
@@ -283,7 +285,6 @@ namespace Admin.Controllers
         }
 
 
-
         /// <summary>
         /// 每节汇总统计
         /// </summary>
@@ -295,11 +296,34 @@ namespace Admin.Controllers
 
             try
             {
-                List<CourseEntity> courseEntities = courseBLL.ActionDal.ActionDBAccess.Queryable<CourseEntity>()
-                                                    .Where(it => it.isDel == false)
+                List<int> courseEntities = courseBLL.ActionDal.ActionDBAccess.Queryable<CourseEntity>()
+                                                    .Select(it => it.courseId)
                                                     .ToList();
 
-                dataResult.data = courseEntities;
+                Dictionary<string, string> keyValuePairs = new Dictionary<string, string>();
+
+                courseEntities.ForEach( it => 
+                {
+                    keyValuePairs.Add(it.ToString(), "0");
+                });
+
+
+                List<KeyValuePair<string, string>> keyValues = courseBLL.ActionDal.ActionDBAccess.Queryable<CourseOrderEntity>()
+                            .Where(it => it.state == 2 )
+                            .GroupBy(it => it.courseId)
+                            .Select<KeyValuePair<string, string>>("courseId, SUM(realTotal) as realTotal")
+                            .ToList();
+
+                keyValues.ForEach(it =>
+               {
+                   keyValuePairs[it.Key] = Math.Round(Convert.ToDouble(it.Value), 2).ToString();
+               });
+
+                LineResult lineResult = new LineResult();
+                lineResult.xAxis = keyValuePairs.Keys.ToList();
+                lineResult.yAxis = keyValuePairs.Values.ToList();
+                dataResult.data = lineResult;
+
                 dataResult.code = "200";
                 dataResult.msg = "成功";
             }
@@ -327,11 +351,29 @@ namespace Admin.Controllers
 
             try
             {
-                List<CourseEntity> courseEntities = courseBLL.ActionDal.ActionDBAccess.Queryable<CourseEntity>()
-                                                    .Where(it => it.isDel == false)
-                                                    .ToList();
+                Dictionary<string, string> keyValuePairs = new Dictionary<string, string>();
+                for ( var d = staDate; d <= endDate;)
+                {
+                    keyValuePairs.Add(d.ToString("MM/dd/yyyy"), "0");
+                    d = d.AddDays(1);
+                }
 
-                dataResult.data = courseEntities;
+                List<KeyValuePair<string, string>> keyValues = courseBLL.ActionDal.ActionDBAccess.Queryable<CourseOrderEntity>()
+                            .Where(it => it.state == 2 && SqlFunc.Between(it.payDate, staDate, endDate.AddDays(1)))
+                            .GroupBy(it => it.payDate)
+                            .Select<KeyValuePair<string, string>>("payDate, SUM(realTotal) as realTotal")
+                            .ToList();
+      
+                keyValues.ForEach(it =>
+               {
+                   keyValuePairs[Convert.ToDateTime(it.Key).ToString("MM/dd/yyyy")] = Math.Round(Convert.ToDouble( it.Value), 2).ToString();
+
+               });
+
+                LineResult lineResult = new LineResult();
+                lineResult.xAxis = keyValuePairs.Keys.ToList();
+                lineResult.yAxis = keyValuePairs.Values.ToList();
+                dataResult.data = lineResult;
                 dataResult.code = "200";
                 dataResult.msg = "成功";
             }
@@ -345,8 +387,6 @@ namespace Admin.Controllers
             return dataResult;
 
         }
-
-
 
 
     }
