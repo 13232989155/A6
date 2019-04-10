@@ -243,11 +243,18 @@
             <param name="pageSize"></param>
             <returns></returns>
         </member>
-        <member name="M:Api.Controllers.CourseController.GetById(System.String,System.Int32)">
+        <member name="M:Api.Controllers.CourseController.GetById(System.Int32)">
+            <summary>
+            根据课程ID获取介绍
+            </summary>
+            <param name="courseId">*</param>
+            <returns></returns>
+        </member>
+        <member name="M:Api.Controllers.CourseController.GetDetailById(System.String,System.Int32)">
             <summary>
             根据课程获取详细内容
             </summary>
-            <param name="token"></param>
+            <param name="token">*</param>
             <param name="courseId">*</param>
             <returns></returns>
         </member>
@@ -261,12 +268,7 @@
             
             </summary>
         </member>
-        <member name="F:Api.Controllers.CourseOrderController._client">
-            <summary>
-            微信支付请求客户端(用于处理请求与其响应)
-            </summary>
-        </member>
-        <member name="M:Api.Controllers.CourseOrderController.#ctor(Essensoft.AspNetCore.Payment.WeChatPay.IWeChatPayClient)">
+        <member name="M:Api.Controllers.CourseOrderController.#ctor(PaySharp.Core.IGateways)">
             <summary>
             
             </summary>
@@ -679,23 +681,6 @@
             
             </summary>
             <param name="id"></param>
-        </member>
-        <member name="T:Api.Controllers.WeChatController">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:Api.Controllers.WeChatController.#ctor(Essensoft.AspNetCore.Payment.WeChatPay.IWeChatPayNotifyClient)">
-            <summary>
-            
-            </summary>
-            <param name="client"></param>
-        </member>
-        <member name="M:Api.Controllers.WeChatController.CoursePayNotify">
-            <summary>
-            微信支付结果通知
-            </summary>
-            <returns></returns>
         </member>
         <member name="T:Api.Models.CoursePayResult">
             <summary>

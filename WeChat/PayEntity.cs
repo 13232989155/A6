@@ -21,7 +21,7 @@ namespace WeChat
         //随机字符串
         public static string nonceStr = PayHelper.GetRandomString(32);
         //通知地址 (异步接收微信支付结果通知的回调地址，通知url必须为外网可访问的url，不能携带参数。)
-        public static string notifyUrl = "https://jy.geekann.com/api/WxChat/CoursePayNotify";
+        public static string notifyUrl = "https://jyadmin.geekann.com/WeChat/CoursePayNotify";
         //终端IP
         public static string ip = PayHelper.GetIp();
         //交易类型

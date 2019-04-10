@@ -25,7 +25,7 @@ namespace BLL
             {
                 contents = contents ?? "",
                 createDate = DateTime.Now,
-                img = img,
+                img = img ?? "",
                 isDel = false,
                 modifyDate = DateTime.Now,
                 shareTopicId = shareTopicId,

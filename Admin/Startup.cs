@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using PaySharp.Wechatpay;
 
 namespace Admin
 {
@@ -29,6 +30,23 @@ namespace Admin
             //    options.CheckConsentNeeded = context => true;
             //    options.MinimumSameSitePolicy = SameSiteMode.None;
             //});
+
+
+            services.AddPaySharp(a =>
+            {
+                var wechatpayMerchant = new Merchant
+                {
+                    AppId = WeChat.LoginHelper.AppID,
+                    MchId = WeChat.PayEntity.MchId,
+                    Key = WeChat.PayEntity.Key,
+                    AppSecret = WeChat.LoginHelper.AppSecret,
+                    SslCertPath = "",
+                    SslCertPassword = "",
+                    NotifyUrl = WeChat.PayEntity.notifyUrl
+                };
+                a.Add(new WechatpayGateway(wechatpayMerchant));
+                a.UseWechatpay(Configuration);
+            });
 
             services.AddDistributedMemoryCache();
 
@@ -64,6 +82,8 @@ namespace Admin
                     name: "default",
                     template: "{controller=Login}/{action=Login}/{id?}");
             });
+
+            app.UsePaySharp();
         }
     }
 }

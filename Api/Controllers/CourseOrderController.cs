@@ -6,11 +6,13 @@ using Api.Base;
 using Api.Models;
 using BLL;
 using Entity;
-using Essensoft.AspNetCore.Payment.WeChatPay;
-using Essensoft.AspNetCore.Payment.WeChatPay.Request;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using PaySharp.Core;
+using PaySharp.Wechatpay;
+using PaySharp.Wechatpay.Domain;
+using PaySharp.Wechatpay.Request;
 
 namespace Api.Controllers
 {
@@ -27,18 +29,15 @@ namespace Api.Controllers
         /// </summary>
         private CourseOrderBLL courseOrderBLL = null;
 
-        /// <summary>
-        /// 微信支付请求客户端(用于处理请求与其响应)
-        /// </summary>
-        private readonly IWeChatPayClient _client;
+        private readonly IGateway _gateway;
 
         /// <summary>
         /// 
         /// </summary>
-        public CourseOrderController(IWeChatPayClient client)
+        public CourseOrderController(IGateways gateways)
         {
             courseOrderBLL = new CourseOrderBLL();
-            _client = client;
+             _gateway = gateways.Get<WechatpayGateway>();
         }
 
         /// <summary>
@@ -99,33 +98,16 @@ namespace Api.Controllers
                 CoursePayResult coursePayResult = new CoursePayResult();
                 coursePayResult.courseOrderEntity = courseOrder;
 
+                var request = new AppPayRequest();
+                request.AddGatewayData(new AppPayModel()
+                {
+                    Body = "购买课程" + courseEntity.name,
+                    TotalAmount = Convert.ToInt32( courseOrder.orderTotal * 100),
+                    OutTradeNo = courseOrder.orderNo
+                });
 
-                var request = new WeChatPayUnifiedOrderRequest
-                {
-                    Body = WeChat.PayEntity.body,
-                    OutTradeNo = courseOrder.orderNo,
-                    TotalFee = Convert.ToInt32((courseOrder.orderTotal * 100)),
-                    SpbillCreateIp = WeChat.PayEntity.ip,
-                    NotifyUrl = WeChat.PayEntity.notifyUrl,
-                    TradeType = "APP",
-                    Attach = WeChat.PayEntity.attach
-                };
-                var response = await _client.ExecuteAsync(request);
-
-                if (response.ReturnCode == "SUCCESS" && response.ResultCode == "SUCCESS")
-                {
-                    var req = new WeChatPayAppCallPaymentRequest
-                    {
-                        PrepayId = response.PrepayId
-                    };
-                    var parameter = _client.ExecuteAsync(req);
-                    // 将参数(parameter)给 ios/android端 让他调起微信APP(https://pay.weixin.qq.com/wiki/doc/api/app/app.php?chapter=8_5)
-                    coursePayResult.payResult = JsonConvert.SerializeObject(parameter);
-                }
-                else
-                {
-                    coursePayResult.payResult = "获取预支付id失败";
-                }
+                var response = _gateway.Execute(request);
+                coursePayResult.payResult = response.OrderInfo;
 
                 dr.code = "200";
                 dr.msg = "成功";

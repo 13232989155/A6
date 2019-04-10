@@ -43,7 +43,7 @@ namespace Api.Controllers
             try
             {
 
-                if (string.IsNullOrWhiteSpace(img) || shareTypeId == 0)
+                if ((string.IsNullOrWhiteSpace(img) && string.IsNullOrWhiteSpace(contents)) || shareTypeId == 0)
                 {
                     dr.code = "201";
                     dr.msg = "参数错误";

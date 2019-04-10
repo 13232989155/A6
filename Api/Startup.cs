@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Api.Models;
-using Essensoft.AspNetCore.Payment.WeChatPay;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -12,7 +11,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using PaySharp.Wechatpay;
 using Swashbuckle.AspNetCore.Swagger;
+
 
 namespace Api
 {
@@ -43,22 +44,20 @@ namespace Api
         public void ConfigureServices(IServiceCollection services)
         {
 
-            // 引入HttpClient
-            services.AddHttpClient();
-
-            // 可在添加依赖注入时设置参数 一般设置 AppId、MchId、Key，其余默认即可.
-            // 退款、转账等需要双向证书的API 需要配置 Certificate 参数，将.p12证书文件转成base64串写入即可.
-            // 如：
-            services.AddWeChatPay(opt =>
+            services.AddPaySharp(a =>
             {
-                // 此处为 公众号AppId、小程序AppId、企业号corpid、微信开放平台应用AppId
-                opt.AppId = WeChat.LoginHelper.AppID;
-
-                // 微信支付商户号
-                opt.MchId = WeChat.PayEntity.MchId;
-
-                // API密钥
-                opt.Key = WeChat.PayEntity.Key;
+                var wechatpayMerchant = new Merchant
+                {
+                    AppId = WeChat.LoginHelper.AppID,
+                    MchId = WeChat.PayEntity.MchId,
+                    Key = WeChat.PayEntity.Key,
+                    AppSecret = WeChat.LoginHelper.AppSecret,
+                    SslCertPath = "",
+                    SslCertPassword = "",
+                    NotifyUrl = WeChat.PayEntity.notifyUrl
+                };
+                a.Add(new WechatpayGateway(wechatpayMerchant));
+                a.UseWechatpay(Configuration);
             });
 
             services.AddMvc(options => options.Filters.Add(new LoginAuthorizeAttribute())).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
@@ -83,6 +82,9 @@ namespace Api
             {
                 app.UseDeveloperExceptionPage();
             }
+
+
+
             //启用中间件服务生成Swagger作为JSON终结点
             app.UseSwagger();
             //启用中间件服务对swagger-ui，指定Swagger JSON终结点
@@ -92,7 +94,8 @@ namespace Api
             });
             app.UseMvc();
 
-           
+            app.UsePaySharp();
+
         }
     }
 }

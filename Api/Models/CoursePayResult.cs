@@ -21,5 +21,7 @@ namespace Api.Models
         /// 
         /// </summary>
         public string payResult { set; get; }
+
     }
+
 }
