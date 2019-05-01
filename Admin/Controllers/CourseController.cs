@@ -304,6 +304,57 @@ namespace Admin.Controllers
         }
 
 
+
+        /// <summary>
+        /// 每天汇总统计
+        /// </summary>
+        /// <param name="staDate"></param>
+        /// <param name="endDate"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult<DataResult> CourseDayStatistics(DateTime staDate, DateTime endDate)
+        {
+            DataResult dataResult = new DataResult();
+
+            try
+            {
+                Dictionary<string, string> keyValuePairs = new Dictionary<string, string>();
+                for (var d = staDate; d <= endDate;)
+                {
+                    keyValuePairs.Add(d.ToString("MM/dd/yyyy"), "0");
+                    d = d.AddDays(1);
+                }
+
+                List<KeyValuePair<string, string>> keyValues = courseBLL.ActionDal.ActionDBAccess.Queryable<CourseOrderEntity>()
+                            .Where(it => it.state == 2 && SqlFunc.Between(it.payDate, staDate, endDate.AddDays(1)))
+                            .GroupBy("CONVERT( varchar(10),payDate, 103) ")
+                            .Select<KeyValuePair<string, string>>("CONVERT( varchar(10),payDate, 103) AS payDate, SUM(realTotal) AS realTotal")
+                            .ToList();
+
+                keyValues.ForEach(it =>
+                {
+                    keyValuePairs[it.Key] = Math.Round(Convert.ToDouble(it.Value), 2).ToString();
+
+                });
+
+                LineResult lineResult = new LineResult();
+                lineResult.xAxis = keyValuePairs.Keys.ToList();
+                lineResult.yAxis = keyValuePairs.Values.ToList();
+                dataResult.data = lineResult;
+                dataResult.code = "200";
+                dataResult.msg = "成功";
+            }
+            catch (Exception e)
+            {
+                dataResult.code = "999";
+                dataResult.msg = e.Message;
+                return dataResult;
+            }
+
+            return dataResult;
+
+        }
+
         /// <summary>
         /// 每节汇总统计
         /// </summary>
@@ -330,7 +381,7 @@ namespace Admin.Controllers
                 List<KeyValuePair<string, string>> keyValues = courseBLL.ActionDal.ActionDBAccess.Queryable<CourseOrderEntity>()
                             .Where(it => it.state == 2 )
                             .GroupBy(it => it.courseId)
-                            .Select<KeyValuePair<string, string>>("courseId, SUM(realTotal) as realTotal")
+                            .Select<KeyValuePair<string, string>>("courseId, SUM(realTotal) AS realTotal")
                             .ToList();
 
                 keyValues.ForEach(it =>
@@ -357,55 +408,6 @@ namespace Admin.Controllers
 
         }
 
-        /// <summary>
-        /// 每天汇总统计
-        /// </summary>
-        /// <param name="staDate"></param>
-        /// <param name="endDate"></param>
-        /// <returns></returns>
-        [HttpPost]
-        public ActionResult<DataResult> CourseDayStatistics( DateTime staDate, DateTime endDate)
-        {
-            DataResult dataResult = new DataResult();
-
-            try
-            {
-                Dictionary<string, string> keyValuePairs = new Dictionary<string, string>();
-                for ( var d = staDate; d <= endDate;)
-                {
-                    keyValuePairs.Add(d.ToString("MM/dd/yyyy"), "0");
-                    d = d.AddDays(1);
-                }
-
-                List<KeyValuePair<string, string>> keyValues = courseBLL.ActionDal.ActionDBAccess.Queryable<CourseOrderEntity>()
-                            .Where(it => it.state == 2 && SqlFunc.Between(it.payDate, staDate, endDate.AddDays(1)))
-                            .GroupBy(it => it.payDate)
-                            .Select<KeyValuePair<string, string>>("payDate, SUM(realTotal) as realTotal")
-                            .ToList();
-      
-                keyValues.ForEach(it =>
-               {
-                   keyValuePairs[Convert.ToDateTime(it.Key).ToString("MM/dd/yyyy")] = Math.Round(Convert.ToDouble( it.Value), 2).ToString();
-
-               });
-
-                LineResult lineResult = new LineResult();
-                lineResult.xAxis = keyValuePairs.Keys.ToList();
-                lineResult.yAxis = keyValuePairs.Values.ToList();
-                dataResult.data = lineResult;
-                dataResult.code = "200";
-                dataResult.msg = "成功";
-            }
-            catch (Exception e)
-            {
-                dataResult.code = "999";
-                dataResult.msg = e.Message;
-                return dataResult;
-            }
-
-            return dataResult;
-
-        }
 
 
     }
