@@ -60,11 +60,11 @@ namespace Entity
         public string coverVideo { get; set; }
 
         /// <summary>
-        /// Desc:老师简介
+        /// Desc:老师id
         /// Default:
         /// Nullable:False
         /// </summary>           
-        public string teacherDescribe { get; set; }
+        public int teacherId { get; set; }
 
         /// <summary>
         /// Desc:
@@ -129,5 +129,16 @@ namespace Entity
         [SugarColumn(IsIgnore = true)]
         public List<CourseSectionEntity> courseSectionEntities { set; get; }
 
+        /// <summary>
+        /// 教师数据
+        /// </summary>
+        [SugarColumn(IsIgnore = true)]
+        public TeacherEntity teacherEntity { set; get; }
+
+        /// <summary>
+        /// 已售数量
+        /// </summary>
+        [SugarColumn(IsIgnore = true)]
+        public int countSold { set; get; }
     }
 }

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using X.PagedList;
+using System.Linq;
 
 namespace BLL
 {
@@ -66,7 +67,61 @@ namespace BLL
                                 name = it.name,
                                 price = it.price
                             })
+                            .Mapper((it, cache) =>
+                            {
+                                var courseOrderEntities = cache.Get(list =>
+                                {
+                                    var ids = list.Select(i => it.courseId).ToList();
+                                    return ActionDal.ActionDBAccess.Queryable<CourseOrderEntity>()
+                                        .In(ids)
+                                        .Where( i => i.state == 2)
+                                        .ToList();
+                                });
+
+                                it.countSold = courseOrderEntities.Where(i => i.courseId == it.courseId).Count();
+
+                            })
                             .ToPageList(pageNumber, pageSize, ref totalCount);
+
+            return courseEntities;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="idInts"></param>
+        /// <returns></returns>
+        public List<CourseEntity> ListByIdInts(List<int> idInts)
+        {
+            List<CourseEntity> courseEntities = new List<CourseEntity>();
+
+            courseEntities = ActionDal.ActionDBAccess.Queryable<CourseEntity>()
+                          .In(it => it.courseId, idInts)
+                          .Where(it => it.isDel == false)
+                          .OrderBy(it => it.createDate, OrderByType.Desc)
+                          .Select(it => new CourseEntity
+                          {
+                              courseId = it.courseId,
+                              courseTypeId = it.courseTypeId,
+                              coverImage = it.coverImage,
+                              createDate = it.createDate,
+                              name = it.name,
+                              price = it.price
+                          })
+                          .Mapper((it, cache) =>
+                          {
+                              List<CourseOrderEntity> courseOrderEntities = cache.Get(list =>
+                              {
+                                  var ids = list.Select(i => it.courseId).ToList();
+                                  return ActionDal.ActionDBAccess.Queryable<CourseOrderEntity>()
+                                           .In(ids)
+                                           .Where(i => i.state == 2)
+                                           .ToList();
+                              });
+                              it.countSold = courseOrderEntities.Where(i => i.courseId == it.courseId).Count();
+
+                          })
+                          .ToList();
 
             return courseEntities;
         }

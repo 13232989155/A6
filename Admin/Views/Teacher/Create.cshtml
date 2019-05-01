@@ -1,0 +1,201 @@
+﻿
+@{
+    ViewData["Title"] = "创建教师";
+}
+<div class="page-title">
+    <div class="title_left">
+        <h3>创建教师</h3>
+    </div>
+</div>
+<link href="~/css/pnotify.css" rel="stylesheet" />
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2><small></small></h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle"><i class="fa fa-wrench"></i></a>
+                    </li>
+                    <li>
+                        <a class="close-link"><i class="fa fa-close"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div id="example" class="x_content">
+                <br>
+                <form asp-action="Create" id="demo-form2" class="form-horizontal form-label-left">
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            名称 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" v-model="name" class="form-control col-md-7 col-xs-12">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            介绍 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div id="describe">
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ln_solid"></div>
+
+                    <div class="form-group">
+                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                            <button class="btn btn-primary" onclick="Save()" type="button">创建</button>
+                            <a asp-action="List" class="btn btn-info">返回列表</a>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/pnotify.js"></script>
+<script src="~/js/vue.js"></script>
+<script src="~/js/a6admin.js"></script>
+<script src="~/js/qiniu.min.js"></script>
+<script src="~/js/wangEditor.js"></script>
+<script type="text/javascript">
+    //
+    $("#liTeacherList").addClass("current-page");
+    $("#ulCourse").show();
+
+    var dataEntity = {
+        name: "",
+        describe: ""
+    }
+
+    var caseOfficialVue = new Vue({
+        el: "#example",
+        data: dataEntity
+    })
+
+    function Save() {
+
+        if (dataEntity.name == "") {
+            ShowPNotify("名称不能为空");
+            return
+        }
+
+        if (editor.txt.html() == "") {
+            ShowPNotify("描述不能为空");
+            return
+        }
+
+        dataEntity.describe = editor.txt.html();
+
+        $.ajax({
+            type: "post",
+            url: "/Teacher/Create",
+            data: {
+                name: dataEntity.name,
+                describe: dataEntity.describe
+            },
+            dataType: "json",
+            success: function (result) {
+
+                if (result.code == "200") {
+                    window.location.href = "/Teacher/List";
+                }
+                else {
+                    ShowPNotify(result.msg)
+                }
+            },
+            error: function () {
+                ShowPNotify("请求错误")
+            }
+        });
+    }
+
+    var E = window.wangEditor
+    var editor = new E('#describe')
+
+    editor.customConfig.customUploadImg = function (files, insert) {
+        // files 是 input 中选中的文件列表
+        // insert 是获取图片 url 后，插入到编辑器的方法
+        var file = files[0]
+        var suffix = MimeToSuffix(file.type)//文件后缀
+
+        var arr = ['.jpeg', '.png', '.gif', '.bmp'];
+        if ( arr.indexOf(suffix) == -1) {
+            ShowPNotify("文件类型错误")
+            return
+        }
+
+        var bucket = "image"//存放的存储空间
+        $.when(GetQiNiuToken(bucket)).done(function (defer) {
+            var reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function (e) {
+                blob = DataURItoBlob(e.target.result);
+                var token
+                var key
+                var blob
+
+                token = defer
+
+                var guid = new GUID();
+                key = guid.newGUID();
+
+                var putExtra = {
+                    fname: "",  //文件原文件名
+                    params: {}, //用来放置自定义变量
+                    mimeType: null  //用来限制上传文件类型，为 null 时表示不对文件类型限制；限制类型放到数组里： ["image/png", "image/jpeg", "image/gif"]
+                };
+
+                var config = {
+                    useCdnDomain: true,   //表示是否使用 cdn 加速域名，为布尔值，true 表示使用，默认为 false。
+                    region: qiniu.region.z2     // 根据具体提示修改上传地区,当为 null 或 undefined 时，自动分析上传域名区域
+                };
+
+                var observable = qiniu.upload(blob, key + suffix, token, putExtra, config)
+                new PNotify({
+                    title: '文件上传中!',
+                    text: '请等待...',
+                    type: 'info',
+                    delay: 180000,
+                    styling: 'bootstrap3',
+                    addclass: 'dark'
+                });
+                var subscription = observable.subscribe({
+                    next: (res) => {
+
+                    },
+                    error: (err) => {
+                        // 失败报错信息
+                        ShowPNotify(err);
+                    },
+                    complete: (res) => {
+                        // 接收成功后返回的信息
+                        PNotify.removeAll()
+                        ShowSuccessPNotify("文件上传完成")
+                        insert(GetQiNiuDomain(bucket) + res.key)
+                    }
+                })
+            }
+        });
+    }
+
+    //editor.customConfig.uploadFileName = 'files'
+    //editor.customConfig.uploadImgServer = '/Home/UploadFile'  // 上传图片到服务器
+    // 隐藏“网络图片”tab
+    editor.customConfig.showLinkImg = false
+    editor.create()
+
+</script>
+

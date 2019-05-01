@@ -71,6 +71,9 @@ namespace Api.Controllers
                 CourseEntity courseEntity = courseBLL.GetById(courseId);
                 courseEntity.videoUrl = "";
 
+                TeacherBLL teacherBLL = new TeacherBLL();
+                courseEntity.teacherEntity = teacherBLL.GetById(courseEntity.teacherId);
+
                 dr.code = "200";
                 dr.data = courseEntity;
             }
@@ -97,21 +100,24 @@ namespace Api.Controllers
             try
             {
                 UserEntity userEntity = this.GetUserByToken(token);
-                //CourseOrderBLL courseOrderBLL = new CourseOrderBLL();
-                //CourseOrderEntity courseOrderEntity = courseOrderBLL.GetByCourseAndUserId(courseId, userEntity.userId);
+                CourseOrderBLL courseOrderBLL = new CourseOrderBLL();
+                CourseOrderEntity courseOrderEntity = courseOrderBLL.GetByCourseAndUserId(courseId, userEntity.userId);
 
-                //if (courseOrderEntity == null)
-                //{
-                //    dr.code = "201";
-                //    dr.msg = "未购买该课程";
-                //    return Json(dr);
-                //}
+                if (courseOrderEntity == null)
+                {
+                    dr.code = "201";
+                    dr.msg = "未购买该课程";
+                    return Json(dr);
+                }
 
                 CourseBLL courseBLL = new CourseBLL();
                 CourseEntity courseEntity = courseBLL.GetById(courseId);
 
                 CourseSectionBLL courseSectionBLL = new CourseSectionBLL();
                 courseEntity.courseSectionEntities = courseSectionBLL.ListByCourseId(courseId);
+
+                TeacherBLL teacherBLL = new TeacherBLL();
+                courseEntity.teacherEntity = teacherBLL.GetById( courseEntity.teacherId);
 
                 dr.code = "200";
                 dr.data = courseEntity;

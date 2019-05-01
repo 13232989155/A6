@@ -33,6 +33,7 @@ namespace Api.Controllers
             try
             {
                 CourseRecommendBLL courseRecommendBLL = new CourseRecommendBLL();
+                CourseBLL courseBLL = new CourseBLL();
 
                 List<CourseRecommendEntity> courseRecommendEntities = courseRecommendBLL.ActionDal.ActionDBAccess.Queryable<CourseRecommendEntity>().ToList();
 
@@ -44,19 +45,7 @@ namespace Api.Controllers
                                 .ToList();
                    if ( vs.Count > 0)
                    {
-                       it.courseEntities = courseRecommendBLL.ActionDal.ActionDBAccess.Queryable<CourseEntity>()
-                                            .In(ittt => ittt.courseId, vs)
-                                            .Select(ittt => new CourseEntity
-                                            {
-                                                courseId = ittt.courseId,
-                                                courseTypeId = ittt.courseTypeId,
-                                                coverImage = ittt.coverImage,
-                                                createDate = ittt.createDate,
-                                                name = ittt.name,
-                                                price = ittt.price
-                                            })
-                                            .OrderBy(ittt => ittt.name, SqlSugar.OrderByType.Desc)
-                                            .ToList();
+                       it.courseEntities = courseBLL.ListByIdInts(vs);
                    }
 
                });

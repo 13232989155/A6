@@ -62,6 +62,15 @@
 
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            教师ID <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" value="@Model.teacherId" disabled class="form-control col-md-7 col-xs-12">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
                             课程分类 <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
@@ -157,17 +166,6 @@
 
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                            教师介绍 <span class="required">*</span>
-                        </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <div id="teacherDescribe">
-                                @Html.Raw(Model.teacherDescribe)
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
                             提示 <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
@@ -232,12 +230,6 @@
     describeEditor.customConfig.showLinkImg = false
     describeEditor.create()
     describeEditor.$textElem.attr('contenteditable', false)
-
-    var teacherDescribeEditor = new E('#teacherDescribe')
-    // 隐藏“网络图片”tab
-    teacherDescribeEditor.customConfig.showLinkImg = false
-    teacherDescribeEditor.create()
-    teacherDescribeEditor.$textElem.attr('contenteditable', false)
 
     var tipsEditor = new E('#tips')
     // 隐藏“网络图片”tab

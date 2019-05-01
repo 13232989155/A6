@@ -58,6 +58,8 @@ namespace Admin.Controllers
         public IActionResult Create()
         {
             List<CourseTypeEntity> courseTypeEntities = courseBLL.ActionDal.ActionDBAccess.Queryable<CourseTypeEntity>().Where(it => it.isDel == false).ToList();
+            List<TeacherEntity> teacherEntities = courseBLL.ActionDal.ActionDBAccess.Queryable<TeacherEntity>().Where(it => it.isDel == false).ToList();
+            ViewBag.teacherEntities = teacherEntities;
             return View(courseTypeEntities);
         }
 
@@ -67,7 +69,7 @@ namespace Admin.Controllers
         /// <param name="courseEntity"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult<DataResult> Create([Bind("courseTypeId, name, describe, coverImage, coverVideo, teacherDescribe, videoUrl, tips, price")] CourseEntity courseEntity)
+        public ActionResult<DataResult> Create([Bind("courseTypeId, name, describe, coverImage, coverVideo, teacherId, videoUrl, tips, price")] CourseEntity courseEntity)
         {
             DataResult dataResult = new DataResult();
 
@@ -78,6 +80,13 @@ namespace Admin.Controllers
                 {
                     dataResult.code = "201";
                     dataResult.msg = "标题不能为空";
+                    return dataResult;
+                }
+
+                if ( courseEntity.teacherId < 10000)
+                {
+                    dataResult.code = "201";
+                    dataResult.msg = "教师不能为空";
                     return dataResult;
                 }
 
@@ -107,7 +116,7 @@ namespace Admin.Controllers
                     modifyDate = DateTime.Now,
                     price = courseEntity.price == 0 ? -1 : courseEntity.price,
                     state = 1,
-                    teacherDescribe = courseEntity.teacherDescribe ?? "",
+                    teacherId = courseEntity.teacherId,
                     tips = courseEntity.tips ?? "",
                     name = courseEntity.name,
                     videoUrl = courseEntity.videoUrl
@@ -147,6 +156,9 @@ namespace Admin.Controllers
             CourseEntity courseEntity = courseBLL.GetById(id);
             List<CourseTypeEntity> courseTypeEntities = courseBLL.ActionDal.ActionDBAccess.Queryable<CourseTypeEntity>().Where(it => it.isDel == false).ToList();
             ViewBag.courseTypeEntities = courseTypeEntities;
+
+            List<TeacherEntity> teacherEntities = courseBLL.ActionDal.ActionDBAccess.Queryable<TeacherEntity>().Where(it => it.isDel == false).ToList();
+            ViewBag.teacherEntities = teacherEntities;
             return View(courseEntity);
         }
 
@@ -157,7 +169,7 @@ namespace Admin.Controllers
         /// <param name="adminEntity"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult<DataResult> Edit([Bind("courseTypeId, name, describe, coverImage, coverVideo, teacherDescribe, videoUrl, tips, price, isDel, courseId")] CourseEntity courseEntity)
+        public ActionResult<DataResult> Edit([Bind("courseTypeId, name, describe, coverImage, coverVideo, teacherId, videoUrl, tips, price, isDel, courseId")] CourseEntity courseEntity)
         {
             DataResult dataResult = new DataResult();
 
@@ -167,6 +179,13 @@ namespace Admin.Controllers
                 {
                     dataResult.code = "201";
                     dataResult.msg = "标题不能为空";
+                    return dataResult;
+                }
+
+                if (courseEntity.teacherId < 10000)
+                {
+                    dataResult.code = "201";
+                    dataResult.msg = "教师不能为空";
                     return dataResult;
                 }
 
@@ -193,7 +212,7 @@ namespace Admin.Controllers
                 course.isDel = courseEntity.isDel;
                 course.modifyDate = DateTime.Now;
                 course.price = courseEntity.price == 0 ? -1 : courseEntity.price;
-                course.teacherDescribe = courseEntity.teacherDescribe ?? "";
+                course.teacherId = courseEntity.teacherId;
                 course.tips = courseEntity.tips ?? "";
                 course.name = courseEntity.name ?? "";
                 course.videoUrl = courseEntity.videoUrl;
