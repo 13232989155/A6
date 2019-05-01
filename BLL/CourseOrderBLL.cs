@@ -3,6 +3,8 @@ using SqlSugar;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
+
 
 namespace BLL
 {
@@ -50,11 +52,37 @@ namespace BLL
                                 createDate = co.payDate,
                                 name = c.name,
                                 price = c.price,
+                                teacherId = c.teacherId
                             })
                             .OrderBy( co => co.createDate, OrderByType.Desc)
+                            .Mapper((it, cache) =>
+                            {
+                                var teacherEntities = cache.Get(list =>
+                                {
+                                    var ids = list.Select(i => it.teacherId).ToList();
+                                    return ActionDal.ActionDBAccess.Queryable<TeacherEntity>()
+                                        .In(ids)
+                                        .ToList();
+                                });
+
+                                it.teacherEntity = teacherEntities.Where(i => i.teacherId == it.teacherId).First();
+
+                            })
                             .ToList();
 
             return courseEntities;
+        }
+
+        /// <summary>
+        /// 获取已购买数量
+        /// </summary>
+        /// <param name="courseId"></param>
+        /// <returns></returns>
+        public int GetCountByCourseId(int courseId)
+        {
+            int count = 0;
+            count = ActionDal.ActionDBAccess.Queryable<CourseOrderEntity>().Where(it => it.state == 2 && it.courseId == courseId).Count();
+            return count;
         }
     }
 }

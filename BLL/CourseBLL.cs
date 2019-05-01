@@ -67,20 +67,6 @@ namespace BLL
                                 name = it.name,
                                 price = it.price
                             })
-                            .Mapper((it, cache) =>
-                            {
-                                var courseOrderEntities = cache.Get(list =>
-                                {
-                                    var ids = list.Select(i => it.courseId).ToList();
-                                    return ActionDal.ActionDBAccess.Queryable<CourseOrderEntity>()
-                                        .In(ids)
-                                        .Where( i => i.state == 2)
-                                        .ToList();
-                                });
-
-                                it.countSold = courseOrderEntities.Where(i => i.courseId == it.courseId).Count();
-
-                            })
                             .ToPageList(pageNumber, pageSize, ref totalCount);
 
             return courseEntities;
@@ -107,19 +93,6 @@ namespace BLL
                               createDate = it.createDate,
                               name = it.name,
                               price = it.price
-                          })
-                          .Mapper((it, cache) =>
-                          {
-                              List<CourseOrderEntity> courseOrderEntities = cache.Get(list =>
-                              {
-                                  var ids = list.Select(i => it.courseId).ToList();
-                                  return ActionDal.ActionDBAccess.Queryable<CourseOrderEntity>()
-                                           .In(ids)
-                                           .Where(i => i.state == 2)
-                                           .ToList();
-                              });
-                              it.countSold = courseOrderEntities.Where(i => i.courseId == it.courseId).Count();
-
                           })
                           .ToList();
 

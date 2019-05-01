@@ -40,6 +40,15 @@ namespace Api.Controllers
                 int totalItemCount = courseBLL.Count(courseTypeId);
                 List<CourseEntity> courseEntities = courseBLL.List(courseTypeId, pageNumber: pageNumber, pageSize: pageSize, totalCount: totalItemCount);
 
+                if (courseEntities.Count > 0)
+                {
+                    CourseOrderBLL courseOrderBLL = new CourseOrderBLL();
+                    courseEntities.ForEach(it =>
+                   {
+                       it.countSold = courseOrderBLL.GetCountByCourseId(it.courseId);
+                   });
+                }
+
                 PageData pageData = new PageData(courseEntities, pageNumber, pageSize, totalItemCount);
 
                 dr.code = "200";
@@ -73,6 +82,9 @@ namespace Api.Controllers
 
                 TeacherBLL teacherBLL = new TeacherBLL();
                 courseEntity.teacherEntity = teacherBLL.GetById(courseEntity.teacherId);
+
+                CourseOrderBLL courseOrderBLL = new CourseOrderBLL();
+                courseEntity.countSold = courseOrderBLL.GetCountByCourseId( courseEntity.courseId);
 
                 dr.code = "200";
                 dr.data = courseEntity;
@@ -118,6 +130,8 @@ namespace Api.Controllers
 
                 TeacherBLL teacherBLL = new TeacherBLL();
                 courseEntity.teacherEntity = teacherBLL.GetById( courseEntity.teacherId);
+
+                courseEntity.countSold = courseOrderBLL.GetCountByCourseId(courseEntity.courseId);
 
                 dr.code = "200";
                 dr.data = courseEntity;

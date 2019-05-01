@@ -34,7 +34,7 @@ namespace Api.Controllers
             {
                 CourseRecommendBLL courseRecommendBLL = new CourseRecommendBLL();
                 CourseBLL courseBLL = new CourseBLL();
-
+                CourseOrderBLL courseOrderBLL = new CourseOrderBLL();
                 List<CourseRecommendEntity> courseRecommendEntities = courseRecommendBLL.ActionDal.ActionDBAccess.Queryable<CourseRecommendEntity>().ToList();
 
                 courseRecommendEntities.ForEach(it =>
@@ -46,6 +46,15 @@ namespace Api.Controllers
                    if ( vs.Count > 0)
                    {
                        it.courseEntities = courseBLL.ListByIdInts(vs);
+                   }
+
+                   if (it.courseEntities.Count > 0)
+                   {
+
+                       it.courseEntities.ForEach(i =>
+                       {
+                           i.countSold = courseOrderBLL.GetCountByCourseId(i.courseId);
+                       });
                    }
 
                });

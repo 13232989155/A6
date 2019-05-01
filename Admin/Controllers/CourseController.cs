@@ -327,8 +327,8 @@ namespace Admin.Controllers
 
                 List<KeyValuePair<string, string>> keyValues = courseBLL.ActionDal.ActionDBAccess.Queryable<CourseOrderEntity>()
                             .Where(it => it.state == 2 && SqlFunc.Between(it.payDate, staDate, endDate.AddDays(1)))
-                            .GroupBy("CONVERT( varchar(10),payDate, 103) ")
-                            .Select<KeyValuePair<string, string>>("CONVERT( varchar(10),payDate, 103) AS payDate, SUM(realTotal) AS realTotal")
+                            .GroupBy("CONVERT( varchar(10),payDate, 101) ")
+                            .Select<KeyValuePair<string, string>>("CONVERT( varchar(10),payDate, 101) AS payDate, SUM(realTotal) AS realTotal")
                             .ToList();
 
                 keyValues.ForEach(it =>
