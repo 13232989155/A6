@@ -27,94 +27,94 @@
                 </ul>
                 <div class="clearfix"></div>
             </div>
-            <div id="example" class="x_content">
+            <div class="x_content">
                 <br>
                 <form asp-action="Edit" id="demo-form2" class="form-horizontal form-label-left">
-
-                    <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                            ID <span class="required">*</span>
-                        </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" v-model="caseOfficialId" readonly class="form-control col-md-7 col-xs-12">
+                    <div id="example">
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                                ID <span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input type="text" v-model="caseOfficialId" readonly class="form-control col-md-7 col-xs-12">
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                            标题 <span class="required">*</span>
-                        </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <textarea class="form-control" v-model="title" rows="5"></textarea>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                                标题 <span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <textarea class="form-control" v-model="title" rows="5"></textarea>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                            图片 <span class="required">*</span>
-                        </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input id="fileCoverImage" type="file" style="width:0; height:0" accept="image/x-png,image/gif,image/jpeg,image/bmp" />
-                            <template v-if="coverImage === ''">
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                                图片 <span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input id="fileCoverImage" type="file" style="width:0; height:0" accept="image/x-png,image/gif,image/jpeg,image/bmp" />
+                                <template v-if="coverImage === ''">
 
-                                <div class="x_panel tile fixed_height_320">
-                                    <div class="x_content">
-                                        <div class="flex" style="justify-content:center; align-items:center;text-align:center">
-                                            <h3 class="name">
-                                                <label>
-                                                    &nbsp;
-                                                </label>
-                                            </h3>
-                                            <h3 class="name">
-                                                <label for="fileCoverImage" style="cursor:pointer">
-                                                    <i class="fa fa-plus fa-5x"></i>
-                                                </label>
-                                            </h3>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </template>
-
-                            <template v-else>
-
-                                <div class="col-md-12 col-sm-12 col-xs-12">
-                                    <div class="x_panel">
-                                        <div class="x_title">
-                                            <ul class="nav navbar-right panel_toolbox">
-                                                <li>
-                                                    <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                                                </li>
-                                                <li class="dropdown">
-                                                    <a v-on:click="UpdateCoverImage()" class="dropdown-toggle"><i class="fa fa-picture-o"></i></a>
-                                                </li>
-                                                <li>
-                                                    <a class="close-link" v-on:click="DeleteCoverImage()"><i class="fa fa-close"></i></a>
-                                                </li>
-                                            </ul>
-                                            <div class="clearfix"></div>
-                                        </div>
+                                    <div class="x_panel tile fixed_height_320">
                                         <div class="x_content">
-
-                                            <div class="bs-example" data-example-id="simple-jumbotron">
-                                                <img style="width:100%" :src="coverImage" />
+                                            <div class="flex" style="justify-content:center; align-items:center;text-align:center">
+                                                <h3 class="name">
+                                                    <label>
+                                                        &nbsp;
+                                                    </label>
+                                                </h3>
+                                                <h3 class="name">
+                                                    <label for="fileCoverImage" style="cursor:pointer">
+                                                        <i class="fa fa-plus fa-5x"></i>
+                                                    </label>
+                                                </h3>
                                             </div>
-
                                         </div>
                                     </div>
-                                </div>
 
-                            </template>
+                                </template>
 
+                                <template v-else>
+
+                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                        <div class="x_panel">
+                                            <div class="x_title">
+                                                <ul class="nav navbar-right panel_toolbox">
+                                                    <li>
+                                                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                                    </li>
+                                                    <li class="dropdown">
+                                                        <a v-on:click="UpdateCoverImage()" class="dropdown-toggle"><i class="fa fa-picture-o"></i></a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="close-link" v-on:click="DeleteCoverImage()"><i class="fa fa-close"></i></a>
+                                                    </li>
+                                                </ul>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                            <div class="x_content">
+
+                                                <div class="bs-example" data-example-id="simple-jumbotron">
+                                                    <img style="width:100%" :src="coverImage" />
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </template>
+
+                            </div>
                         </div>
                     </div>
-
 
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">
                             内容 <span class="required">*</span>
                         </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="col-md-8 col-sm-8 col-xs-12">
                             <div id="contents">
                                 @Html.Raw(Model.contents)
                             </div>
@@ -163,7 +163,6 @@
         el: "#example",
         data: caseOfficialEntity,
         beforeCreate: function () {
-
             caseOfficialEntity.title = "@Html.Raw(Model.title)"
             caseOfficialEntity.coverImage = "@Html.Raw(Model.coverImage)"
             caseOfficialEntity.contents = ""
@@ -268,7 +267,6 @@
                 title: caseOfficialEntity.title,
                 coverImage: caseOfficialEntity.coverImage,
                 contents: caseOfficialEntity.contents,
-
             },
             dataType: "json",
             success: function (result) {
@@ -356,7 +354,6 @@
     // 隐藏“网络图片”tab
     editor.customConfig.showLinkImg = false
     editor.create()
-
 
 </script>
 

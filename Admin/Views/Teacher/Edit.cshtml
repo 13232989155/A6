@@ -27,48 +27,48 @@
                 </ul>
                 <div class="clearfix"></div>
             </div>
-            <div id="example" class="x_content">
+            <div  class="x_content">
                 <br>
                 <form asp-action="Edit" id="demo-form2" class="form-horizontal form-label-left">
+                    <div id="example">
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                                ID <span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input type="text" v-model="teacherId" readonly class="form-control col-md-7 col-xs-12">
+                            </div>
+                        </div>
 
-                    <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                            ID <span class="required">*</span>
-                        </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" v-model="teacherId" readonly class="form-control col-md-7 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                                名称 <span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input type="text" v-model="name" class="form-control col-md-7 col-xs-12">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                                是否删除 <span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <select v-model="isDel" class="form-control">
+                                    <option value="True" selected>是</option>
+                                    <option value="False">否</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                            名称 <span class="required">*</span>
-                        </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" v-model="name" class="form-control col-md-7 col-xs-12">
-                        </div>
-                    </div>
-
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">
                             课程介绍 <span class="required">*</span>
                         </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="col-md-8 col-sm-8 col-xs-12">
                             <div id="describe">
                                 @Html.Raw(Model.describe)
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                            是否删除 <span class="required">*</span>
-                        </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <select v-model="isDel" class="form-control">
-                                <option value="True" selected>是</option>
-                                <option value="False">否</option>
-                            </select>
                         </div>
                     </div>
 

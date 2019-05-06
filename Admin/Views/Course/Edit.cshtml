@@ -29,280 +29,292 @@
                 </ul>
                 <div class="clearfix"></div>
             </div>
-            <div id="example" class="x_content">
+            <div class="x_content">
                 <br>
                 <form asp-action="Edit" id="demo-form2" class="form-horizontal form-label-left">
-
-                    <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                            ID <span class="required">*</span>
-                        </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" v-model="courseId" readonly class="form-control col-md-7 col-xs-12">
+                    <div id="example">
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                                ID <span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input type="text" v-model="courseId" readonly class="form-control col-md-7 col-xs-12">
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                            名称 <span class="required">*</span>
-                        </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" v-model="name" class="form-control col-md-7 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                                名称 <span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input type="text" v-model="name" class="form-control col-md-7 col-xs-12">
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                            价格(保留两位小数) <span class="required">*</span>
-                        </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="number" v-model="price" class="form-control col-md-7 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                                价格(保留两位小数) <span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input type="number" v-model="price" class="form-control col-md-7 col-xs-12">
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                            教师 <span class="required">*</span>
-                        </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <select v-model="teacherId" class="form-control">
-                                @foreach (var item in teacherEntities)
-                                {
-                                    <option value="@item.teacherId" selected>@item.name</option>
-                                }
-                            </select>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                                教师 <span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <select v-model="teacherId" class="form-control">
+                                    @foreach (var item in teacherEntities)
+                                    {
+                                        <option value="@item.teacherId" selected>@item.name</option>
+                                    }
+                                </select>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                            分类 <span class="required">*</span>
-                        </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <select v-model="courseTypeId" class="form-control">
-                                @foreach (var item in courseTypeEntities)
-                                {
-                                    <option value="@item.courseTypeId" selected>@item.name</option>
-                                }
-                            </select>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                                分类 <span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <select v-model="courseTypeId" class="form-control">
+                                    @foreach (var item in courseTypeEntities)
+                                    {
+                                        <option value="@item.courseTypeId" selected>@item.name</option>
+                                    }
+                                </select>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                            课程视频 <span class="required">*</span>
-                        </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input id="fileVideo" type="file" style="width:0; height:0" accept="video/mp4" />
-                            <template v-if="videoUrl === ''">
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                                课程视频 <span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input id="fileVideo" type="file" style="width:0; height:0" accept="video/mp4" />
+                                <template v-if="videoUrl === ''">
 
-                                <div class="x_panel tile fixed_height_320">
-                                    <div class="x_content">
-                                        <div class="flex" style="justify-content:center; align-items:center;text-align:center">
-                                            <h3 class="name">
-                                                <label>
-                                                    &nbsp;
-                                                </label>
-                                            </h3>
-                                            <h3 class="name">
-                                                <label for="fileVideo" style="cursor:pointer">
-                                                    <i class="fa fa-plus fa-5x"></i>
-                                                </label>
-                                            </h3>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </template>
-
-                            <template v-else>
-
-                                <div class="col-md-12 col-sm-12 col-xs-12">
-                                    <div class="x_panel">
-                                        <div class="x_title">
-                                            <ul class="nav navbar-right panel_toolbox">
-                                                <li>
-                                                    <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                                                </li>
-                                                <li class="dropdown">
-                                                    <a v-on:click="UpdateVideo()" class="dropdown-toggle"><i class="fa fa-video-camera"></i></a>
-                                                </li>
-                                                <li>
-                                                    <a class="close-link" v-on:click="DeleteVideo()"><i class="fa fa-close"></i></a>
-                                                </li>
-                                            </ul>
-                                            <div class="clearfix"></div>
-                                        </div>
+                                    <div class="x_panel tile fixed_height_320">
                                         <div class="x_content">
-
-                                            <div class="bs-example" data-example-id="simple-jumbotron">
-                                                <video controls="controls" style="width:100%">
-                                                    <source :src="videoUrl" type="video/mp4" />
-                                                    <source :src="videoUrl" type="video/webm" />
-                                                    <source :src="videoUrl" type="video/ogg" />
-                                                </video>
+                                            <div class="flex" style="justify-content:center; align-items:center;text-align:center">
+                                                <h3 class="name">
+                                                    <label>
+                                                        &nbsp;
+                                                    </label>
+                                                </h3>
+                                                <h3 class="name">
+                                                    <label for="fileVideo" style="cursor:pointer">
+                                                        <i class="fa fa-plus fa-5x"></i>
+                                                    </label>
+                                                </h3>
                                             </div>
-
                                         </div>
                                     </div>
-                                </div>
 
-                            </template>
+                                </template>
 
+                                <template v-else>
+
+                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                        <div class="x_panel">
+                                            <div class="x_title">
+                                                <ul class="nav navbar-right panel_toolbox">
+                                                    <li>
+                                                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                                    </li>
+                                                    <li class="dropdown">
+                                                        <a v-on:click="UpdateVideo()" class="dropdown-toggle"><i class="fa fa-video-camera"></i></a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="close-link" v-on:click="DeleteVideo()"><i class="fa fa-close"></i></a>
+                                                    </li>
+                                                </ul>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                            <div class="x_content">
+
+                                                <div class="bs-example" data-example-id="simple-jumbotron">
+                                                    <video controls="controls" style="width:100%">
+                                                        <source :src="videoUrl" type="video/mp4" />
+                                                        <source :src="videoUrl" type="video/webm" />
+                                                        <source :src="videoUrl" type="video/ogg" />
+                                                    </video>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </template>
+
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                        </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <div class="progress" id="divProgressVideoUrl">
-                                <div id="videoProgressVideoUrl" class="progress-bar progress-bar-success" style="width: 0%;">
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="progress" id="divProgressVideoUrl">
+                                    <div id="videoProgressVideoUrl" class="progress-bar progress-bar-success" style="width: 0%;">
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                            课程封面视频 <span class="required">*</span>
-                        </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input id="fileCoverVideo" type="file" style="width:0; height:0" accept="video/mp4" />
-                            <template v-if="coverVideo === ''">
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                                课程封面视频 <span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input id="fileCoverVideo" type="file" style="width:0; height:0" accept="video/mp4" />
+                                <template v-if="coverVideo === ''">
 
-                                <div class="x_panel tile fixed_height_320">
-                                    <div class="x_content">
-                                        <div class="flex" style="justify-content:center; align-items:center;text-align:center">
-                                            <h3 class="name">
-                                                <label>
-                                                    &nbsp;
-                                                </label>
-                                            </h3>
-                                            <h3 class="name">
-                                                <label for="fileCoverVideo" style="cursor:pointer">
-                                                    <i class="fa fa-plus fa-5x"></i>
-                                                </label>
-                                            </h3>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </template>
-
-                            <template v-else>
-
-                                <div class="col-md-12 col-sm-12 col-xs-12">
-                                    <div class="x_panel">
-                                        <div class="x_title">
-                                            <ul class="nav navbar-right panel_toolbox">
-                                                <li>
-                                                    <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                                                </li>
-                                                <li class="dropdown">
-                                                    <a v-on:click="UpdateCoverVideo()" class="dropdown-toggle"><i class="fa fa-video-camera"></i></a>
-                                                </li>
-                                                <li>
-                                                    <a class="close-link" v-on:click="DeleteCoverVideo()"><i class="fa fa-close"></i></a>
-                                                </li>
-                                            </ul>
-                                            <div class="clearfix"></div>
-                                        </div>
+                                    <div class="x_panel tile fixed_height_320">
                                         <div class="x_content">
-
-                                            <div class="bs-example" data-example-id="simple-jumbotron">
-                                                <video controls="controls" style="width:100%">
-                                                    <source :src="coverVideo" type="video/mp4" />
-                                                    <source :src="coverVideo" type="video/webm" />
-                                                    <source :src="coverVideo" type="video/ogg" />
-                                                </video>
+                                            <div class="flex" style="justify-content:center; align-items:center;text-align:center">
+                                                <h3 class="name">
+                                                    <label>
+                                                        &nbsp;
+                                                    </label>
+                                                </h3>
+                                                <h3 class="name">
+                                                    <label for="fileCoverVideo" style="cursor:pointer">
+                                                        <i class="fa fa-plus fa-5x"></i>
+                                                    </label>
+                                                </h3>
                                             </div>
-
                                         </div>
                                     </div>
-                                </div>
 
-                            </template>
+                                </template>
 
+                                <template v-else>
+
+                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                        <div class="x_panel">
+                                            <div class="x_title">
+                                                <ul class="nav navbar-right panel_toolbox">
+                                                    <li>
+                                                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                                    </li>
+                                                    <li class="dropdown">
+                                                        <a v-on:click="UpdateCoverVideo()" class="dropdown-toggle"><i class="fa fa-video-camera"></i></a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="close-link" v-on:click="DeleteCoverVideo()"><i class="fa fa-close"></i></a>
+                                                    </li>
+                                                </ul>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                            <div class="x_content">
+
+                                                <div class="bs-example" data-example-id="simple-jumbotron">
+                                                    <video controls="controls" style="width:100%">
+                                                        <source :src="coverVideo" type="video/mp4" />
+                                                        <source :src="coverVideo" type="video/webm" />
+                                                        <source :src="coverVideo" type="video/ogg" />
+                                                    </video>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </template>
+
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                        </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <div class="progress" id="divProgressCoverVideo">
-                                <div id="videoProgressCoverVideo" class="progress-bar progress-bar-success" style="width: 0%;">
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="progress" id="divProgressCoverVideo">
+                                    <div id="videoProgressCoverVideo" class="progress-bar progress-bar-success" style="width: 0%;">
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                            封面图片 <span class="required">*</span>
-                        </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input id="fileCoverImage" type="file" style="width:0; height:0" accept="image/png,image/gif,image/jpeg,image/bmp" />
-                            <template v-if="coverImage === ''">
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                                封面图片 <span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input id="fileCoverImage" type="file" style="width:0; height:0" accept="image/png,image/gif,image/jpeg,image/bmp" />
+                                <template v-if="coverImage === ''">
 
-                                <div class="x_panel tile fixed_height_320">
-                                    <div class="x_content">
-                                        <div class="flex" style="justify-content:center; align-items:center;text-align:center">
-                                            <h3 class="name">
-                                                <label>
-                                                    &nbsp;
-                                                </label>
-                                            </h3>
-                                            <h3 class="name">
-                                                <label for="fileCoverImage" style="cursor:pointer">
-                                                    <i class="fa fa-plus fa-5x"></i>
-                                                </label>
-                                            </h3>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </template>
-
-                            <template v-else>
-
-                                <div class="col-md-12 col-sm-12 col-xs-12">
-                                    <div class="x_panel">
-                                        <div class="x_title">
-                                            <ul class="nav navbar-right panel_toolbox">
-                                                <li>
-                                                    <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                                                </li>
-                                                <li class="dropdown">
-                                                    <a v-on:click="UpdateCoverImage()" class="dropdown-toggle"><i class="fa fa-picture-o"></i></a>
-                                                </li>
-                                                <li>
-                                                    <a class="close-link" v-on:click="DeleteCoverImage()"><i class="fa fa-close"></i></a>
-                                                </li>
-                                            </ul>
-                                            <div class="clearfix"></div>
-                                        </div>
+                                    <div class="x_panel tile fixed_height_320">
                                         <div class="x_content">
-
-                                            <div class="bs-example" data-example-id="simple-jumbotron">
-                                                <img style="width:100%" :src="coverImage" />
+                                            <div class="flex" style="justify-content:center; align-items:center;text-align:center">
+                                                <h3 class="name">
+                                                    <label>
+                                                        &nbsp;
+                                                    </label>
+                                                </h3>
+                                                <h3 class="name">
+                                                    <label for="fileCoverImage" style="cursor:pointer">
+                                                        <i class="fa fa-plus fa-5x"></i>
+                                                    </label>
+                                                </h3>
                                             </div>
-
                                         </div>
                                     </div>
-                                </div>
 
-                            </template>
+                                </template>
 
+                                <template v-else>
+
+                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                        <div class="x_panel">
+                                            <div class="x_title">
+                                                <ul class="nav navbar-right panel_toolbox">
+                                                    <li>
+                                                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                                    </li>
+                                                    <li class="dropdown">
+                                                        <a v-on:click="UpdateCoverImage()" class="dropdown-toggle"><i class="fa fa-picture-o"></i></a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="close-link" v-on:click="DeleteCoverImage()"><i class="fa fa-close"></i></a>
+                                                    </li>
+                                                </ul>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                            <div class="x_content">
+
+                                                <div class="bs-example" data-example-id="simple-jumbotron">
+                                                    <img style="width:100%" :src="coverImage" />
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </template>
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                                是否删除 <span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <select v-model="isDel" class="form-control">
+                                    <option value="True" selected>是</option>
+                                    <option value="False">否</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
-
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">
                             课程介绍 <span class="required">*</span>
                         </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="col-md-8 col-sm-8 col-xs-12">
                             <div id="describe">
                                 @Html.Raw(Model.describe)
                             </div>
@@ -313,22 +325,10 @@
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">
                             提示 <span class="required">*</span>
                         </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="col-md-8 col-sm-8 col-xs-12">
                             <div id="tips">
                                 @Html.Raw(Model.tips)
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                            是否删除 <span class="required">*</span>
-                        </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <select v-model="isDel" class="form-control">
-                                <option value="True" selected>是</option>
-                                <option value="False">否</option>
-                            </select>
                         </div>
                     </div>
 
